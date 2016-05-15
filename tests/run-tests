@@ -1,0 +1,114 @@
+#!/usr/bin/python
+# encoding=UTF-8
+
+# Copyright © 2013-2016 Jakub Wilk
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the “Software”), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+import difflib
+import io
+import os
+import re
+import subprocess as ipc
+import sys
+import unittest
+
+import nose
+import nose.plugins
+
+class Plugin(nose.plugins.Plugin):
+
+    name = 'pydiatra'
+    enabled = True
+
+    def options(self, parser, env):
+        pass
+
+    def wantFile(self, file):
+        if file.endswith('.t'):
+            return True
+
+    def loadTestsFromFile(self, path):
+        yield TestCase(path)
+
+class TestCase(unittest.TestCase):
+
+    _comment_re = re.compile(r'''
+        ^ [#][#]
+        (?: \s+ \[ (?P<rel> << | >= ) \s+ (?P<ver> [0-9][.][0-9]+ ) \] )?
+        \s+
+        (?P<expected> .+ )
+        ''', re.VERBOSE
+    )
+
+    def __init__(self, path):
+        super(TestCase, self).__init__('test')
+        self.path = path
+        self.name = os.path.splitext(os.path.basename(path))[0]
+
+    def test(self):
+        if '.py2.' in self.path and sys.version_info >= (3,):
+            raise nose.SkipTest
+        if '.py3.' in self.path and sys.version_info < (3,):
+            raise nose.SkipTest
+        commandline = [sys.executable, '-tt', '-m', 'pydiatra', self.path]
+        checker = ipc.Popen(commandline,
+            stdout=ipc.PIPE,
+            stderr=ipc.PIPE,
+            env=dict(os.environ, PYTHONIOENCODING='UTF-8'),
+        )
+        expected = []
+        with io.open(self.path, 'rt', encoding='UTF-8') as file:
+            for line in file:
+                match = self._comment_re.match(line)
+                if match is None:
+                    continue
+                relation = match.group('rel')
+                if relation:
+                    version = tuple(
+                        int(x) for x in match.group('ver').split('.')
+                    )
+                    if relation == '<<' and not sys.version_info < version:
+                        continue
+                    if relation == '>=' and not sys.version_info >= version:
+                        continue
+                expected += ['{path}:{rest}'.format(path=self.path, rest=match.group('expected'))]
+        [stdout, stderr] = (
+            s.decode('UTF-8').splitlines()
+            for s in checker.communicate()
+        )
+        if stderr:
+            raise AssertionError('non-empty stderr:\n' +
+                '\n'.join('| ' + line for line in stderr)
+            )
+        if stdout != expected:
+            message = ['unexpected checker output:', '']
+            diff = list(
+                difflib.unified_diff(expected, stdout, n=9999)
+            )
+            message += diff[3:]
+            raise AssertionError('\n'.join(message))
+
+    def __str__(self):
+        return self.name
+
+if __name__ == '__main__':
+    nose.main(addplugins=[Plugin()])
+
+# vim:ts=4 sts=4 sw=4 et
