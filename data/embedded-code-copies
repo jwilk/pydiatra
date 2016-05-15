@@ -1,0 +1,24 @@
+# This file contains regular expressions that identify common embedded copies
+# of Python modules.
+# "Common" is defined as: at least two source packages in the Debian archive
+# contained a copy of the module at the time when it was added to the list.
+#
+# Please keep the list sorted.
+
+BeautifulSoup || Beautiful Soup parses a \(possibly invalid\) XML or HTML document
+ConfigParser => Python || A setup file consists of sections, lead by a "\[section\]" header,
+argparse => Python (>= 2.7) | python-argparse || This module is an optparse-inspired command-line parsing library that:
+configobj || This is the base class for all errors that ConfigObj raises\.
+doctest => Python || Module doctest -- a framework for running examples in docstrings\.
+optparse => Python (>= 2.3) || [Aa] powerful, extensible, and easy-to-use option parser\.
+pexpect || Pexpect is a Python module for spawning child
+ply.lex || ^lex: =+ MASTER REGEXS FOLLOW =+$
+ply.yacc || ^PLY: PARSE DEBUG START$
+pyparsing || pyparsing module - Classes and methods to define and execute parsing grammars
+sets => Python (>= 2.3) || Classes to represent arbitrary sets \(including sets of sets\)
+smartypants || Smart-quotes, smart-ellipses, and smart-dashes for weblog entries in pyblosxom
+ssl.match_hostname() => Python (>= 3.2) || Verify that [*]cert[*] [(]in decoded format as returned by
+subprocess => Python (>= 2.4) || subprocess - Subprocesses with accessible I/O streams\s+This module allows you to spawn processes,
+textwrap => Python (>= 2.3) || ^Text wrapping and filling\.\s*$
+uuid => Python (>= 2.5) || This module provides immutable UUID objects \(class UUID\) and the functions\s+uuid1\(\), uuid3\(\), uuid4\(\), uuid5\(\)
+youtube_dl || File downloader objects are the ones responsible of downloading the\s+actual video file and writing it to disk

@@ -1,0 +1,119 @@
+[assertion-always-true]
+severity = minor
+certainty = certain
+references =
+ https://docs.python.org/reference/simple_stmts.html#grammar-token-assert_stmt
+
+[embedded-code-copy]
+severity = important
+certainty = possible
+references =
+ https://www.debian.org/doc/debian-policy/ch-source.html#s-embeddedfiles
+
+[except-shadows-builtin]
+severity = important
+certainty = possible
+references =
+ https://docs.python.org/whatsnew/2.6.html#pep-3110-exception-handling-changes
+description =
+ One error that Python programmers occasionally make is writing the following
+ code::
+ .
+ .    try:
+ .        ...
+ .    except TypeError, ValueError:  # Wrong!
+ .        ...
+ .
+ The author is probably trying to catch both ``TypeError`` and ``ValueError``
+ exceptions, but this code actually does something different: it will catch
+ ``TypeError`` and bind the resulting exception object to the local name
+ ``ValueError``. The ``ValueError`` exception will not be caught at all.
+ The correct code specifies a tuple of exceptions:
+ .
+ .    try:
+ .        ...
+ .    except (TypeError, ValueError):
+ .        ...
+
+[except-without-exception-type]
+severity = minor
+certainty = possible
+experimental = yes
+references =
+ https://docs.python.org/2/howto/doanddont.html#except
+
+[hardcoded-errno-value]
+severity = normal
+certainty = possible
+references =
+ https://lists.debian.org/20100803162901.GA5419@jwilk.net
+
+[inconsistent-use-of-tabs-and-spaces-in-indentation]
+severity = normal
+certainty = certain
+references =
+ https://docs.python.org/reference/lexical_analysis.html#indentation
+description =
+ The source file mixes tabs and spaces for indentation in a way that makes it
+ depend on the worth of a tab expressed in spaces.
+ .
+ You can check consistency of indentation with the following command::
+ .
+ .    python -m tabnanny <i>path-to-source-file</i>
+
+[mkstemp-file-descriptor-leak]
+severity = normal
+certainty = possible
+references =
+ https://docs.python.org/2/library/tempfile.html#tempfile.mkstemp
+
+[obsolete-pil-import]
+severity = important
+certainty = possible
+references =
+ https://mail.python.org/pipermail/image-sig/2011-January/006650.html
+ https://lists.debian.org/5117D0B7.801@debian.org
+description =
+ Python Imaging Library 1.2 and Pillow (a PIL fork) no longer support this
+ style of imports::
+ .
+ .    import Image
+ .
+ Imports from the PIL namespace should be used instead::
+ .
+ .    from PIL import Image
+
+[regexp-duplicate-range]
+severity = minor
+certainty = possible
+
+[regexp-overlapping-ranges]
+severity = important
+certainty = possible
+
+[regexp-syntax-error]
+severity = important
+certainty = certain
+
+[string-exception]
+severity = important
+certainty = possible
+references =
+ https://docs.python.org/whatsnew/2.6.html#deprecations-and-removals
+description =
+ String exceptions have been removed in Python 2.6.
+ Attempting to use them raises a TypeError.
+
+[string-formatting-error]
+severity = important
+certainty = certain
+
+[syntax-error]
+severity = serious
+certainty = certain
+
+[syntax-warning]
+severity = important
+certainty = possible
+
+# vim:ft=dosini
