@@ -293,7 +293,7 @@ class Visitor(ast.NodeVisitor):
                     pending_body_tags += [t]
                     continue
                 if t.name == '*modern-pil-import':
-                    [_, mod] = t
+                    [_, mod] = t.args
                     body_modern_pil_imp.add(mod)
                 yield t
         for child in node.handlers:
