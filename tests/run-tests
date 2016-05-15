@@ -59,7 +59,7 @@ class TestCase(unittest.TestCase):
 
     def __init__(self, path):
         super(TestCase, self).__init__('test')
-        self.path = path
+        self.path = os.path.relpath(path)
         self.name = os.path.splitext(os.path.basename(path))[0]
 
     def test(self):
