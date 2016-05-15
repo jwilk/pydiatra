@@ -48,4 +48,6 @@ The following checks are implemented:
 
     * assertions that are always true
 
+See `the tags file <data/tags>`_ for details.
+
 .. vim:ft=rst ts=3 sts=3 sw=3 et tw=72
