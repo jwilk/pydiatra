@@ -286,7 +286,7 @@ class Visitor(ast.NodeVisitor):
                     pending_body_tags += [t]
                     continue
                 if t.name == '*modern-pil-import':
-                    _, _, mod = t
+                    [_, mod] = t
                     body_modern_pil_imp.add(mod)
                 yield t
         for child in node.handlers:
@@ -296,23 +296,23 @@ class Visitor(ast.NodeVisitor):
                     pending_except_tags += [t]
                     continue
                 if t.name == '*modern-pil-import':
-                    _, _, mod = t
+                    [_, mod] = t.args
                     except_modern_pil_imp.add(mod)
                 if t.name == '*hardcoded-errno-value':
-                    _, lineno, n = t
+                    [_, n] = t.args
                     code = errno_constants[n]
-                    yield self.tag(lineno, 'hardcoded-errno-value', n, '->', 'errno.{code}'.format(code=code))
+                    yield self.tag(t.lineno, 'hardcoded-errno-value', n, '->', 'errno.{code}'.format(code=code))
                 if t.name == '*reraise':
                     reraised = True
                 yield t
             if child.type is None and not reraised:
                 yield self.tag(child.lineno, 'except-without-exception-type')
         for t in pending_body_tags:
-            _, _, mod = t
+            [_, mod] = t.args
             if not mod in except_modern_pil_imp:
                 yield t
         for t in pending_except_tags:
-            _, _, mod = t
+            [_, mod] = t.args
             if not mod in body_modern_pil_imp:
                 yield t
         for child in node.orelse:
