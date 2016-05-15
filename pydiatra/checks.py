@@ -107,14 +107,20 @@ class ReVisitor(object):
         assert lineno == self.lineno
         return tag(self.path, lineno, *args)
 
+    def _normalize_op(self, op):
+        if sys.version_info >= (3, 5):
+            op = repr(op).lower()
+        if type(op) != str:
+            raise TypeError
+        return op
+
     def visit(self, node):
         if not isinstance(node, sre_parse.SubPattern):
             raise TypeError('{0!r} is not a subpattern'.format(node))
         for op, args in node.data:
             if not isinstance(args, (list, tuple)):
                 args = (args,)
-            if sys.version_info >= (3, 5):
-                op = repr(op).lower()
+            op = self._normalize_op(op)
             method = 'visit_' + op
             visitor = getattr(self, method, self.generic_visit)
             for t in visitor(*args):
@@ -138,6 +144,7 @@ class ReVisitor(object):
     def visit_in(self, *args):
         ranges = []
         for op, arg in args:
+            op = self._normalize_op(op)
             if op == 'range':
                 ranges += [arg]
             elif op == 'literal':
