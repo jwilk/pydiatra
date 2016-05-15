@@ -473,6 +473,8 @@ def check_source(path, source, catch_tab_errors=True):
         # Inconsistent use of tabs and spaces in indentation is always a fatal
         # error in Python 3.X.
         catch_tab_errors = False
+    elif sys.flags.tabcheck < 2:
+        raise RuntimeError('tab check disabled')
     try:
         with warnings.catch_warnings(record=True) as wrns:
             ast_source = ast.parse(source, filename=path)
