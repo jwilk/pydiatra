@@ -411,7 +411,7 @@ class Visitor(ast.NodeVisitor):
             try:
                 fstring = list(string_formatter.parse(fstring))
             except Exception as exc:
-                yield self.tag(node.lineno, 'string-formatting-error')
+                yield self.tag(node.lineno, 'string-formatting-error', str(exc))
             else:
                 for (literal_text, field_name, format_spec, conversion) in fstring:
                     try:
