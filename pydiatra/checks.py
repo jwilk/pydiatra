@@ -46,7 +46,7 @@ code_copies = []
 code_copies_regex = None
 
 def load_data_file(ident):
-    path = '{dir}/{ident}'.format(dir=datadir)
+    path = '{dir}/{ident}'.format(dir=datadir, ident=ident)
     with open(path) as file:
         for line in file:
             line = line.strip()

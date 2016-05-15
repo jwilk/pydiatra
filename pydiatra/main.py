@@ -29,6 +29,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('paths', metavar='<file>', nargs='+')
     options = ap.parse_args()
+    checks.load_data()
     for path in options.paths:
         for t in checks.check_file(path):
             print(t)
