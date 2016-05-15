@@ -67,7 +67,7 @@ class TestCase(unittest.TestCase):
             raise nose.SkipTest
         if '.py3.' in self.path and sys.version_info < (3,):
             raise nose.SkipTest
-        commandline = [sys.executable, '-tt', '-m', 'pydiatra', self.path]
+        commandline = [sys.executable, '-tt', '-c', 'import pydiatra.__main__', self.path]
         checker = ipc.Popen(commandline,
             stdout=ipc.PIPE,
             stderr=ipc.PIPE,
