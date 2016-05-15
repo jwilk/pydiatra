@@ -38,6 +38,7 @@ The following checks are implemented:
      (e.g. ``re.compile("[a-zA-z]")``)
 
  * string exceptions
+   (e.g. ``raise "eggs"`` or ``except "ham":``)
 
  * string formatting errors
 
