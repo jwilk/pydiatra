@@ -358,7 +358,7 @@ class Visitor(ast.NodeVisitor):
         else:
             info = None
         if info is not None:
-            yield tag(None, 'embedded-code-copy', info)
+            yield self.tag(None, 'embedded-code-copy', info)
             self.state.code_copy = True
 
     def visit_BinOp(self, node):
