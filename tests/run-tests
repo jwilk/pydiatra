@@ -88,7 +88,12 @@ class TestCase(unittest.TestCase):
                         continue
                     if relation == '>=' and not sys.version_info >= version:
                         continue
-                expected += ['{path}:{rest}'.format(path=self.path, rest=match.group('expected'))]
+                xline = match.group('expected')
+                expected += ['{path}{sep}{rest}'.format(
+                    path=self.path,
+                    sep=(':' if xline[0].isdigit() else ': '),
+                    rest=xline
+                )]
         [stdout, stderr] = (
             s.decode('UTF-8').splitlines()
             for s in checker.communicate()
