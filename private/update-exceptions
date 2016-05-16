@@ -34,7 +34,7 @@ header_template = '''\
 
 versions = '''
 2.5 2.6 2.7
-3.0 3.1 3.2 3.3 3.4
+3.0 3.1 3.2 3.3 3.4 3.5
 '''
 versions = versions.split()
 
@@ -64,7 +64,7 @@ def extract_exceptions(version):
     with urllib.request.urlopen(url) as fp:
         html = fp.read()
     html = html.decode('UTF-8')
-    match = re.search('<pre>(?:<span class="ne">)?(BaseException.*?)</pre>', html, flags=re.DOTALL)
+    match = re.search('<pre>(?:<span></span>)?(?:<span class="ne">)?(BaseException.*?)</pre>', html, flags=re.DOTALL)
     if match is None:
         raise RuntimeError('cannot extract exception names for Python {ver}'.format(ver=version))
     s = match.group(1)
