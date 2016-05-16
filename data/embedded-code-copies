@@ -7,7 +7,7 @@
 
 BeautifulSoup || Beautiful Soup parses a \(possibly invalid\) XML or HTML document
 ConfigParser => Python || A setup file consists of sections, lead by a "\[section\]" header,
-argparse => Python (>= 2.7) | python-argparse || This module is an optparse-inspired command-line parsing library that:
+argparse => Python (>= 2.7) | argparse || This module is an optparse-inspired command-line parsing library that:
 configobj || This is the base class for all errors that ConfigObj raises\.
 doctest => Python || Module doctest -- a framework for running examples in docstrings\.
 optparse => Python (>= 2.3) || [Aa] powerful, extensible, and easy-to-use option parser\.
