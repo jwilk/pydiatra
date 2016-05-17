@@ -515,4 +515,9 @@ def check_warnings(path, wrns):
         else:
             yield tag(path, wrn.lineno, 'syntax-warning', wrn.message)
 
+__all__ = [
+    'check_file',
+    'load_data',
+]
+
 # vim:ts=4 sts=4 sw=4 et
