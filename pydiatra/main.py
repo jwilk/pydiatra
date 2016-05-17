@@ -25,10 +25,11 @@ from __future__ import print_function
 import argparse
 import io
 import sys
+import warnings
 
 try:
     import concurrent.futures
-except ImportError:
+except ImportError as concurrent_exc:
     concurrent = False
 
 from . import checks
@@ -51,6 +52,7 @@ def main():
     ap.add_argument('-j', '--jobs', metavar='<n>', type=int, default=1, help=(None if concurrent else argparse.SUPPRESS))
     options = ap.parse_args()
     if not concurrent:
+        print('{prog}: warning: cannot import concurrent.futures: {msg}'.format(prog=ap.prog, msg=concurrent_exc), file=sys.stderr)
         options.jobs = 1
     checks.load_data()
     if (len(options.paths) <= 1) or (options.jobs <= 1):
