@@ -1,3 +1,6 @@
+Overview
+========
+
 **pydiatra** is yet another static checker for Python code.
 
 This is (almost) the same checker
@@ -6,7 +9,8 @@ that used to be a part of lintian4python_.
 .. _lintian4python:
    http://jwilk.net/software/lintian4python
 
-The following checks are implemented:
+Implemented checks
+==================
 
 * embedded code copies
 
