@@ -8,45 +8,45 @@ that used to be a part of lintian4python_.
 
 The following checks are implemented:
 
- * embedded code copies
+* embedded code copies
 
- * ``except`` shadowing builtins
-   (e.g. ``except IOError, OSError:``, which overwrites ``OSError``)
+* ``except`` shadowing builtins
+  (e.g. ``except IOError, OSError:``, which overwrites ``OSError``)
 
- * ``except`` without exception type
-   (i.e. ``except:``)
+* ``except`` without exception type
+  (i.e. ``except:``)
 
- * hardcoded errno values
-   (e.g. ``exc.errno == 2`` instead of ``exc.errno == errno.ENOENT``)
+* hardcoded errno values
+  (e.g. ``exc.errno == 2`` instead of ``exc.errno == errno.ENOENT``)
 
- * inconsistent use of tabs and spaces in indentation
+* inconsistent use of tabs and spaces in indentation
 
- * ``mkstemp()`` file descriptor leaks
-   (e.g. ``path = tempfile.mkstemp()[1]``)
+* ``mkstemp()`` file descriptor leaks
+  (e.g. ``path = tempfile.mkstemp()[1]``)
 
- * obsolete PIL imports
-   (e.g. ``import Image`` instead of ``from PIL import Image``)
+* obsolete PIL imports
+  (e.g. ``import Image`` instead of ``from PIL import Image``)
 
- * regular expression syntax errors
+* regular expression syntax errors
 
- * regular expression syntax warnings:
+* regular expression syntax warnings:
 
-   * duplicate range
-     (e.g. ``re.compile("[aa]")``)
+  * duplicate range
+    (e.g. ``re.compile("[aa]")``)
 
-   * overlapping ranges
-     (e.g. ``re.compile("[a-zA-z]")``)
+  * overlapping ranges
+    (e.g. ``re.compile("[a-zA-z]")``)
 
- * string exceptions
-   (e.g. ``raise "eggs"`` or ``except "ham":``)
+* string exceptions
+  (e.g. ``raise "eggs"`` or ``except "ham":``)
 
- * string formatting errors
+* string formatting errors
 
- * Python syntax errors
+* Python syntax errors
 
- * Python syntax warnings
+* Python syntax warnings
 
-    * assertions that are always true
+  * assertions that are always true
 
 See `the tags file <data/tags>`_ for details.
 
