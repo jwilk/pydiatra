@@ -20,19 +20,47 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from __future__ import print_function
+
 import argparse
+import io
 import sys
 
+try:
+    import concurrent.futures
+except ImportError:
+    concurrent = False
+
 from . import checks
+
+def check_file(path, file=sys.stdout):
+    for t in checks.check_file(path):
+        print(t, file=file)
+
+def check_file_s(path):
+    if str == bytes:
+        file = io.BytesIO()
+    else:
+        file = io.StringIO()
+    check_file(path, file=file)
+    return file.getvalue()
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('paths', metavar='<file>', nargs='+')
+    ap.add_argument('-j', '--jobs', metavar='<n>', type=int, default=1, help=(None if concurrent else argparse.SUPPRESS))
     options = ap.parse_args()
+    if not concurrent:
+        options.jobs = 1
     checks.load_data()
-    for path in options.paths:
-        for t in checks.check_file(path):
-            print(t)
+    if (len(options.paths) <= 1) or (options.jobs <= 1):
+        for path in options.paths:
+            check_file(path)
+    else:
+        executor = concurrent.futures.ProcessPoolExecutor(max_workers=options.jobs)
+        with executor:
+            for s in executor.map(check_file_s, options.paths):
+                sys.stdout.write(s)
     sys.exit(0)
 
 __all__ = ['main']

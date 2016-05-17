@@ -1,2 +1,3 @@
 #!/usr/bin/python3
-import pydiatra.__main__
+import pydiatra.main
+pydiatra.main.main()
