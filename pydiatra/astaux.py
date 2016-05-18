@@ -40,4 +40,8 @@ else:
     def python_open(filename):
         return open(filename, 'rU')
 
+__all__ = [
+    'python_open',
+]
+
 # vim:ts=4 sts=4 sw=4 et
