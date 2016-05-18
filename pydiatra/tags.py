@@ -20,6 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+'''
+pydiatra tags
+'''
+
 class Tag(object):
 
     def __init__(self, path, lineno, *args):
