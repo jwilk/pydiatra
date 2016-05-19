@@ -9,6 +9,6 @@ except:
     if not exception_okay_to_ignore():
         raise
 
-## 3: except-without-exception-type
+## 3: bare-except
 
 # vim:ts=4 sts=4 sw=4 et syntax=python
