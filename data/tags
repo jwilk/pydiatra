@@ -28,7 +28,7 @@ description =
  exceptions, but this code actually does something different: it will catch
  ``TypeError`` and bind the resulting exception object to the local name
  ``ValueError``. The ``ValueError`` exception will not be caught at all.
- The correct code specifies a tuple of exceptions:
+ The correct code specifies a tuple of exceptions::
  .
  .    try:
  .        ...
