@@ -35,7 +35,7 @@ description =
  .    except (TypeError, ValueError):
  .        ...
 
-[except-without-exception-type]
+[bare-except]
 severity = minor
 certainty = possible
 experimental = yes

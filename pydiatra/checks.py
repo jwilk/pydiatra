@@ -317,7 +317,7 @@ class Visitor(ast.NodeVisitor):
                     reraised = True
                 yield t
             if child.type is None and not reraised:
-                yield self.tag(child.lineno, 'except-without-exception-type')
+                yield self.tag(child.lineno, 'bare-except')
         for t in pending_body_tags:
             [_, mod] = t.args
             if not mod in except_modern_pil_imp:

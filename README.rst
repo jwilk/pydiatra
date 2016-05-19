@@ -17,7 +17,7 @@ Implemented checks
 * ``except`` shadowing builtins
   (e.g. ``except IOError, OSError:``, which overwrites ``OSError``)
 
-* ``except`` without exception type
+* barse ``except``
   (i.e. ``except:``)
 
 * hardcoded errno values
