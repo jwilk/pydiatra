@@ -40,9 +40,7 @@ versions = versions.split()
 
 def main():
     here = os.path.dirname(__file__)
-    root = '{here}/..'.format(here=here)
-    os.chdir(root)
-    path = 'data/exceptions'
+    path = '{here}/../pydiatra/data/exceptions'.format(here=here)
     exceptions = set()
     for version in versions:
         exceptions |= extract_exceptions(version)

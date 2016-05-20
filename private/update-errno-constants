@@ -34,9 +34,7 @@ header = '''\
 
 def main():
     here = os.path.dirname(__file__)
-    root = '{here}/..'.format(here=here)
-    os.chdir(root)
-    path = 'data/errno-constants'
+    path = '{here}/../pydiatra/data/errno-constants'.format(here=here)
     with open(path, 'wt', encoding='ASCII') as file:
         file.write(header.format(
             today=datetime.date.today(),
