@@ -1,0 +1,4 @@
+include MANIFEST.in
+
+include private/*
+include py[23]diatra

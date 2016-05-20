@@ -1,2 +1,5 @@
 *.py[co]
+MANIFEST
+build
+dist
 secret

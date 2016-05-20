@@ -38,8 +38,7 @@ from . import tags
 tag = tags.Tag
 
 here = os.path.dirname(__file__)
-root = '{here}/..'.format(here=here)
-datadir = '{root}/data'.format(root=root)
+datadir = '{here}/data'.format(here=here)
 
 string_formatter = string.Formatter()
 
