@@ -10,5 +10,6 @@ python:
 install:
 - pip install docutils
 script:
+- python setup.py build
 - python tests/run-tests -v
 - ls *.rst | xargs -L1 -t -I{} rst2xml.py --strict {} /dev/null
