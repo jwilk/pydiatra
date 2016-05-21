@@ -59,7 +59,7 @@ description =
  .
  You can check consistency of indentation with the following command::
  .
- .    python -m tabnanny <i>path-to-source-file</i>
+ .    python -m tabnanny <pyfile>
 
 [mkstemp-file-descriptor-leak]
 severity = normal
