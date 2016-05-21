@@ -11,4 +11,4 @@ install:
 - pip install docutils
 script:
 - python tests/run-tests -v
-- find -name '*.rst' | xargs -L1 -t -I{} rst2xml.py --strict {} /dev/null
+- ls *.rst | xargs -L1 -t -I{} rst2xml.py --strict {} /dev/null
