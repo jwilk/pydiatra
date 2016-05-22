@@ -40,24 +40,6 @@ class cmd_build_doc(cmd_build):
 
     description = 'build documentation'
 
-    def build_man(self, manname, commandline):
-        self.spawn(commandline)
-        with open(manname, 'r+') as file:
-            contents = file.read()
-            # Format URLs consistently:
-            contents = self._url_regex.sub(
-                lambda m: r'\m[blue]\fI{0}\fR\m[]'.format(*m.groups()),
-                contents,
-            )
-            # Use RFC 3339 date format:
-            contents = self._date_regex.sub(
-                lambda m: '{year}-{month}-{day}'.format(**m.groupdict()),
-                contents
-            )
-            file.seek(0)
-            file.truncate()
-            file.write(contents)
-
     def make_tags_rst(self, data_path, rst_path):
         cp = configparser.RawConfigParser()
         cp.read(data_path)
