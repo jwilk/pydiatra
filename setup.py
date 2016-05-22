@@ -24,6 +24,7 @@
 from __future__ import print_function
 
 import functools
+import io
 import re
 import sys
 
@@ -90,12 +91,24 @@ class cmd_build_doc(cmd_build):
     def make_man(self, rst_path, man_path):
         import docutils.core
         import docutils.writers.manpage
+        if str == bytes:
+            tmp_file = io.BytesIO()
+        else:
+            tmp_file = io.StringIO()
+        tmp_file.close = object  # prevent docutils from closing the file
         docutils.core.publish_file(
             source_path=rst_path,
-            destination_path=man_path,
+            destination=tmp_file,
             writer=docutils.writers.manpage.Writer(),
             settings_overrides=dict(input_encoding='UTF-8', halt_level=1),
         )
+        tmp_file.seek(0)
+        with uopen(man_path, 'w') as man_file:
+            for line in tmp_file:
+                if line.startswith('.BI'):
+                    # work-around for https://bugs.debian.org/806601:
+                    line = line.replace(r'\fP', r'\fR')
+                man_file.write(line)
 
     def run(self):
         data_path = 'data/tags'
