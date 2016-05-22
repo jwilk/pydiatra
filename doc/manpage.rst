@@ -14,9 +14,18 @@ static checker for Python code
 
 Synopsis
 --------
-| **py2diatra** *pyfile* [*pyfile* …]
-| **py3diatra** *pyfile* [*pyfile* …]
-| **python**\ *X*\ **.**\ *Y* **-tt** **-m** **pydiatra** *pyfile* [*pyfile* …]
+| **py2diatra** [*options*] *pyfile* [*pyfile* …]
+| **py3diatra** [*options*] *pyfile* [*pyfile* …]
+| **python**\ *X*\ **.**\ *Y* **-tt** **-m** **pydiatra** [*options*] *pyfile* [*pyfile* …]
+
+Options
+-------
+
+-j n, --jobs n
+   Use up to *n* CPU cores.
+   The default is to use only a single core.
+-h, --help
+   Show the help message and exit.
 
 Description
 -----------
