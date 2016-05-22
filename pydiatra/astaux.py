@@ -32,13 +32,13 @@ if sys.version_info >= (3, 2):
     del tokenize
 elif sys.version_info >= (3,):
     import py_compile
-    def python_open(filename, read_encoding=py_compile.read_encoding):
-        encoding = read_encoding(filename, 'utf-8')
-        return open(filename, 'rU', encoding=encoding)
+    def python_open(path, read_encoding=py_compile.read_encoding):
+        encoding = read_encoding(path, 'utf-8')
+        return open(path, 'rU', encoding=encoding)
     del py_compile
 else:
-    def python_open(filename):
-        return open(filename, 'rU')
+    def python_open(path):
+        return open(path, 'rU')
 
 __all__ = [
     'python_open',
