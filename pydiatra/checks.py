@@ -484,7 +484,12 @@ def check_source(path, source, catch_tab_errors=True):
         # error in Python 3.X.
         catch_tab_errors = False
     elif sys.flags.tabcheck < 2:
-        raise RuntimeError('tab check disabled')
+        python = os.path.basename(sys.executable)
+        warnings.warn('tab check disabled'
+            ' (try passing -tt to {python})'.format(python=python),
+            category=RuntimeWarning,
+            stacklevel=2,
+        )
     try:
         with warnings.catch_warnings(record=True) as wrns:
             ast_source = ast.parse(source, filename=path)
