@@ -1,6 +1,18 @@
 [assertion-always-true]
 severity = minor
 certainty = certain
+description =
+ It's a common error to write code like this::
+ .
+ .    assert(x > 0, "x must be positive")  # wrong!
+ .
+ The intention was to check whether ``x > 0`` is true.
+ But this code checks if the tuple is true,
+ and it always is, regardless of the value of ``x``.
+ The correct code omits the parentheses::
+ .
+ .    assert x > 0, "x must be positive"
+
 references =
  https://docs.python.org/2/reference/simple_stmts.html#grammar-token-assert_stmt
 
