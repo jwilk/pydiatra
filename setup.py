@@ -24,8 +24,8 @@
 from __future__ import print_function
 
 import functools
-import sys
 import re
+import sys
 
 import distutils.core
 from distutils.command.build import build as cmd_build
