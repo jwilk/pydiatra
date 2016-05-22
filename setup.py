@@ -111,7 +111,7 @@ class cmd_build_doc(cmd_build):
         with uopen(man_path, 'w') as man_file:
             for line in tmp_file:
                 if line.startswith('.BI'):
-                    # work-around for https://bugs.debian.org/806601:
+                    # work-around for <https://bugs.debian.org/806601>:
                     line = line.replace(r'\fP', r'\fR')
                 man_file.write(line)
 
