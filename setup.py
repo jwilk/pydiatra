@@ -36,6 +36,12 @@ try:
 except ImportError:
     import ConfigParser as configparser
 
+def uopen(*args):
+    if str == bytes:
+        return open(*args)
+    else:
+        return open(*args, encoding='UTF-8')
+
 class cmd_build_doc(cmd_build):
 
     description = 'build documentation'
@@ -43,11 +49,7 @@ class cmd_build_doc(cmd_build):
     def make_tags_rst(self, data_path, rst_path):
         cp = configparser.RawConfigParser()
         cp.read(data_path)
-        if str == bytes:
-            rst_file = open(rst_path, 'w')
-        else:
-            rst_file = open(rst_path, 'wt', encoding='UTF-8')
-        with rst_file:
+        with uopen(rst_file):
             self._make_tags_rst(cp, print=functools.partial(print, file=rst_file))
 
     def _make_tags_rst(self, data, print):
