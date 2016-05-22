@@ -43,6 +43,11 @@ def uopen(*args):
     else:
         return open(*args, encoding='UTF-8')
 
+def get_version():
+    with uopen('doc/changelog') as file:
+        line = file.readline()
+    return line.split()[1].strip('()')
+
 class cmd_build_doc(cmd_build):
 
     description = 'build documentation'
@@ -136,7 +141,7 @@ Topic :: Software Development :: Quality Assurance
 
 setup_options = dict(
     name='pydiatra',
-    version='0',
+    version=get_version(),
     license='MIT',
     description='yet another static checker for Python code',
     classifiers=classifiers,
