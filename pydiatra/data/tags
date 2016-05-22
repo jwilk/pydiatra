@@ -12,7 +12,6 @@ description =
  The correct code omits the parentheses::
  .
  .    assert x > 0, "x must be positive"
-
 references =
  https://docs.python.org/2/reference/simple_stmts.html#grammar-token-assert_stmt
 
