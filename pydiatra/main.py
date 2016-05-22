@@ -29,7 +29,6 @@ from __future__ import print_function
 import argparse
 import io
 import sys
-import warnings
 
 try:
     import concurrent.futures
