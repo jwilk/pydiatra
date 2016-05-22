@@ -2,7 +2,7 @@
 severity = minor
 certainty = certain
 references =
- https://docs.python.org/reference/simple_stmts.html#grammar-token-assert_stmt
+ https://docs.python.org/2/reference/simple_stmts.html#grammar-token-assert_stmt
 
 [embedded-code-copy]
 severity = important
@@ -14,7 +14,7 @@ references =
 severity = important
 certainty = possible
 references =
- https://docs.python.org/whatsnew/2.6.html#pep-3110-exception-handling-changes
+ https://docs.python.org/2/whatsnew/2.6.html#pep-3110-exception-handling-changes
 description =
  One error that Python programmers occasionally make is writing the following
  code::
@@ -52,7 +52,7 @@ references =
 severity = normal
 certainty = certain
 references =
- https://docs.python.org/reference/lexical_analysis.html#indentation
+ https://docs.python.org/2/reference/lexical_analysis.html#indentation
 description =
  The source file mixes tabs and spaces for indentation in a way that makes it
  depend on the worth of a tab expressed in spaces.
@@ -99,7 +99,7 @@ certainty = certain
 severity = important
 certainty = possible
 references =
- https://docs.python.org/whatsnew/2.6.html#deprecations-and-removals
+ https://docs.python.org/2/whatsnew/2.6.html#deprecations-and-removals
 description =
  String exceptions have been removed in Python 2.6.
  Attempting to use them raises a TypeError.
