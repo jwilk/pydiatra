@@ -36,6 +36,7 @@ try:
 except ImportError as concurrent_exc:
     concurrent = False
 
+from . import __version__
 from . import checks
 
 def check_file(path, file=sys.stdout):
@@ -53,6 +54,7 @@ def check_file_s(path):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('paths', metavar='<file>', nargs='+')
+    ap.add_argument('--version', action='version', version='%(prog)s {}'.format(__version__))
     ap.add_argument('-j', '--jobs', metavar='<n>', type=int, default=1, help=(None if concurrent else argparse.SUPPRESS))
     options = ap.parse_args()
     if len(options.paths) <= 1:

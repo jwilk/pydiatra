@@ -26,6 +26,8 @@ Options
    The default is to use only a single core.
 -h, --help
    Show the help message and exit.
+--version
+   Show the program's version number and exit.
 
 Description
 -----------
