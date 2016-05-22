@@ -119,7 +119,7 @@ Programming Language :: Python :: 3
 Topic :: Software Development :: Quality Assurance
 '''.strip().splitlines()
 
-distutils.core.setup(
+setup_options = dict(
     name='pydiatra',
     version='0',
     license='MIT',
@@ -134,5 +134,8 @@ distutils.core.setup(
     data_files = [('share/man/man1', ['doc/pydiatra.1', 'doc/py{0}diatra.1'.format(*sys.version_info)])],
     cmdclass=dict(build_doc=cmd_build_doc),
 )
+
+if __name__ == '__main__':
+    distutils.core.setup(**setup_options)
 
 # vim:ts=4 sts=4 sw=4 et
