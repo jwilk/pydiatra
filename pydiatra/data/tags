@@ -49,6 +49,8 @@ description =
 severity = minor
 certainty = possible
 experimental = yes
+references =
+ https://docs.python.org/2/howto/doanddont.html#except
 description =
  It's a mistake to write code like this::
  .
@@ -63,12 +65,13 @@ description =
  or ignoring ``KeyboardInterrupt`` triggered by user's Ctrl+C.
  .
  Please catch only the exceptions you expect to be raised.
-references =
- https://docs.python.org/2/howto/doanddont.html#except
 
 [hardcoded-errno-value]
 severity = normal
 certainty = possible
+references =
+ https://lists.debian.org/20100803162901.GA5419@jwilk.net
+ http://pubs.opengroup.org/onlinepubs/9699919799/functions/V2_chap02.html#tag_15_03
 description =
  It's a mistake to write code like this::
  .
@@ -87,9 +90,6 @@ description =
  .    except OSError as exc:
  .        if e.errno == errno.EEXIST:
  .           ...
-references =
- https://lists.debian.org/20100803162901.GA5419@jwilk.net
- http://pubs.opengroup.org/onlinepubs/9699919799/functions/V2_chap02.html#tag_15_03
 
 [inconsistent-use-of-tabs-and-spaces-in-indentation]
 severity = normal
