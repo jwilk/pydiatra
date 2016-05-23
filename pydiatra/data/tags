@@ -49,6 +49,20 @@ description =
 severity = minor
 certainty = possible
 experimental = yes
+description =
+ It's a common mistake to write code like this::
+ .
+ .    try:
+ .        ...
+ .    except:  # wrong!
+ .        ...
+ .
+ The ``except:`` clause catches all the exceptions,
+ including exceptions that the programmer never expected to happen,
+ potentially hinding programming errors,
+ or ignoring ``KeyboardInterrupt`` triggered by user's Ctrl+C.
+ .
+ Please catch only the exceptions you expect to be raised.
 references =
  https://docs.python.org/2/howto/doanddont.html#except
 
