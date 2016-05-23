@@ -25,12 +25,13 @@ from __future__ import print_function
 
 import functools
 import io
+import os
 import re
 import sys
 
 import distutils.core
-from distutils.command.build import build as cmd_build
-from distutils.command.sdist import sdist as cmd_sdist
+from distutils.command.build import build as distutils_build
+from distutils.command.sdist import sdist as distutils_sdist
 
 try:
     import configparser
@@ -48,7 +49,7 @@ def get_version():
         line = file.readline()
     return line.split()[1].strip('()')
 
-class cmd_build_doc(cmd_build):
+class cmd_build_doc(distutils_build):
 
     description = 'build documentation'
 
@@ -125,9 +126,23 @@ class cmd_build_doc(cmd_build):
         self.make_file([data_path], tags_rst_path, self.make_tags_rst, [data_path, tags_rst_path])
         self.make_file([tags_rst_path, man_rst_path], man_path, self.make_man, [man_rst_path, man_path])
 
-for cmd in [cmd_build, cmd_sdist]:
-    cmd.sub_commands[:0] = [('build_doc', None)]
-del cmd
+distutils_build.sub_commands[:0] = [('build_doc', None)]
+
+class cmd_sdist(distutils_sdist):
+
+    def run(self):
+        self.run_command('build_doc')
+        return distutils_sdist.run(self)
+
+    def make_release_tree(self, base_dir, files):
+        distutils_sdist.make_release_tree(self, base_dir, files)
+        # distutils doesn't seem to handle symlinks-to-directories
+        # out of the box, so let's take care of them manually:
+        target = os.readlink('data')
+        dest = os.path.join(base_dir, 'data')
+        distutils.log.info('linking %s -> %s', dest, target)
+        if not self.dry_run:
+            os.symlink(target, dest)
 
 classifiers = '''
 Development Status :: 4 - Beta
@@ -154,7 +169,10 @@ setup_options = dict(
     package_data=dict(pydiatra=['data/*']),
     scripts=['py{0}diatra'.format(*sys.version_info)],
     data_files = [('share/man/man1', ['doc/pydiatra.1', 'doc/py{0}diatra.1'.format(*sys.version_info)])],
-    cmdclass=dict(build_doc=cmd_build_doc),
+    cmdclass=dict(
+        build_doc=cmd_build_doc,
+        sdist=cmd_sdist,
+    ),
 )
 
 if __name__ == '__main__':
