@@ -150,6 +150,9 @@ description =
 [string-formatting-error]
 severity = important
 certainty = certain
+references =
+ https://docs.python.org/2/library/stdtypes.html#string-formatting-operations
+ https://docs.python.org/2/library/string.html#formatstrings
 description =
  The code uses string formatting (either ``%``-formatting or ``str.format()``)
  in a way that always causes runtime error.
