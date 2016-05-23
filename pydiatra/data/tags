@@ -155,7 +155,7 @@ description =
 severity = minor
 certainty = possible
 description =
- A character set in a regular rexpression includes
+ A character set in a regular expression includes
  the same character range twice.
  This is probably a mistake.
  .
@@ -171,7 +171,7 @@ description =
 severity = important
 certainty = possible
 description =
- A character set in a regular rexpression includes
+ A character set in a regular expression includes
  two intersecting character ranges.
  This is probably a mistake.
  .
