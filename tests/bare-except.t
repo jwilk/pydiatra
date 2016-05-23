@@ -1,3 +1,5 @@
+from sleeve import do_stuff, exception_okay_to_ignore
+
 try:
     do_stuff()
 except:
@@ -9,6 +11,6 @@ except:
     if not exception_okay_to_ignore():
         raise
 
-## 3: bare-except
+## 5: bare-except
 
 # vim:ts=4 sts=4 sw=4 et syntax=python

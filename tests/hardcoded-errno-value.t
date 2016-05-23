@@ -1,3 +1,5 @@
+from sleeve import do_stuff
+
 try:
     do_stuff()
 except IOError as exc:
@@ -26,9 +28,9 @@ except IOError as exc:
     if 28 != exc.errno:
         raise
 
-## 4: hardcoded-errno-value 2 -> errno.ENOENT
-## 12: hardcoded-errno-value 13 -> errno.EACCES
-## 20: hardcoded-errno-value 20 -> errno.ENOTDIR
-## 26: hardcoded-errno-value 28 -> errno.ENOSPC
+## 6: hardcoded-errno-value 2 -> errno.ENOENT
+## 14: hardcoded-errno-value 13 -> errno.EACCES
+## 22: hardcoded-errno-value 20 -> errno.ENOTDIR
+## 28: hardcoded-errno-value 28 -> errno.ENOSPC
 
 # vim:ts=4 sts=4 sw=4 et syntax=python
