@@ -150,6 +150,9 @@ description =
 [string-formatting-error]
 severity = important
 certainty = certain
+description =
+ The code uses string formatting (either ``%``-formatting or ``str.format()``)
+ in a way that always causes runtime error.
 
 [syntax-error]
 severity = serious
