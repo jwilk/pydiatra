@@ -4,7 +4,7 @@ certainty = certain
 references =
  https://docs.python.org/2/reference/simple_stmts.html#grammar-token-assert_stmt
 description =
- It's a common error to write code like this::
+ It's a mistake to write code like this::
  .
  .    assert(x > 0, "x must be positive")  # wrong!
  .
@@ -27,7 +27,7 @@ certainty = possible
 references =
  https://docs.python.org/2/whatsnew/2.6.html#pep-3110-exception-handling-changes
 description =
- It's a common error to write code like this::
+ It's a mistake to write code like this::
  .
  .    try:
  .        ...
@@ -50,7 +50,7 @@ severity = minor
 certainty = possible
 experimental = yes
 description =
- It's a common mistake to write code like this::
+ It's a mistake to write code like this::
  .
  .    try:
  .        ...
