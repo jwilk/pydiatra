@@ -162,9 +162,13 @@ description =
 [syntax-error]
 severity = serious
 certainty = certain
+description =
+ The parser encountered a syntax error.
 
 [syntax-warning]
 severity = important
 certainty = possible
+description =
+ The parser encountered a dubious syntactic construct.
 
 # vim:ft=dosini
