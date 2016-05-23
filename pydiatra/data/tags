@@ -144,6 +144,11 @@ certainty = possible
 [regexp-syntax-error]
 severity = important
 certainty = certain
+references =
+ https://docs.python.org/2/library/re.html#regular-expression-syntax
+description =
+ The code attempts to compile a regular expression
+ that is not syntactically valid.
 
 [string-exception]
 severity = important
