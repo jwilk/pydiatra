@@ -126,6 +126,13 @@ description =
  .
  .    from PIL import Image
 
+[py3k-compat-warning]
+severity = wishlist
+certainty = certain
+description =
+ The parser encountered a syntactic construct
+ that is no longer supported in Python 3.
+
 [regexp-duplicate-range]
 severity = minor
 certainty = possible

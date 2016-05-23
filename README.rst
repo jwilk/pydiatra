@@ -52,6 +52,8 @@ Implemented checks
 
   * assertions that are always true
 
+  * syntactic constructs that are no longer supported in Python 3
+
 See the manual page
 (or `the tags file <pydiatra/data/tags>`_)
 for details.

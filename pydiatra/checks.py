@@ -483,13 +483,20 @@ def check_source(path, source, catch_tab_errors=True):
         # Inconsistent use of tabs and spaces in indentation is always a fatal
         # error in Python 3.X.
         catch_tab_errors = False
-    elif sys.flags.tabcheck < 2:
+    else:
         python = os.path.basename(sys.executable)
-        warnings.warn('tab check disabled'
-            ' (try passing -tt to {python})'.format(python=python),
-            category=RuntimeWarning,
-            stacklevel=2,
-        )
+        if sys.flags.tabcheck < 2:
+            warnings.warn('tab check disabled'
+                ' (try passing -tt to {python})'.format(python=python),
+                category=RuntimeWarning,
+                stacklevel=2,
+            )
+        if not sys.flags.py3k_warning:
+            warnings.warn('Python 3.X compat checks disabled'
+                ' (try passing -3 to {python})'.format(python=python),
+                category=RuntimeWarning,
+                stacklevel=2,
+            )
     try:
         with warnings.catch_warnings(record=True) as wrns:
             ast_source = ast.parse(source, filename=path)
@@ -520,6 +527,8 @@ def check_warnings(path, wrns):
     for wrn in wrns:
         if str(wrn.message) == 'assertion is always true, perhaps remove parentheses?':
             yield tag(path, wrn.lineno, 'assertion-always-true')
+        elif re.search(' in 3[.]x(?:\Z|;)', str(wrn.message)):
+            yield tag(path, wrn.lineno, 'py3k-compat-warning', wrn.message)
         else:
             yield tag(path, wrn.lineno, 'syntax-warning', wrn.message)
 

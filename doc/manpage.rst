@@ -14,9 +14,15 @@ static checker for Python code
 
 Synopsis
 --------
+For Python 2:
+
 | **py2diatra** [*options*] *pyfile* [*pyfile* …]
+| **python2.**\ *X* **-3tt** **-m** **pydiatra** [*options*] *pyfile* [*pyfile* …]
+
+For Python 3:
+
 | **py3diatra** [*options*] *pyfile* [*pyfile* …]
-| **python**\ *X*\ **.**\ *Y* **-tt** **-m** **pydiatra** [*options*] *pyfile* [*pyfile* …]
+| **python3.**\ *X* **-m** **pydiatra** [*options*] *pyfile* [*pyfile* …]
 
 Options
 -------
