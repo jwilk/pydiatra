@@ -144,8 +144,10 @@ certainty = possible
 references =
  https://docs.python.org/2/whatsnew/2.6.html#deprecations-and-removals
 description =
+ The code attempts to raise or catch strings exceptions.
+ .
  String exceptions have been removed in Python 2.6.
- Attempting to use them raises a TypeError.
+ Attempting to raise them causes ``TypeError``.
 
 [string-formatting-error]
 severity = important
