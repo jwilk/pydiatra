@@ -136,10 +136,34 @@ description =
 [regexp-duplicate-range]
 severity = minor
 certainty = possible
+description =
+ A character set in a regular rexpression includes
+ the same character range twice.
+ This is probably a mistake.
+ .
+ For example::
+ .
+ .    [A-ZA-Z]
+ .
+ could be simplified to::
+ .
+ .    [A-Z]
 
 [regexp-overlapping-ranges]
 severity = important
 certainty = possible
+description =
+ A character set in a regular rexpression includes
+ two intersecting character ranges.
+ This is probably a mistake.
+ .
+ For example::
+ .
+ .    [A-za-z]
+ .
+ is a common misspelling of::
+ .
+ .    [A-Za-z]
 
 [regexp-syntax-error]
 severity = important
