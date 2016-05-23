@@ -61,7 +61,7 @@ description =
  .
  The ``except:`` clause catches all the exceptions,
  including exceptions that the programmer never expected to happen,
- potentially hinding programming errors,
+ potentially hiding programming errors,
  or ignoring ``KeyboardInterrupt`` triggered by user's Ctrl+C.
  .
  Please catch only the exceptions you expect to be raised.
