@@ -78,6 +78,8 @@ class cmd_build_doc(cmd_build):
             description = '\n'.join(
                 parse_multiline(tag, 'description')
             )
+            if not description.strip():
+                raise ValueError('missing description for {0}'.format(tagname))
             print(description)
             print()
             references = list(parse_multiline(tag, 'references'))
