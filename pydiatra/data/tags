@@ -20,6 +20,9 @@ severity = important
 certainty = possible
 references =
  https://www.debian.org/doc/debian-policy/ch-source.html#s-embeddedfiles
+description =
+ The source appears to include
+ a convenience copy of code from other software package.
 
 [except-shadows-builtin]
 severity = important
