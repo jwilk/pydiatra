@@ -69,6 +69,24 @@ references =
 [hardcoded-errno-value]
 severity = normal
 certainty = possible
+description =
+ It's a mistake to write code like this::
+ .
+ .    try:
+ .        ...
+ .    except OSError as exc:
+ .        if e.errno == 17:  # non-portable!
+ .           ...
+ .
+ The code was meant to check for ``EEXIST``,
+ but actaul value of this constant may vary with architecture.
+ The portable code uses constant from the ``errno`` module::
+ .
+ .    try:
+ .        ...
+ .    except OSError as exc:
+ .        if e.errno == errno.EEXIST:
+ .           ...
 references =
  https://lists.debian.org/20100803162901.GA5419@jwilk.net
 
