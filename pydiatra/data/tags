@@ -110,6 +110,21 @@ description =
 [mkstemp-file-descriptor-leak]
 severity = normal
 certainty = possible
+description =
+ ``tempfile.mkstemp()`` returns a tuple containing
+ a file descriptor and the pathname.
+ It is reponsiblity of the caller to close the file descriptor
+ when it's no longer needed.
+ It's a mistake to write code like this::
+ .
+ .    path = tempfile.mkstemp()[1]
+ .
+ because it leaks the file descriptor.
+ .
+ Please consider using a higher-level function instead,
+ ``tempfile.TemporaryFile()`` or ``tempfile.NamedTemporaryFile()``,
+ which take care of file closing automatically.
+
 references =
  https://docs.python.org/2/library/tempfile.html#tempfile.mkstemp
 
