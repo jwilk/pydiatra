@@ -28,6 +28,7 @@ from __future__ import print_function
 
 import argparse
 import io
+import multiprocessing
 import sys
 
 try:
@@ -50,11 +51,23 @@ def check_file_s(path):
     check_file(path, file=file)
     return file.getvalue()
 
+def parse_jobs(s):
+    if s == 'auto':
+        try:
+            return multiprocessing.cpu_count()
+        except NotImplementedError:
+            return 1
+    n = int(s)
+    if n <= 0:
+        raise ValueError
+    return n
+parse_jobs.__name__ = 'jobs'
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('paths', metavar='<file>', nargs='+')
     ap.add_argument('--version', action='version', version='%(prog)s {0}'.format(__version__))
-    ap.add_argument('-j', '--jobs', metavar='<n>', type=int, default=1, help=('use <n> processes' if concurrent else argparse.SUPPRESS))
+    ap.add_argument('-j', '--jobs', metavar='<n>', type=parse_jobs, default=1, help=('use <n> processes' if concurrent else argparse.SUPPRESS))
     options = ap.parse_args()
     if len(options.paths) <= 1:
         options.jobs = 1

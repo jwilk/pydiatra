@@ -1,8 +1,11 @@
 pydiatra (0.2) UNRELEASED; urgency=low
 
-  * Clarify description of -j/--jobs.
+  * Improve the -j/--jobs option:
+    + Clarify the description.
+    + Reject negative numbers and 0 as arguments.
+    + Accept “auto” as the argument.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 30 May 2016 12:32:28 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 30 May 2016 12:39:12 +0200
 
 pydiatra (0.1) unstable; urgency=low
 
