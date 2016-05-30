@@ -1,8 +1,8 @@
 pydiatra (0.2) UNRELEASED; urgency=low
 
-  * 
+  * Clarify description of -j/--jobs.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 30 May 2016 12:28:27 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 30 May 2016 12:32:28 +0200
 
 pydiatra (0.1) unstable; urgency=low
 

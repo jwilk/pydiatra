@@ -28,8 +28,8 @@ Options
 -------
 
 -j n, --jobs n
-   Use up to *n* CPU cores.
-   The default is to use only a single core.
+   Use *n* processes in parallel.
+   The default is to use only a single process.
 -h, --help
    Show the help message and exit.
 --version
