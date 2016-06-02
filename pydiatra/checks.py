@@ -474,9 +474,14 @@ def check_node(path, node):
     return Visitor(path=path).visit(node)
 
 def check_file(path):
-    with astaux.python_open(path) as file:
-        source = file.read()
-    return check_source(path, source)
+    try:
+        with astaux.python_open(path) as file:
+            source = file.read()
+    except SyntaxError as exc:
+        yield tag(path, exc.lineno, 'syntax-error', exc.msg)
+        return
+    for t in check_source(path, source):
+        yield t
 
 def check_source(path, source, catch_tab_errors=True):
     if sys.version_info >= (3,):
@@ -512,7 +517,7 @@ def check_source(path, source, catch_tab_errors=True):
             yield tag(path, exc.lineno, 'syntax-error', exc.msg)
             return
     except SyntaxError as exc:
-        yield tag(path, exc.lineno, 'syntax-error', exc.msg)
+        yield tag(path, exc.lineno or None, 'syntax-error', exc.msg)
         return
     except Exception as exc:
         yield tag(path, None, 'syntax-error', exc.msg)
