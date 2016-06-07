@@ -520,7 +520,7 @@ def check_source(path, source, catch_tab_errors=True):
         yield tag(path, exc.lineno or None, 'syntax-error', exc.msg)
         return
     except Exception as exc:
-        yield tag(path, None, 'syntax-error', exc.msg)
+        yield tag(path, None, 'syntax-error', str(exc))
         return
     for t in check_warnings(path, wrns):
         yield t
