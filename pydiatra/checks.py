@@ -532,7 +532,7 @@ def check_warnings(path, wrns):
     for wrn in wrns:
         if str(wrn.message) == 'assertion is always true, perhaps remove parentheses?':
             yield tag(path, wrn.lineno, 'assertion-always-true')
-        elif re.search(' in 3[.]x(?:\Z|;)', str(wrn.message)):
+        elif re.search(r' in 3[.]x(?:\Z|;)', str(wrn.message)):
             yield tag(path, wrn.lineno, 'py3k-compat-warning', wrn.message)
         else:
             yield tag(path, wrn.lineno, 'syntax-warning', wrn.message)
