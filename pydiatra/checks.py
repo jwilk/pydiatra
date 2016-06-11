@@ -480,6 +480,9 @@ def check_file(path):
     except SyntaxError as exc:
         yield tag(path, exc.lineno, 'syntax-error', exc.msg)
         return
+    except UnicodeDecodeError as exc:
+        yield tag(path, None, 'syntax-error', str(exc))
+        return
     for t in check_source(path, source):
         yield t
 
