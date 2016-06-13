@@ -6,8 +6,9 @@ pydiatra (0.2) UNRELEASED; urgency=low
     + Accept “auto” as the argument.
   * Fix encoding error handling.
   * Fix attribute error when compile() fails.
+  * Fix false positive string-formatting-error for tuples with starargs.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Tue, 07 Jun 2016 11:50:18 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 13 Jun 2016 23:55:02 +0200
 
 pydiatra (0.1) unstable; urgency=low
 
