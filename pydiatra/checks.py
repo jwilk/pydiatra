@@ -384,6 +384,9 @@ class Visitor(ast.NodeVisitor):
         else:
             return
         if isinstance(rhs, ast.Tuple):
+            if sys.version_info >= (3, 5):
+                if any(isinstance(elt, ast.Starred) for elt in rhs.elts):
+                    return
             rhs = tuple(
                 elt.s if isinstance(elt, ast.Str) else 0
                 for elt in rhs.elts
