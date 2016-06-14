@@ -33,7 +33,7 @@ Implemented checks
 
 * regular expression syntax errors
 
-* regular expression syntax warnings:
+* dubious constructs in regular expressions:
 
   * duplicate range
     (e.g. ``re.compile("[aa]")``)
