@@ -7,7 +7,7 @@ static checker for Python code
 ------------------------------
 
 :manual section: 1
-:version: pydiatra 0.2
+:version: pydiatra 0.2.1
 :date: |date|
 
 .. |date| date:: %Y-%m-%d
