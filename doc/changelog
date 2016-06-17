@@ -7,8 +7,9 @@ pydiatra (0.2) UNRELEASED; urgency=low
   * Fix encoding error handling.
   * Fix attribute error when compile() fails.
   * Fix false positive string-formatting-error for tuples with starargs.
+  * Improve wording in README.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 13 Jun 2016 23:55:02 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Fri, 17 Jun 2016 22:22:19 +0200
 
 pydiatra (0.1) unstable; urgency=low
 
