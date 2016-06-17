@@ -1,4 +1,4 @@
-pydiatra (0.2) UNRELEASED; urgency=low
+pydiatra (0.2) unstable; urgency=low
 
   * Improve the -j/--jobs option:
     + Clarify the description.
@@ -9,7 +9,7 @@ pydiatra (0.2) UNRELEASED; urgency=low
   * Fix false positive string-formatting-error for tuples with starargs.
   * Improve wording in README.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Fri, 17 Jun 2016 22:22:19 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Fri, 17 Jun 2016 22:24:33 +0200
 
 pydiatra (0.1) unstable; urgency=low
 
