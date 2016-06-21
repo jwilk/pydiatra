@@ -1,8 +1,8 @@
 pydiatra (0.2.1) UNRELEASED; urgency=low
 
-  * 
+  * Fix typos in tag descriptions.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Fri, 17 Jun 2016 23:23:37 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Wed, 22 Jun 2016 00:17:04 +0200
 
 pydiatra (0.2) unstable; urgency=low
 
