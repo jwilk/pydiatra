@@ -85,7 +85,7 @@ description =
  .           ...
  .
  The code was meant to check for ``EEXIST``,
- but actaul value of this constant may vary with architecture.
+ but actual value of this constant may vary with architecture.
  The portable code uses constant from the ``errno`` module::
  .
  .    try:
@@ -113,7 +113,7 @@ certainty = possible
 description =
  ``tempfile.mkstemp()`` returns a tuple containing
  a file descriptor and the pathname.
- It is reponsiblity of the caller to close the file descriptor
+ It is responsibility of the caller to close the file descriptor
  when it's no longer needed.
  It's a mistake to write code like this::
  .
