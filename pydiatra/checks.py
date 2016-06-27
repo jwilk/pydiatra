@@ -80,6 +80,7 @@ def load_data():
 
 if sys.version_info >= (3,):
     long = int
+    unichr = chr
 else:
     ascii = repr
 
