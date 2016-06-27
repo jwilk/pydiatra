@@ -8,8 +8,10 @@ python:
 - "3.5"
 - nightly
 install:
+- pip install pyflakes
 - pip install docutils
 script:
 - python setup.py build
 - python tests/run-tests -v
+- \[ "${TRAVIS_PYTHON_VERSION##3*}" != '' ] || private/run-pyflakes
 - ls *.rst | xargs -L1 -t -I{} rst2xml.py --strict {} /dev/null
