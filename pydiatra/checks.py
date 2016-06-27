@@ -80,16 +80,13 @@ def load_data():
 
 if sys.version_info >= (3,):
     long = int
+else:
+    ascii = repr
 
 def format_char_range(rng, tp):
     if tp == str:
-        if sys.version_info >= (3,):
-            def fmt(i):
-                from builtins import ascii  # hi, pyflakes!
-                return ascii(chr(i))[1:-1]
-        else:
-            def fmt(i):
-                return repr(chr(i))[1:-1]
+        def fmt(i):
+            return ascii(chr(i))[1:-1]
     else:
         def fmt(i):
             return repr(unichr(i))[2:-1]
