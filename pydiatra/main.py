@@ -35,6 +35,8 @@ try:
     import concurrent.futures
 except ImportError as concurrent_exc:
     concurrent = False
+else:
+    concurrent_exc = None  # hi, pyflakes!
 
 from . import __version__
 from . import checks
