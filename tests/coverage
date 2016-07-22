@@ -1,0 +1,16 @@
+[X] assertion-always-true
+[X] bare-except
+[#] embedded-code-copy
+[X] except-shadows-builtin
+[X] hardcoded-errno-value
+[X] inconsistent-use-of-tabs-and-spaces-in-indentation
+[X] mkstemp-file-descriptor-leak
+[X] obsolete-pil-import
+[X] py3k-compat-warning
+[X] regexp-duplicate-range
+[3] regexp-overlapping-ranges
+[3] regexp-syntax-error
+[X] string-exception
+[4] string-formatting-error
+[8] syntax-error
+[X] syntax-warning

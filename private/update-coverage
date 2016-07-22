@@ -1,0 +1,80 @@
+#!/usr/bin/python3
+
+# Copyright © 2011-2016 Jakub Wilk
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the “Software”), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+import configparser
+import glob
+import os
+import re
+
+_comment_re = re.compile(r'''
+    ^ [#][#]
+    (?: \s+ \[ (?P<rel> << | >= ) \s+ (?P<ver> [0-9][.][0-9]+ ) \] )?
+    \s+
+    (?P<expected> .+ )
+    ''', re.VERBOSE
+)
+
+def main():
+    here = os.path.dirname(__file__)
+    os.chdir('{here}/..'.format(here=here))
+    update_code_analysis_coverage()
+
+def read_tags(path):
+    cp = configparser.RawConfigParser()
+    cp.read('data/tags', encoding='ASCII')
+    return {t: 0 for t in cp.sections()}
+
+def print_coverage(tags, file):
+    for tag, n in sorted(tags.items()):
+        if n > 9:
+            c = '#'
+        else:
+            c = {0: ' ', 1: 'X'}.get(n, n)
+        print('[{c}] {tag}'.format(c=c, tag=tag), file=file)
+
+def update_code_analysis_coverage():
+    path = 'data/tags'
+    tags = read_tags(path)
+    for path in glob.iglob('tests/*.t'):
+        done = set()
+        with open(path, 'rt', encoding='UTF-8', errors='replace') as file:
+            for line in file:
+                match = _comment_re.match(line)
+                if match:
+                    taginfo = match.group('expected').split()
+                    if taginfo[0][0].isdigit():
+                        tag = taginfo[1]
+                    else:
+                        tag = taginfo[0]
+                    done.add(tag)
+        for tag in done:
+            tags[tag] += 1
+    with open('tests/coverage', 'wt', encoding='UTF-8') as stdout:
+        print_coverage(tags, file=stdout)
+
+if __name__ == '__main__':
+    main()
+
+# Local Variables:
+# indent-tabs-mode: nil
+# End:
+# vim: syntax=python sw=4 sts=4 sr et
