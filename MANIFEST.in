@@ -4,3 +4,4 @@ include README.*
 include doc/*
 include private/*
 include py[23]diatra
+include tests/*
