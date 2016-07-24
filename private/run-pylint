@@ -37,6 +37,7 @@ then
     # https://github.com/PyCQA/pylint/issues/73
     set -- --ignored-modules=distutils "$@"
 fi
+set -- --load-plugins=pylint.extensions.check_elif "$@"
 ! "$PYTHON" -m pylint "$@" \
 | grep '^\w:' \
 | grep -v ': missing-docstring \[\w' \
