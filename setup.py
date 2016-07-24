@@ -167,7 +167,7 @@ setup_options = dict(
     packages=['pydiatra'],
     package_data=dict(pydiatra=['data/*']),
     scripts=['py{0}diatra'.format(*sys.version_info)],
-    data_files = [('share/man/man1', ['doc/pydiatra.1', 'doc/py{0}diatra.1'.format(*sys.version_info)])],
+    data_files=[('share/man/man1', ['doc/pydiatra.1', 'doc/py{0}diatra.1'.format(*sys.version_info)])],
     cmdclass=dict(
         build_doc=cmd_build_doc,
         sdist=cmd_sdist,
