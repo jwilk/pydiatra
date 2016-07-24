@@ -21,12 +21,9 @@
 # SOFTWARE.
 
 set -e -u
-
 PYTHON=${PYTHON:-python3}
 [ -n "${TRAVIS_PYTHON_VERSION:-}" ] && PYTHON=python
-
 "$PYTHON" -m pylint --version >/dev/null || exit 1
-
 if [ $# -eq 0 ]
 then
     pyre='^#!.*python'
@@ -40,7 +37,6 @@ then
     # https://github.com/PyCQA/pylint/issues/73
     set -- --ignored-modules=distutils "$@"
 fi
-
 ! "$PYTHON" -m pylint "$@" \
 | grep '^\w:' \
 | grep -v ': missing-docstring \[\w' \
