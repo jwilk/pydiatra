@@ -72,7 +72,7 @@ def extract_exceptions(version):
     exceptions = s.split()
     for exc in exceptions:
         if not re.match(r'\A\w+\Z', exc):
-            raise 'invalid Python {ver} exception name: {exc}'.format(ver=version, exc=exc);
+            raise 'invalid Python {ver} exception name: {exc}'.format(ver=version, exc=exc)
     return frozenset(exceptions)
 
 if __name__ == '__main__':
