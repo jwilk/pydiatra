@@ -60,7 +60,7 @@ def load_data_file(ident):
             yield line
 
 def load_data():
-    global code_copies_regex
+    global code_copies_regex  # pylint: disable=global-statement
     builtin_exception_types.update(
         load_data_file('exceptions')
     )
@@ -78,11 +78,13 @@ def load_data():
     regex = '|'.join('(%s)' % r for r in regex)
     code_copies_regex = re.compile(regex, re.DOTALL)
 
+# pylint: disable=redefined-builtin
 if sys.version_info >= (3,):
     long = int
     unichr = chr
 else:
     ascii = repr
+# pylint: enable=redefined-builtin
 
 def format_char_range(rng, tp):
     if tp == str:
@@ -111,7 +113,7 @@ class ReVisitor(object):
     def _normalize_op(self, op):
         if sys.version_info >= (3, 5):
             op = repr(op).lower()
-        if type(op) != str:
+        if type(op) != str:  # pylint: disable=unidiomatic-typecheck
             raise TypeError
         return op
 
@@ -187,7 +189,7 @@ re_functions = dict(
 class Visitor(ast.NodeVisitor):
 
     def __init__(self, path):
-        class state:
+        class state:  # pylint: disable=no-init,old-style-class
             code_copy = False
         self.state = state
         self.path = path
@@ -383,7 +385,7 @@ class Visitor(ast.NodeVisitor):
             return
         if isinstance(rhs, ast.Tuple):
             if sys.version_info >= (3, 5):
-                if any(isinstance(elt, ast.Starred) for elt in rhs.elts):
+                if any(isinstance(elt, ast.Starred) for elt in rhs.elts):  # pylint: disable=no-member
                     return
             rhs = tuple(
                 elt.s if isinstance(elt, ast.Str) else 0
@@ -412,7 +414,7 @@ class Visitor(ast.NodeVisitor):
             lhs % rhs
         except KeyError as exc:
             yield self.tag(node.lineno, 'string-formatting-error', 'missing key', str(exc))
-        except Exception as exc:
+        except Exception as exc:  # pylint: disable=broad-except
             yield self.tag(node.lineno, 'string-formatting-error', str(exc))
 
     def visit_Call(self, node):
@@ -436,7 +438,7 @@ class Visitor(ast.NodeVisitor):
                             message
                         )
                         yield self.tag(node.lineno, 'string-formatting-error', message)
-                    except Exception as exc:
+                    except Exception as exc:  # pylint: disable=broad-except
                         yield self.tag(node.lineno, 'string-formatting-error', str(exc))
         if isinstance(func, ast.Attribute) and isinstance(func.value, ast.Name) and func.value.id == 're':
             nargs = len(node.args)
@@ -454,12 +456,12 @@ class Visitor(ast.NodeVisitor):
                 s = node.args[0].s
                 try:
                     subpattern = sre_parse.parse(s)
-                except Exception as exc:
+                except Exception as exc:  # pylint: disable=broad-except
                     yield self.tag(node.lineno, 'regexp-syntax-error', str(exc))
                 else:
                     try:
                         re.compile(s)
-                    except Exception as exc:
+                    except Exception as exc:  # pylint: disable=broad-except
                         yield self.tag(node.lineno, 'regexp-syntax-error', str(exc))
                     else:
                         re_visitor = ReVisitor(tp=type(s), path=self.path, lineno=node.lineno)
@@ -524,7 +526,7 @@ def check_source(path, source, catch_tab_errors=True):
     except SyntaxError as exc:
         yield tag(path, exc.lineno or None, 'syntax-error', exc.msg)
         return
-    except Exception as exc:
+    except Exception as exc:  # pylint: disable=broad-except
         yield tag(path, None, 'syntax-error', str(exc))
         return
     for t in check_warnings(path, wrns):

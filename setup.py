@@ -32,10 +32,12 @@ import distutils.core
 from distutils.command.build import build as distutils_build
 from distutils.command.sdist import sdist as distutils_sdist
 
+# pylint: disable=import-error
 try:
     import configparser
 except ImportError:
     import ConfigParser as configparser
+# pylint: enable=import-error
 
 def uopen(*args):
     if str == bytes:
@@ -58,7 +60,7 @@ class cmd_build_doc(distutils_build):
         with uopen(rst_path, 'w') as rst_file:
             self._make_tags_rst(cp, print=functools.partial(print, file=rst_file))
 
-    def _make_tags_rst(self, data, print):
+    def _make_tags_rst(self, data, print):  # pylint: disable=redefined-builtin
         _strip_leading_dot = functools.partial(
             re.compile('^[.]', re.MULTILINE).sub,
             ''

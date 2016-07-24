@@ -1,6 +1,6 @@
-# encoding=UTF-8
+#!/bin/sh
 
-# Copyright © 2011-2016 Jakub Wilk <jwilk@jwilk.net>
+# Copyright © 2015-2016 Jakub Wilk <jwilk@jwilk.net>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the “Software”), to deal
@@ -20,28 +20,33 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-'''
-pydiatra: helper functions for AST manipulation
-'''
+set -e -u
 
-import sys
+PYTHON=${PYTHON:-python}
 
-if sys.version_info >= (3, 2):
-    import tokenize
-    python_open = tokenize.open  # pylint: disable=no-member
-    del tokenize
-elif sys.version_info >= (3,):
-    import py_compile
-    def python_open(path, read_encoding=py_compile.read_encoding):  # pylint: disable=no-member
-        encoding = read_encoding(path, 'utf-8')
-        return open(path, 'rU', encoding=encoding)
-    del py_compile
-else:
-    def python_open(path):
-        return open(path, 'rU')
+"$PYTHON" -m pylint --version >/dev/null || exit 1
 
-__all__ = [
-    'python_open',
-]
+if [ $# -eq 0 ]
+then
+    pyre='^#!.*python'
+    pyver=$("$PYTHON" -c 'import sys; print(sys.version_info[0])')
+    [ "$pyver" = 2 ] && pyre="${pyre}(?!3)"
+    pyscripts=$(grep -l -r -P "$pyre" .)
+    set -- pydiatra setup.py $pyscripts
+fi
+if [ -n "${TRAVIS_PYTHON_VERSION:-}" ]
+then
+    # https://github.com/PyCQA/pylint/issues/73
+    set -- --ignored-modules=distutils "$@"
+fi
+
+! "$PYTHON" -m pylint "$@" \
+| grep '^\w:' \
+| grep -v ': missing-docstring \[\w' \
+| grep -v -P '^\w: (?!pydiatra/).+: missing-docstring ' \
+| grep -v -P '^\w: .+/__main__[.]py:.+: missing-docstring ' \
+| grep -v ": redefined-builtin \\[.*\\] Redefining built-in 'file'" \
+| LC_ALL=C sort -k2 \
+| grep '.'
 
 # vim:ts=4 sts=4 sw=4 et

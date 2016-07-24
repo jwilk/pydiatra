@@ -1,0 +1,23 @@
+[MESSAGES CONTROL]
+disable =
+    bad-builtin,
+    bad-continuation,
+    duplicate-code,
+    invalid-name,
+    locally-disabled,
+    locally-enabled,
+    no-self-use,
+    redefined-variable-type,
+    too-few-public-methods,
+    too-many-branches,
+    too-many-locals,
+
+[REPORTS]
+reports = no
+msg-template = {C}: {path}:{line}: {symbol} [{obj}] {msg}
+
+[FORMAT]
+max-line-length = 140
+expected-line-ending-format = LF
+
+# vim:ft=dosini ts=4 sts=4 sw=4 et
