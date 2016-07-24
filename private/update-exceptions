@@ -56,7 +56,7 @@ def main():
 
 def extract_exceptions(version):
     url = 'https://docs.python.org/{ver}/library/exceptions.html'
-    if re.match('\A2[.][0-5]\Z', version):
+    if re.match(r'\A2[.][0-5]\Z', version):
         url = 'https://docs.python.org/{ver}/lib/module-exceptions.html'
     url = url.format(ver=version)
     with urllib.request.urlopen(url) as fp:
@@ -67,7 +67,7 @@ def extract_exceptions(version):
         raise RuntimeError('cannot extract exception names for Python {ver}'.format(ver=version))
     s = match.group(1)
     s = re.sub('</?span[^<]*>', '', s)
-    s = re.sub('\s+\(.*$', '', s, flags=re.MULTILINE)
+    s = re.sub(r'\s+\(.*$', '', s, flags=re.MULTILINE)
     s = re.sub('^[ \t|+-]+', '', s, flags=re.MULTILINE)
     exceptions = s.split()
     for exc in exceptions:
