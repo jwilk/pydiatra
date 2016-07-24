@@ -19,6 +19,6 @@ install:
 script:
 - python setup.py build
 - python tests/run-tests -v
-- \[ "${TRAVIS_PYTHON_VERSION##3*}" != '' ] || private/run-pyflakes
+- private/run-pyflakes
 - \[ -z "$PYLINT" ] || private/run-pylint
 - ls *.rst | xargs -L1 -t -I{} rst2xml.py --strict {} /dev/null
