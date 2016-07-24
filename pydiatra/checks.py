@@ -421,10 +421,11 @@ class Visitor(ast.NodeVisitor):
             fstring = func.value.s
             try:
                 fstring = list(string_formatter.parse(fstring))
-            except Exception as exc:
+            except Exception as exc:  # pylint: disable=broad-except
                 yield self.tag(node.lineno, 'string-formatting-error', str(exc))
             else:
                 for (literal_text, field_name, format_spec, conversion) in fstring:
+                    del literal_text, field_name, format_spec
                     try:
                         string_formatter.convert_field(0, conversion)
                     except ValueError as exc:
