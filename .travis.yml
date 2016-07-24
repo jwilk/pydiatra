@@ -8,17 +8,18 @@ python:
 - "3.5"
 - nightly
 before_install:
-- PYLINT=1
-- \[ "$TRAVIS_PYTHON_VERSION" != 2.6 ] || PYLINT=
-- \[ "$TRAVIS_PYTHON_VERSION" != 3.2 ] || PYLINT=
+- no_pylint=true
+- \[ "$TRAVIS_PYTHON_VERSION" = 2.6 ] ||
+  \[ "$TRAVIS_PYTHON_VERSION" = 3.2 ] ||
+  no_pylint=false
 install:
 - \[ "${TRAVIS_PYTHON_VERSION##2*}" != '' ] || pip install futures
 - pip install pyflakes
-- \[ -z "$PYLINT" ] || pip install pylint
+- $no_pylint || pip install pylint
 - pip install docutils
 script:
 - python setup.py build
 - python tests/run-tests -v
 - private/run-pyflakes
-- \[ -z "$PYLINT" ] || private/run-pylint
+- $no_pylint || private/run-pylint
 - ls *.rst | xargs -L1 -t -I{} rst2xml.py --strict {} /dev/null
