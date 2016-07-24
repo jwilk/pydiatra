@@ -24,7 +24,8 @@ set -e -u
 
 pyflakes=$(which pyflakes) || { echo pyflakes not found >&2; exit 1; }
 
-PYTHON=${PYTHON:-python}
+PYTHON=${PYTHON:-python3}
+[ -n "${TRAVIS_PYTHON_VERSION:-}" ] && PYTHON=python
 
 if [ $# -eq 0 ]
 then
