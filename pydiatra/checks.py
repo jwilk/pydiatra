@@ -319,11 +319,11 @@ class Visitor(ast.NodeVisitor):
                 yield self.tag(child.lineno, 'bare-except')
         for t in pending_body_tags:
             [_, mod] = t.args
-            if not mod in except_modern_pil_imp:
+            if mod not in except_modern_pil_imp:
                 yield t
         for t in pending_except_tags:
             [_, mod] = t.args
-            if not mod in body_modern_pil_imp:
+            if mod not in body_modern_pil_imp:
                 yield t
         for child in node.orelse:
             for t in self.visit(child):
