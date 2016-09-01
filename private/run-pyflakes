@@ -22,7 +22,7 @@
 
 set -e -u
 
-pyflakes=$(which pyflakes) || { echo pyflakes not found >&2; exit 1; }
+pyflakes=$(command -v pyflakes) || { echo pyflakes not found >&2; exit 1; }
 
 PYTHON=${PYTHON:-python3}
 [ -n "${TRAVIS_PYTHON_VERSION:-}" ] && PYTHON=python
