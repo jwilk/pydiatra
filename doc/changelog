@@ -1,8 +1,9 @@
 pydiatra (0.2.2) UNRELEASED; urgency=low
 
+  * Add docstring to the main module.
   * Fix tests to be compatible with Python 3.6.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Sat, 12 Nov 2016 22:23:12 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Sat, 10 Dec 2016 17:31:09 +0100
 
 pydiatra (0.2.1) unstable; urgency=low
 
