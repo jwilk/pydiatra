@@ -135,16 +135,16 @@ class cmd_sdist(distutils_sdist):
         self.run_command('build_doc')
         return distutils_sdist.run(self)
 
+    def maybe_move_file(self, base_dir, src, dst):
+        src = os.path.join(base_dir, src)
+        dst = os.path.join(base_dir, dst)
+        if os.path.exists(src):
+            self.move_file(src, dst)
+
     def make_release_tree(self, base_dir, files):
         distutils_sdist.make_release_tree(self, base_dir, files)
-        self.move_file(
-            os.path.join(base_dir, 'README.rst'),
-            os.path.join(base_dir, 'doc/README'),
-        )
-        self.move_file(
-            os.path.join(base_dir, 'LICENSE'),
-            os.path.join(base_dir, 'doc/LICENSE'),
-        )
+        self.maybe_move_file(base_dir, 'README.rst', 'doc/README')
+        self.maybe_move_file(base_dir, 'LICENSE', 'doc/LICENSE')
         # distutils doesn't seem to handle symlinks-to-directories
         # out of the box, so let's take care of them manually:
         target = os.readlink('data')
