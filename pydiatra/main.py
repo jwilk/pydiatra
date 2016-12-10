@@ -46,7 +46,7 @@ def check_file(path, file=sys.stdout):
         print(t, file=file)
 
 def check_file_s(path):
-    if str == bytes:
+    if str is bytes:
         file = io.BytesIO()
     else:
         file = io.StringIO()

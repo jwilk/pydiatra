@@ -40,7 +40,7 @@ except ImportError:
 # pylint: enable=import-error
 
 def uopen(*args):
-    if str == bytes:
+    if str is bytes:
         return open(*args)
     else:
         return open(*args, encoding='UTF-8')
@@ -100,7 +100,7 @@ class cmd_build_doc(distutils_build):
     def make_man(self, rst_path, man_path):
         import docutils.core
         import docutils.writers.manpage
-        if str == bytes:
+        if str is bytes:
             tmp_file = io.BytesIO()
         else:
             tmp_file = io.StringIO()
