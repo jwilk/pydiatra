@@ -141,6 +141,10 @@ class cmd_sdist(distutils_sdist):
             os.path.join(base_dir, 'README.rst'),
             os.path.join(base_dir, 'doc/README'),
         )
+        self.move_file(
+            os.path.join(base_dir, 'LICENSE'),
+            os.path.join(base_dir, 'doc/LICENSE'),
+        )
         # distutils doesn't seem to handle symlinks-to-directories
         # out of the box, so let's take care of them manually:
         target = os.readlink('data')
