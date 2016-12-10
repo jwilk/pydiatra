@@ -12,5 +12,5 @@
 [3] regexp-syntax-error
 [X] string-exception
 [4] string-formatting-error
-[8] syntax-error
+[9] syntax-error
 [X] syntax-warning
