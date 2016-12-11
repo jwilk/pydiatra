@@ -143,7 +143,6 @@ class cmd_sdist(distutils_sdist):
 
     def make_release_tree(self, base_dir, files):
         distutils_sdist.make_release_tree(self, base_dir, files)
-        self.maybe_move_file(base_dir, 'README.rst', 'doc/README')
         self.maybe_move_file(base_dir, 'LICENSE', 'doc/LICENSE')
         # distutils doesn't seem to handle symlinks-to-directories
         # out of the box, so let's take care of them manually:
