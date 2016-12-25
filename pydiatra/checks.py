@@ -511,6 +511,7 @@ def check_source(path, source, catch_tab_errors=True):
             )
     try:
         with warnings.catch_warnings(record=True) as wrns:
+            warnings.simplefilter('default')
             ast_source = ast.parse(source, filename=path)
             compile(ast_source, path, 'exec')
     except TabError as exc:
