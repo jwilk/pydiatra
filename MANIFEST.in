@@ -5,3 +5,5 @@ include doc/*
 include private/*
 include py[23]diatra
 include tests/*
+
+global-exclude *.py[co]
