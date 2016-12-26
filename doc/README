@@ -42,7 +42,7 @@ Implemented checks
     (e.g. ``re.compile("[a-zA-z]")``)
 
   * inline flags in the middle of a regexp
-    (e.g. ``re.compile("eggs(?i)")``)
+    (e.g. ``re.compile("eggs(?i)")``; Python 3.6+ only)
 
 * string exceptions
   (e.g. ``raise "eggs"`` or ``except "ham":``)
@@ -60,8 +60,10 @@ Implemented checks
   * ill-formed assignments to global variables
 
   * use of ``async`` and ``await`` variables
+    (Python 3.6 only)
 
   * invalid escape sequences in strings
+    (Python 3.6+ only)
 
 See the manual page
 (or `the tags file <pydiatra/data/tags>`_)
