@@ -1,4 +1,4 @@
-pydiatra (0.3) UNRELEASED; urgency=low
+pydiatra (0.3) unstable; urgency=low
 
   * Enable warnings when parsing the code.
     With Python 3.6+, this catches invalid escape sequences in strings, which
@@ -7,7 +7,7 @@ pydiatra (0.3) UNRELEASED; urgency=low
     With Python 3.6+, this catches inline flags in the middle of a regexp,
     which have been deprecated.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 26 Dec 2016 10:47:53 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 26 Dec 2016 13:55:42 +0100
 
 pydiatra (0.2.2) unstable; urgency=low
 
