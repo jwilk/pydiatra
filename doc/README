@@ -57,6 +57,12 @@ Implemented checks
 
   * syntactic constructs that are no longer supported in Python 3
 
+  * ill-formed assignments to global variables
+
+  * use of ``async`` and ``await`` variables
+
+  * invalid escape sequences in strings
+
 See the manual page
 (or `the tags file <pydiatra/data/tags>`_)
 for details.
