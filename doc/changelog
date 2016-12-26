@@ -1,3 +1,9 @@
+pydiatra (0.3.1) UNRELEASED; urgency=low
+
+  * 
+
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 26 Dec 2016 21:06:43 +0100
+
 pydiatra (0.3) unstable; urgency=low
 
   * Enable warnings when parsing the code.
