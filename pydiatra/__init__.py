@@ -1,4 +1,4 @@
 '''
 yet another static checker for Python code
 '''
-__version__ = '0.2.2'
+__version__ = '0.3'
