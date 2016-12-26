@@ -10,7 +10,8 @@
 [X] regexp-duplicate-range
 [3] regexp-overlapping-ranges
 [3] regexp-syntax-error
+[X] regexp-syntax-warning
 [X] string-exception
 [4] string-formatting-error
 [9] syntax-error
-[X] syntax-warning
+[2] syntax-warning
