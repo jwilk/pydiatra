@@ -33,13 +33,16 @@ Implemented checks
 
 * regular expression syntax errors
 
-* dubious constructs in regular expressions:
+* dubious or deprecated constructs in regular expressions:
 
   * duplicate range
     (e.g. ``re.compile("[aa]")``)
 
   * overlapping ranges
     (e.g. ``re.compile("[a-zA-z]")``)
+
+  * inline flags in the middle of a regexp
+    (e.g. ``re.compile("eggs(?i)")``)
 
 * string exceptions
   (e.g. ``raise "eggs"`` or ``except "ham":``)
