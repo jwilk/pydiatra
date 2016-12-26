@@ -455,10 +455,14 @@ class Visitor(ast.NodeVisitor):
             if nargs_ok and isinstance(node.args[0], ast.Str):
                 s = node.args[0].s
                 try:
-                    subpattern = sre_parse.parse(s)
+                    with warnings.catch_warnings(record=True) as wrns:
+                        warnings.simplefilter('default')
+                        subpattern = sre_parse.parse(s)
                 except Exception as exc:  # pylint: disable=broad-except
                     yield self.tag(node.lineno, 'regexp-syntax-error', str(exc))
                 else:
+                    for wrn in wrns:
+                        yield self.tag(node.lineno, 'regexp-syntax-warning', str(wrn.message))
                     try:
                         re.compile(s)
                     except Exception as exc:  # pylint: disable=broad-except
