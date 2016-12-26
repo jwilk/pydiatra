@@ -24,4 +24,4 @@ script:
 - python tests/run-tests -v
 - private/run-pyflakes
 - $no_pylint || private/run-pylint
-- ls *.rst | xargs -L1 -t -I{} rst2xml.py --strict {} /dev/null
+- private/check-rst
