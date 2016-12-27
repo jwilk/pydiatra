@@ -41,8 +41,8 @@ Implemented checks
   * overlapping ranges
     (e.g. ``re.compile("[a-zA-z]")``)
 
-  * inline flags in the middle of a regexp
-    (e.g. ``re.compile("eggs(?i)")``; Python 3.6+ only)
+  * misplaced inline flags
+    (e.g. ``re.compile("eggs(?i)"``; Python 3.6+ only)
 
 * string exceptions
   (e.g. ``raise "eggs"`` or ``except "ham":``)
@@ -59,7 +59,7 @@ Implemented checks
 
   * ill-formed assignments to global variables
 
-  * use of ``async`` and ``await`` variables
+  * use of ``async`` and ``await`` as names
     (Python 3.6 only)
 
   * invalid escape sequences in strings
