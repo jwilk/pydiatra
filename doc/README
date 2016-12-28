@@ -42,7 +42,7 @@ Implemented checks
     (e.g. ``re.compile("[a-zA-z]")``)
 
   * misplaced inline flags
-    (e.g. ``re.compile("eggs(?i)"``; Python 3.6+ only)
+    (e.g. ``re.compile("eggs(?i)")``; Python 3.6+ only)
 
 * string exceptions
   (e.g. ``raise "eggs"`` or ``except "ham":``)
