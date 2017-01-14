@@ -24,6 +24,8 @@ For Python 3:
 | **py3diatra** [*options*] *pyfile* [*pyfile* …]
 | **python3.**\ *X* **-m** **pydiatra** [*options*] *pyfile* [*pyfile* …]
 
+(Beware that **python -m** adds current working directory to ``sys.path``.)
+
 Options
 -------
 
