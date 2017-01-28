@@ -17,14 +17,16 @@ Synopsis
 For Python 2:
 
 | **py2diatra** [*options*] *pyfile* [*pyfile* …]
-| **python2.**\ *X* **-3tt** **-m** **pydiatra** [*options*] *pyfile* [*pyfile* …]
 
 For Python 3:
 
 | **py3diatra** [*options*] *pyfile* [*pyfile* …]
-| **python3.**\ *X* **-m** **pydiatra** [*options*] *pyfile* [*pyfile* …]
 
-(Beware that **python -m** adds current working directory to ``sys.path``.)
+For any Python >= 2.7:
+
+| **python**\ *X*\ **.**\ *Y* **-m** **pydiatra** [*options*] *pyfile* [*pyfile* …]
+
+(Beware that the last form adds current working directory to ``sys.path``.)
 
 Options
 -------

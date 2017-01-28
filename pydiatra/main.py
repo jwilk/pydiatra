@@ -29,6 +29,7 @@ from __future__ import print_function
 import argparse
 import io
 import multiprocessing
+import os
 import sys
 
 try:
@@ -65,7 +66,57 @@ def parse_jobs(s):
     return n
 parse_jobs.__name__ = 'jobs'
 
-def main():
+def maybe_reexec(argv0=None):
+    if sys.version_info >= (3,):
+        return
+    required_flags = dict(
+        tabcheck=2,
+        py3k_warning=1,
+    )
+    # https://docs.python.org/2/library/sys.html#sys.flags
+    flag_to_option = dict(
+        debug='d',
+        py3k_warning='3',
+        division_warning='Qwarn',
+        division_new='Qnew',
+        inspect='i',
+        optimize='O',
+        dont_write_bytecode='B',
+        no_user_site='s',
+        no_site='S',
+        ignore_environment='E',
+        tabcheck='t',
+        verbose='v',
+        unicode='U',
+        bytes_warning='b',
+        hash_randomization='R'
+    )
+    assert set(required_flags.keys()).issubset(flag_to_option.keys())
+    argv = [sys.executable]
+    reexec_needed = False
+    for flag, option in flag_to_option.items():
+        n = getattr(sys.flags, flag, 0)
+        m = required_flags.get(flag, 0)
+        if m > n:
+            n = m
+            reexec_needed = True
+        if n > 0:
+            if len(option) == 1:
+                argv += ['-' + option * n]
+            else:
+                argv += ['-' + option] * n
+    argv += argv0
+    argv += sys.argv[1:]
+    if reexec_needed:
+        os.execv(argv[0], argv)
+
+def main(runpy=False, script=None):
+    if runpy:
+        mod_head, _, mod_tail = __name__.partition('.')
+        assert mod_tail == 'main'
+        maybe_reexec(argv0=['-m', mod_head])
+    elif script is not None:
+        maybe_reexec(argv0=[script])
     ap = argparse.ArgumentParser()
     ap.add_argument('paths', metavar='<file>', nargs='+')
     ap.add_argument('--version', action='version', version='%(prog)s {0}'.format(__version__))

@@ -1,2 +1,2 @@
 from . import main
-main.main()
+main.main(runpy=True)
