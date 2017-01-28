@@ -20,6 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+'''
+"python -m pydiatra" support
+'''
+
 if __name__ == '__main__':
     from . import main
     main.main(runpy=True)
