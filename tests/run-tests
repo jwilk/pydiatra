@@ -32,6 +32,10 @@ import unittest
 import nose
 import nose.plugins
 
+here = os.path.dirname(__file__)
+basedir = '{here}/..'.format(here=here)
+basedir = os.path.relpath(basedir)
+
 class Plugin(nose.plugins.Plugin):
 
     name = 'pydiatra'
@@ -71,7 +75,8 @@ class TestCase(unittest.TestCase):
         pyflags = '-tt'
         if sys.version_info < (3,):
             pyflags += '3'
-        commandline = [sys.executable, pyflags, '-c', 'import pydiatra.__main__', self.path]
+        script = '{dir}/py{v}diatra'.format(dir=basedir, v=sys.version_info[0])
+        commandline = [sys.executable, pyflags, script, self.path]
         checker = ipc.Popen(commandline,
             stdout=ipc.PIPE,
             stderr=ipc.PIPE,
