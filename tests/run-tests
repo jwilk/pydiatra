@@ -32,6 +32,8 @@ import unittest
 import nose
 import nose.plugins
 
+import signame
+
 here = os.path.dirname(__file__)
 basedir = '{here}/..'.format(here=here)
 basedir = os.path.relpath(basedir)
@@ -107,6 +109,21 @@ class TestCase(unittest.TestCase):
             s.decode('UTF-8').splitlines()
             for s in checker.communicate()
         )
+        rc = checker.poll()
+        if rc != 0:
+            message = []
+            if rc < 0:
+                message += [
+                    'command was interrupted by signal {sig}'.format(sig=signame.get_signal_name(-rc))
+                ]
+            elif rc > 0:
+                message += [
+                    'command exited with status {rc}'.format(rc=rc)
+                ]
+            if stderr:
+                message += ['', 'stderr:']
+                message += ['| ' + line for line in stderr]
+            raise AssertionError('\n'.join(message))
         if stderr:
             raise AssertionError('non-empty stderr:\n' +
                 '\n'.join('| ' + line for line in stderr)
