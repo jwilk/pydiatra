@@ -33,7 +33,7 @@ then
     pyver=$("$PYTHON" -c 'import sys; print(sys.version_info[0])')
     [ "$pyver" = 2 ] && pyre="${pyre}(?!3)"
     pyscripts=$(grep -l -r -P "$pyre" .)
-    set -- $(find -name '*.py') $pyscripts
+    set -- $(find . -name '*.py') $pyscripts
 fi
 
 exec "$PYTHON" "$pyflakes" "$@"
