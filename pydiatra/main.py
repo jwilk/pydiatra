@@ -110,6 +110,13 @@ def maybe_reexec(argv0=None):
     if reexec_needed:
         os.execv(argv[0], argv)
 
+class ArgumentParser(argparse.ArgumentParser):
+
+    def exit(self, status=0, message=None):
+        if status:
+            status = 1
+        argparse.ArgumentParser.exit(self, status=status, message=message)
+
 def main(runpy=False, script=None):
     if runpy:
         mod_head, _, mod_tail = __name__.partition('.')
@@ -117,7 +124,7 @@ def main(runpy=False, script=None):
         maybe_reexec(argv0=['-m', mod_head])
     elif script is not None:
         maybe_reexec(argv0=[script])
-    ap = argparse.ArgumentParser()
+    ap = ArgumentParser()
     ap.add_argument('paths', metavar='<file>', nargs='+')
     ap.add_argument('--version', action='version', version='%(prog)s {0}'.format(__version__))
     ap.add_argument('-j', '--jobs', metavar='<n>', type=parse_jobs, default=1,
