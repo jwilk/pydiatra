@@ -21,22 +21,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import difflib
 import io
 import os
 import re
-import subprocess as ipc
 import sys
 import unittest
 
 import nose
 import nose.plugins
 
-import signame
-
-here = os.path.dirname(__file__)
-basedir = '{here}/..'.format(here=here)
-basedir = os.path.relpath(basedir)
+import tools
 
 class Plugin(nose.plugins.Plugin):
 
@@ -74,16 +68,6 @@ class TestCase(unittest.TestCase):
             raise nose.SkipTest
         if '.py3.' in self.path and sys.version_info < (3,):
             raise nose.SkipTest
-        pyflags = '-tt'
-        if sys.version_info < (3,):
-            pyflags += '3'
-        script = '{dir}/py{v}diatra'.format(dir=basedir, v=sys.version_info[0])
-        commandline = [sys.executable, pyflags, script, self.path]
-        checker = ipc.Popen(commandline,
-            stdout=ipc.PIPE,
-            stderr=ipc.PIPE,
-            env=dict(os.environ, PYTHONIOENCODING='UTF-8'),
-        )
         expected = []
         with io.open(self.path, 'rt', encoding='UTF-8', errors='replace') as file:
             for line in file:
@@ -105,35 +89,7 @@ class TestCase(unittest.TestCase):
                     sep=(':' if xline[0].isdigit() else ': '),
                     rest=xline
                 )]
-        [stdout, stderr] = (
-            s.decode('UTF-8').splitlines()
-            for s in checker.communicate()
-        )
-        rc = checker.poll()
-        expected_rc = 2 if expected else 0
-        message = []
-        if rc < 0:
-            message += [
-                'command was interrupted by signal {sig}'.format(sig=signame.get_signal_name(-rc))
-            ]
-        elif rc != expected_rc:
-            message += [
-                'command exited with status {rc}'.format(rc=rc)
-            ]
-        if stderr:
-            if message:
-                message += ['', 'stderr:']
-            else:
-                message += ['non-empty stderr:']
-            message += ['| ' + line for line in stderr]
-        if stdout != expected:
-            message = ['unexpected checker output:', '']
-            diff = list(
-                difflib.unified_diff(expected, stdout, n=9999)
-            )
-            message += diff[3:]
-        if message:
-            raise AssertionError('\n'.join(message))
+        tools.run_pydiatra(self.path, expected)
 
     def __str__(self):
         return self.name
