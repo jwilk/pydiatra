@@ -55,7 +55,7 @@ def run_pydiatra(paths, expected):
         message += [
             'command was interrupted by signal {sig}'.format(sig=signame.get_signal_name(-rc))
         ]
-    elif rc != expected_rc:
+    elif (expected is not None) and (rc != expected_rc):
         message += [
             'command exited with status {rc}'.format(rc=rc)
         ]
@@ -65,7 +65,7 @@ def run_pydiatra(paths, expected):
         else:
             message += ['non-empty stderr:']
         message += ['| ' + line for line in stderr]
-    if stdout != expected:
+    if (expected is not None) and (stdout != expected):
         message = ['unexpected checker output:', '']
         diff = list(
             difflib.unified_diff(expected, stdout, n=9999)
