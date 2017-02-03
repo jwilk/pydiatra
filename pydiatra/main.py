@@ -43,8 +43,11 @@ from . import __version__
 from . import checks
 
 def check_file(path, file=sys.stdout):
+    n = 0
     for t in checks.check_file(path):
         print(t, file=file)
+        n += 1
+    return n
 
 def check_file_s(path):
     if str is bytes:
@@ -137,15 +140,19 @@ def main(runpy=False, script=None):
         print('{prog}: warning: cannot import concurrent.futures: {msg}'.format(prog=ap.prog, msg=concurrent_exc), file=sys.stderr)
         options.jobs = 1
     checks.load_data()
+    ok = True
     if options.jobs <= 1:
         for path in options.paths:
-            check_file(path)
+            if check_file(path) > 0:
+                ok = False
     else:
         executor = concurrent.futures.ProcessPoolExecutor(max_workers=options.jobs)
         with executor:
             for s in executor.map(check_file_s, options.paths):
                 sys.stdout.write(s)
-    sys.exit(0)
+                if s:
+                    ok = False
+    sys.exit(0 if ok else 2)
 
 __all__ = ['main']
 

@@ -110,30 +110,29 @@ class TestCase(unittest.TestCase):
             for s in checker.communicate()
         )
         rc = checker.poll()
-        if rc != 0:
-            message = []
-            if rc < 0:
-                message += [
-                    'command was interrupted by signal {sig}'.format(sig=signame.get_signal_name(-rc))
-                ]
-            elif rc > 0:
-                message += [
-                    'command exited with status {rc}'.format(rc=rc)
-                ]
-            if stderr:
-                message += ['', 'stderr:']
-                message += ['| ' + line for line in stderr]
-            raise AssertionError('\n'.join(message))
+        expected_rc = 2 if expected else 0
+        message = []
+        if rc < 0:
+            message += [
+                'command was interrupted by signal {sig}'.format(sig=signame.get_signal_name(-rc))
+            ]
+        elif rc != expected_rc:
+            message += [
+                'command exited with status {rc}'.format(rc=rc)
+            ]
         if stderr:
-            raise AssertionError('non-empty stderr:\n' +
-                '\n'.join('| ' + line for line in stderr)
-            )
+            if message:
+                message += ['', 'stderr:']
+            else:
+                message += ['non-empty stderr:']
+            message += ['| ' + line for line in stderr]
         if stdout != expected:
             message = ['unexpected checker output:', '']
             diff = list(
                 difflib.unified_diff(expected, stdout, n=9999)
             )
             message += diff[3:]
+        if message:
             raise AssertionError('\n'.join(message))
 
     def __str__(self):
