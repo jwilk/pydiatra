@@ -49,6 +49,15 @@ The following checks are implemented:
 
 .. include:: tags.rst
 
+Exit status
+-----------
+
+One of the following exit values can be returned by **pydiatra**:
+
+:0: No issues with the tested code were found.
+:1: A fatal error occurred.
+:2: At least one issue with the tested code was found.
+
 See also
 --------
 **pyflakes**\ (1),
