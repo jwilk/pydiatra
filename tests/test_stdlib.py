@@ -39,6 +39,6 @@ def get_mod_paths():
 
 def test():
     paths = list(get_mod_paths())
-    tools.run_pydiatra(paths, expected=None)
+    tools.run_pydiatra(paths, expected=None, parallel=True)
 
 # vim:ts=4 sts=4 sw=4 et

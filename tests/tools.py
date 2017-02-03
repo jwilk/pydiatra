@@ -31,14 +31,19 @@ here = os.path.dirname(__file__)
 basedir = '{here}/..'.format(here=here)
 basedir = os.path.relpath(basedir)
 
-def run_pydiatra(paths, expected):
+def run_pydiatra(paths, expected, parallel=None):
     if isinstance(paths, str):
         paths = [paths]
     pyflags = '-tt'
     if sys.version_info < (3,):
         pyflags += '3'
     script = '{dir}/py{v}diatra'.format(dir=basedir, v=sys.version_info[0])
-    commandline = [sys.executable, pyflags, script] + paths
+    options = []
+    if parallel is True:
+        options += ['-jauto']
+    elif parallel is not None:
+        options += ['-j{n:d}'.format(n=parallel)]
+    commandline = [sys.executable, pyflags, script] + options + paths
     checker = ipc.Popen(commandline,
         stdout=ipc.PIPE,
         stderr=ipc.PIPE,
