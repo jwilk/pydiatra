@@ -22,6 +22,7 @@ install:
 script:
 - python setup.py build
 - python tests/run-tests -v
+- private/run-pydiatra
 - private/run-pyflakes
 - $no_pylint || private/run-pylint
 - private/check-rst
