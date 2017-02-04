@@ -1,8 +1,13 @@
 pydiatra (0.4) UNRELEASED; urgency=low
 
-  * 
+  * Improve the test suite.
+  * Improve check descriptions in README.
+  * Automatically re-exec the interpreter if it wasn't run without the
+    required flags (-3tt for Python 2.X).
+  * Exit with status 2 if any issues in the checked code were found.
+  * Add security warning for the “python -m” calls in the manual page.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Fri, 03 Feb 2017 19:40:11 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Sat, 04 Feb 2017 17:28:03 +0100
 
 pydiatra (0.3) unstable; urgency=low
 
