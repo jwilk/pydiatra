@@ -121,13 +121,18 @@ class ArgumentParser(argparse.ArgumentParser):
         argparse.ArgumentParser.exit(self, status=status, message=message)
 
 def main(runpy=False, script=None):
+    prog = None
     if runpy:
         mod_head, _, mod_tail = __name__.partition('.')
         assert mod_tail == 'main'
         maybe_reexec(argv0=['-m', mod_head])
+        prog = '{interp} -m {mod}'.format(
+            interp=os.path.basename(sys.executable),
+            mod=mod_head,
+        )
     elif script is not None:
         maybe_reexec(argv0=[script])
-    ap = ArgumentParser()
+    ap = ArgumentParser(prog=prog)
     ap.add_argument('paths', metavar='<file>', nargs='+')
     ap.add_argument('--version', action='version', version='%(prog)s {0}'.format(__version__))
     ap.add_argument('-j', '--jobs', metavar='<n>', type=parse_jobs, default=1,
