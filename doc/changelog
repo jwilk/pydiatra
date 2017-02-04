@@ -1,4 +1,4 @@
-pydiatra (0.4) UNRELEASED; urgency=low
+pydiatra (0.4) unstable; urgency=low
 
   * Improve the test suite.
   * Improve check descriptions in README.
@@ -7,7 +7,7 @@ pydiatra (0.4) UNRELEASED; urgency=low
   * Exit with status 2 if any issues in the checked code were found.
   * Add security warning for the “python -m” calls in the manual page.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Sat, 04 Feb 2017 17:28:03 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Sat, 04 Feb 2017 17:28:34 +0100
 
 pydiatra (0.3) unstable; urgency=low
 
