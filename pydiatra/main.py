@@ -120,6 +120,23 @@ class ArgumentParser(argparse.ArgumentParser):
             status = 1
         argparse.ArgumentParser.exit(self, status=status, message=message)
 
+class VersionAction(argparse.Action):
+    '''
+    argparse --version action
+    '''
+
+    def __init__(self, option_strings, dest=argparse.SUPPRESS):
+        super(VersionAction, self).__init__(
+            option_strings=option_strings,
+            dest=dest,
+            nargs=0,
+            help="show program's version information and exit"
+        )
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        print('{prog} {0}'.format(__version__, prog=parser.prog))
+        sys.exit(0)
+
 def main(runpy=False, script=None):
     prog = None
     if runpy:
@@ -134,7 +151,7 @@ def main(runpy=False, script=None):
         maybe_reexec(argv0=[script])
     ap = ArgumentParser(prog=prog)
     ap.add_argument('paths', metavar='<file>', nargs='+')
-    ap.add_argument('--version', action='version', version='%(prog)s {0}'.format(__version__))
+    ap.add_argument('--version', action=VersionAction)
     ap.add_argument('-j', '--jobs', metavar='<n>', type=parse_jobs, default=1,
         help=('use <n> processes' if concurrent else argparse.SUPPRESS)
     )
