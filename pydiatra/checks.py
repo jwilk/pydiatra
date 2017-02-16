@@ -30,10 +30,10 @@ import re
 import string
 import sys
 import warnings
-import sre_parse
 
 from . import astaux
 from . import tags
+from . import check_re
 
 tag = tags.Tag
 
@@ -77,114 +77,6 @@ def load_data():
         code_copies.append(package)
     regex = '|'.join('(%s)' % r for r in regex)
     code_copies_regex = re.compile(regex, re.DOTALL)
-
-# pylint: disable=redefined-builtin
-if sys.version_info >= (3,):
-    long = int
-    unichr = chr
-else:
-    ascii = repr
-# pylint: enable=redefined-builtin
-
-def format_char_range(rng, tp):
-    if tp == str:
-        def fmt(i):
-            return ascii(chr(i))[1:-1]
-    else:
-        def fmt(i):
-            return repr(unichr(i))[2:-1]
-    x, y = map(fmt, rng)
-    if x != y:
-        return x + '-' + y
-    else:
-        return x
-
-class ReVisitor(object):
-
-    def __init__(self, tp, path, lineno):
-        self.tp = tp
-        self.path = path
-        self.lineno = lineno
-
-    def tag(self, lineno, *args):
-        assert lineno == self.lineno
-        return tag(self.path, lineno, *args)
-
-    def _normalize_op(self, op):
-        if sys.version_info >= (3, 5):
-            op = repr(op).lower()
-        if type(op) != str:  # pylint: disable=unidiomatic-typecheck
-            raise TypeError
-        return op
-
-    def visit(self, node):
-        if not isinstance(node, sre_parse.SubPattern):
-            raise TypeError('{0!r} is not a subpattern'.format(node))
-        for op, args in node.data:
-            if not isinstance(args, (list, tuple)):
-                args = (args,)
-            op = self._normalize_op(op)
-            method = 'visit_' + op
-            visitor = getattr(self, method, self.generic_visit)
-            for t in visitor(*args):
-                yield t
-
-    def generic_visit(self, *args):
-        for arg in args:
-            if isinstance(arg, (list, tuple)):
-                for t in self.generic_visit(*arg):
-                    yield t
-            elif isinstance(arg, sre_parse.SubPattern):
-                for t in self.visit(arg):
-                    yield t
-            elif isinstance(arg, (int, long, str)):
-                pass
-            elif arg is None:
-                pass
-            else:
-                raise TypeError('{0!r} has unexpected type'.format(arg))
-
-    def visit_in(self, *args):
-        ranges = []
-        for op, arg in args:
-            op = self._normalize_op(op)
-            if op == 'range':
-                ranges += [arg]
-            elif op == 'literal':
-                ranges += [(arg, arg)]
-        seen_duplicate_range = False
-        seen_overlapping_ranges = False
-        if len(ranges) >= 2:
-            ranges.sort()
-            for i in range(len(ranges) - 1):
-                r1 = ranges[i]
-                r2 = ranges[i + 1]
-                if r1 == r2:
-                    if not seen_duplicate_range:
-                        yield self.tag(self.lineno, 'regexp-duplicate-range',
-                            format_char_range(r1, tp=self.tp),
-                        )
-                    seen_duplicate_range = True
-                elif r1[1] >= r2[0]:
-                    if not seen_overlapping_ranges:
-                        yield self.tag(self.lineno, 'regexp-overlapping-ranges',
-                            format_char_range(r1, tp=self.tp),
-                            format_char_range(r2, tp=self.tp),
-                        )
-                    seen_overlapping_ranges = True
-        for t in self.generic_visit(*args):
-            yield t
-
-re_functions = dict(
-    compile=1,
-    findall=2,
-    finditer=2,
-    match=2,
-    search=2,
-    split=3,
-    sub=4,
-    subn=4,
-)
 
 class Visitor(ast.NodeVisitor):
 
@@ -441,36 +333,8 @@ class Visitor(ast.NodeVisitor):
                     except Exception as exc:  # pylint: disable=broad-except
                         yield self.tag(node.lineno, 'string-formatting-error', str(exc))
         if isinstance(func, ast.Attribute) and isinstance(func.value, ast.Name) and func.value.id == 're':
-            nargs = len(node.args)
-            ast_have_kwargs = sys.version_info < (3, 5)
-            extra_args = (
-                bool(node.keywords) or
-                (ast_have_kwargs and node.starargs is not None) or
-                (ast_have_kwargs and node.kwargs is not None)
-            )
-            nargs_ok = (
-                (not extra_args) and
-                (1 <= nargs <= re_functions.get(func.attr, 0))
-            )
-            if nargs_ok and isinstance(node.args[0], ast.Str):
-                s = node.args[0].s
-                try:
-                    with warnings.catch_warnings(record=True) as wrns:
-                        warnings.simplefilter('default')
-                        subpattern = sre_parse.parse(s)
-                except Exception as exc:  # pylint: disable=broad-except
-                    yield self.tag(node.lineno, 'regexp-syntax-error', str(exc))
-                else:
-                    for wrn in wrns:
-                        yield self.tag(node.lineno, 'regexp-syntax-warning', str(wrn.message))
-                    try:
-                        re.compile(s)
-                    except Exception as exc:  # pylint: disable=broad-except
-                        yield self.tag(node.lineno, 'regexp-syntax-error', str(exc))
-                    else:
-                        re_visitor = ReVisitor(tp=type(s), path=self.path, lineno=node.lineno)
-                        for t in re_visitor.visit(subpattern):
-                            yield t
+            for t in check_re.check(self, node):
+                yield t
         for t in self.generic_visit(node):
             yield t
 
