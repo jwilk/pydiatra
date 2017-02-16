@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 import ast
+import glob
 import os
 
 # pylint: disable=import-error
@@ -50,25 +51,29 @@ def extract_tags_from_ast(node):
         isinstance(node, ast.Call) and
         isinstance(node.func, ast.Attribute) and
         isinstance(node.func.value, ast.Name) and
-        node.func.value.id == 'self' and
+        node.func.value.id in ('self', 'owner') and
         node.func.attr == 'tag' and
         len(node.args) >= 2 and
         isinstance(node.args[1], ast.Str)
     ):
         yield node.args[1].s
 
-def read_ast_tags(path):
+def read_ast_tags(paths):
     options = {}
     if str is not bytes:
         options.update(encoding='UTF-8')
-    with open(path, 'rt', **options) as file:
-        body = file.read()
-    node = ast.parse(body, filename=path)
-    return frozenset(
-        t for t in
-        extract_tags_from_ast(node)
-        if not t.startswith('*')
-    )
+    result = []
+    for path in paths:
+        with open(path, 'rt', **options) as file:
+            body = file.read()
+        print(path)
+        node = ast.parse(body, filename=path)
+        result += [
+            t for t in
+            extract_tags_from_ast(node)
+            if not t.startswith('*')
+        ]
+    return frozenset(result)
 
 def read_cfg_tags(path):
     cp = configparser.RawConfigParser()
@@ -84,13 +89,14 @@ def test():
     cfg_path = os.path.join(root, 'data', 'tags')
     cfg_path = os.path.relpath(cfg_path)
     cfg_tags = read_cfg_tags(cfg_path)
-    ast_path = os.path.join(root, 'pydiatra', 'checks.py')
-    ast_path = os.path.relpath(ast_path)
-    ast_tags = read_ast_tags(ast_path)
+    ast_glob = os.path.join(root, 'pydiatra', 'check*.py')
+    ast_glob = os.path.relpath(ast_glob)
+    ast_paths = glob.glob(ast_glob)
+    ast_tags = read_ast_tags(ast_paths)
     for tag in cfg_tags - ast_tags:
-        raise AssertionError('{tag!r} is in {cfg_path} but not in {ast_path}'.format(tag=tag, cfg_path=cfg_path, ast_path=ast_path))
+        raise AssertionError('{tag!r} is in {cfg_path} but not in {ast_glob}'.format(tag=tag, cfg_path=cfg_path, ast_glob=ast_glob))
     for tag in ast_tags - cfg_tags:
-        raise AssertionError('{tag!r} is in {ast_path} but not in {cfg_path}'.format(tag=tag, cfg_path=cfg_path, ast_path=ast_path))
+        raise AssertionError('{tag!r} is in {ast_glob} but not in {cfg_path}'.format(tag=tag, cfg_path=cfg_path, ast_glob=ast_glob))
     assert_equal(cfg_tags, ast_tags)
 
 # vim:ts=4 sts=4 sw=4 et
