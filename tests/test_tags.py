@@ -66,7 +66,6 @@ def read_ast_tags(paths):
     for path in paths:
         with open(path, 'rt', **options) as file:
             body = file.read()
-        print(path)
         node = ast.parse(body, filename=path)
         result += [
             t for t in
