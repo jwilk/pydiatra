@@ -50,10 +50,11 @@ def analyze_re_functions():
     ]
     if sys.version_info >= (3, 4):
         funcs += [
-            re.fullmatch
+            re.fullmatch  # pylint: disable=no-member
         ]
     data = {}
     for func in funcs:
+        # pylint: disable=deprecated-method,no-member
         if sys.version_info < (3, 0):
             func_args = inspect.getargspec(func).args
         elif sys.version_info < (3, 3):
@@ -64,6 +65,7 @@ def analyze_re_functions():
                 for arg in inspect.signature(func).parameters.values()
                 if arg.kind in (arg.POSITIONAL_ONLY, arg.POSITIONAL_OR_KEYWORD)
             ]
+        # pylint: enable=deprecated-method,no-member
         assert 'pattern' in func_args
         if sys.version_info >= (2, 7):
             assert 'flags' in func_args
@@ -225,7 +227,7 @@ def check(owner, node):
             return
         starred_tp = ()
     else:
-        starred_tp = ast.Starred
+        starred_tp = ast.Starred  # pylint: disable=no-member
     func_name = node.func.attr
     try:
         argnames = re_functions[func_name]
