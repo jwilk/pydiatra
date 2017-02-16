@@ -82,7 +82,7 @@ else:
 # pylint: enable=redefined-builtin
 
 def format_char_range(rng, tp):
-    if tp == str:
+    if tp in (str, bytes):
         def fmt(i):
             return ascii(chr(i))[1:-1]
     else:
