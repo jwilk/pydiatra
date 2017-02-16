@@ -12,6 +12,7 @@ disable =
     too-many-boolean-expressions,
     too-many-branches,
     too-many-locals,
+    too-many-return-statements,
 
 [REPORTS]
 reports = no
