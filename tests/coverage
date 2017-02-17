@@ -14,4 +14,4 @@
 [X] string-exception
 [4] string-formatting-error
 [#] syntax-error
-[3] syntax-warning
+[4] syntax-warning
