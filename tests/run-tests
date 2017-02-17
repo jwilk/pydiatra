@@ -70,9 +70,10 @@ class TestCase(unittest.TestCase):
             raise nose.SkipTest
         expected = []
         with io.open(self.path, 'rt', encoding='UTF-8', errors='replace') as file:
-            for line in file:
+            for n, line in enumerate(file, 1):
                 match = self._comment_re.match(line)
                 if match is None:
+                    code_n = n
                     continue
                 relation = match.group('rel')
                 if relation:
@@ -86,6 +87,8 @@ class TestCase(unittest.TestCase):
                     if relation == '==' and sys.version_info[:len(version)] != version:
                         continue
                 xline = match.group('expected')
+                if xline[:2] == '*:':
+                    xline = str(code_n) + xline[1:]
                 expected += ['{path}{sep}{rest}'.format(
                     path=self.path,
                     sep=(':' if xline[0].isdigit() else ': '),
