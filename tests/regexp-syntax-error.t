@@ -56,4 +56,18 @@ re.template('.{1}')
 ## [<< 3.5] *: regexp-syntax-error internal: unsupported template operator
 ## [>= 3.5] *: regexp-syntax-error internal: unsupported template operator MAX_REPEAT
 
+# ----------------------------------------------------------------------------------------------------
+
+re.compile('#(\n)', re.VERBOSE)
+## [<< 3.5] *: regexp-syntax-error unbalanced parenthesis
+## [>= 3.5] *: regexp-syntax-error unbalanced parenthesis at position 3 (line 2, column 1)
+
+re.compile('#(\n)', re.VERBOSE | re.MULTILINE)
+## [<< 3.5] *: regexp-syntax-error unbalanced parenthesis
+## [>= 3.5] *: regexp-syntax-error unbalanced parenthesis at position 3 (line 2, column 1)
+
+re.compile('#(\n)', flags=(re.VERBOSE + re.DEBUG))
+## [<< 3.5] *: regexp-syntax-error unbalanced parenthesis
+## [>= 3.5] *: regexp-syntax-error unbalanced parenthesis at position 3 (line 2, column 1)
+
 # vim:ts=4 sts=4 sw=4 et syntax=python
