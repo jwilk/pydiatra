@@ -9,8 +9,8 @@
 [X] py3k-compat-warning
 [X] regexp-duplicate-range
 [3] regexp-overlapping-ranges
-[3] regexp-syntax-error
-[X] regexp-syntax-warning
+[4] regexp-syntax-error
+[2] regexp-syntax-warning
 [X] string-exception
 [4] string-formatting-error
 [#] syntax-error
