@@ -254,20 +254,16 @@ def check(owner, node):
     try:
         with warnings.catch_warnings(record=True) as wrns:
             warnings.simplefilter('default')
-            subpattern = sre_parse.parse(pattern, flags=flags)
+            re.compile(pattern, flags=flags)
+        subpattern = sre_parse.parse(pattern, flags=flags)
     except Exception as exc:  # pylint: disable=broad-except
         yield owner.tag(node.lineno, 'regexp-syntax-error', str(exc))
-    else:
-        for wrn in wrns:
-            yield owner.tag(node.lineno, 'regexp-syntax-warning', str(wrn.message))
-        try:
-            re.compile(pattern, flags=flags)
-        except Exception as exc:  # pylint: disable=broad-except
-            yield owner.tag(node.lineno, 'regexp-syntax-error', str(exc))
-        else:
-            re_visitor = ReVisitor(tp=type(pattern), path=owner.path, lineno=node.lineno)
-            for t in re_visitor.visit(subpattern):
-                yield t
+        return
+    for wrn in wrns:
+        yield owner.tag(node.lineno, 'regexp-syntax-warning', str(wrn.message))
+    re_visitor = ReVisitor(tp=type(pattern), path=owner.path, lineno=node.lineno)
+    for t in re_visitor.visit(subpattern):
+        yield t
 
 __all__ = ['check']
 
