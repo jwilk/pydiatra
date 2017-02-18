@@ -61,7 +61,7 @@ def update_code_analysis_coverage():
                 match = _comment_re.match(line)
                 if match:
                     taginfo = match.group('expected').split()
-                    if taginfo[0][0].isdigit():
+                    if taginfo[0][0].isdigit() or taginfo[0] == '*:':
                         tag = taginfo[1]
                     else:
                         tag = taginfo[0]
