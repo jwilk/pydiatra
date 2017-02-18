@@ -151,7 +151,7 @@ description =
  that is no longer supported in Python 3.
 
 [regexp-duplicate-range]
-severity = minor
+severity = normal
 certainty = possible
 description =
  A character set in a regular expression includes
@@ -167,7 +167,7 @@ description =
  .    [A-Z]
 
 [regexp-overlapping-ranges]
-severity = important
+severity = normal
 certainty = possible
 description =
  A character set in a regular expression includes
@@ -184,7 +184,7 @@ description =
 
 [regexp-syntax-error]
 severity = important
-certainty = certain
+certainty = possible
 references =
  https://docs.python.org/2/library/re.html#regular-expression-syntax
 description =
@@ -192,7 +192,7 @@ description =
  that is not syntactically valid.
 
 [regexp-syntax-warning]
-severity = normal
+severity = important
 certainty = possible
 description =
  The code attempts to compile a regular expression
