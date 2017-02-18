@@ -74,7 +74,4 @@ def update_code_analysis_coverage():
 if __name__ == '__main__':
     main()
 
-# Local Variables:
-# indent-tabs-mode: nil
-# End:
 # vim: syntax=python sw=4 sts=4 sr et
