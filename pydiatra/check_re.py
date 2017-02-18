@@ -257,7 +257,14 @@ def check(owner, node):
         with warnings.catch_warnings(record=True) as wrns:
             warnings.simplefilter('default')
             if check_sub:
-                re.sub(pattern, repl, pattern[:0], flags=flags)
+                if sys.version_info < (2, 7):
+                    # The flags argument was added to re.sub() only in 2.7.
+                    if flags == 0:
+                        re.sub(pattern, repl, pattern[:0])
+                    else:
+                        re.compile(pattern, flags=flags)
+                else:
+                    re.sub(pattern, repl, pattern[:0], flags=flags)
             else:
                 re.compile(pattern, flags=flags)
         subpattern = sre_parse.parse(pattern, flags=flags)
