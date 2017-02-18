@@ -41,6 +41,11 @@ Implemented checks
   * overlapping ranges
     (e.g. ``re.compile("[a-zA-z]")``)
 
+  * misuse of ``re.LOCALE`` (Python 3.5+ only)
+
+  * bad escape sequences
+    (e.g. ``re.compile(r"\eggs")``; Python 3.5+ only)
+
   * misplaced inline flags
     (e.g. ``re.compile("eggs(?i)")``; Python 3.6+ only)
 

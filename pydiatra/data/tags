@@ -194,9 +194,27 @@ description =
 [regexp-syntax-warning]
 severity = important
 certainty = possible
+references =
+ https://docs.python.org/3/whatsnew/3.5.html#deprecated-python-modules-functions-and-methods
+ https://docs.python.org/3/whatsnew/3.6.html#id5
 description =
  The code attempts to compile a regular expression
  that uses a dubious or deprecated syntactic construct.
+ .
+ Combining ``re.LOCALE`` and ``re.ASCII`` was deprecated in Python 3.5.
+ It is disallowed since Python 3.6.
+ .
+ Using ``re.LOCALE`` for Unicode strings has never worked correctly.
+ It was deprecated in Python 3.5.
+ It is disallowed since Python 3.6.
+ .
+ Unknown escape sequences consisting of ``\`` and an ASCII letter were
+ deprecated in Python 3.5.
+ In regular expressions, they are disallowed since Python 3.6;
+ In substitution patterns, they are disallowed since Python 3.7.
+ .
+ Inline flags (such as ``(?i)``) in the middle of the regular expression were
+ deprecated in Python 3.6.
 
 [string-exception]
 severity = important
