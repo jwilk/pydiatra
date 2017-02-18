@@ -245,16 +245,21 @@ def check(owner, node):
     pattern = args.get('pattern')
     if not isinstance(pattern, (unicode, str, bytes)):
         return
+    repl = args.get('repl')
     flags = args.get('flags', 0)
     if not isinstance(flags, int):
         return
     if func_name == 'template':
         flags |= re.TEMPLATE
     flags &= ~re.DEBUG
+    check_sub = func_name.startswith('sub') and isinstance(repl, (unicode, str, bytes))
     try:
         with warnings.catch_warnings(record=True) as wrns:
             warnings.simplefilter('default')
-            re.compile(pattern, flags=flags)
+            if check_sub:
+                re.sub(pattern, repl, pattern[:0], flags=flags)
+            else:
+                re.compile(pattern, flags=flags)
         subpattern = sre_parse.parse(pattern, flags=flags)
     except Exception as exc:  # pylint: disable=broad-except
         yield owner.tag(node.lineno, 'regexp-syntax-error', str(exc))
