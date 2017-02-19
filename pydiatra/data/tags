@@ -2,7 +2,7 @@
 severity = minor
 certainty = certain
 references =
- https://docs.python.org/2/reference/simple_stmts.html#grammar-token-assert_stmt
+ https://docs.python.org/3/reference/simple_stmts.html#grammar-token-assert_stmt
 description =
  It's a mistake to write code like this::
  .
@@ -125,7 +125,7 @@ description =
  ``tempfile.TemporaryFile()`` or ``tempfile.NamedTemporaryFile()``,
  which take care of file closing automatically.
 references =
- https://docs.python.org/2/library/tempfile.html#tempfile.mkstemp
+ https://docs.python.org/3/library/tempfile.html#tempfile.mkstemp
 
 [obsolete-pil-import]
 severity = important
@@ -219,7 +219,7 @@ description =
 severity = important
 certainty = possible
 references =
- https://docs.python.org/2/library/re.html#regular-expression-syntax
+ https://docs.python.org/3/library/re.html#regular-expression-syntax
 description =
  The code attempts to compile a regular expression
  that is not syntactically valid.
@@ -251,8 +251,8 @@ description =
 severity = important
 certainty = certain
 references =
- https://docs.python.org/2/library/stdtypes.html#string-formatting-operations
- https://docs.python.org/2/library/string.html#formatstrings
+ https://docs.python.org/3/library/stdtypes.html#printf-style-string-formatting
+ https://docs.python.org/3/library/string.html#formatstrings
 description =
  The code uses string formatting (either ``%``-formatting or ``str.format()``)
  in a way that always causes runtime error.
