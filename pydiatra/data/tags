@@ -150,6 +150,23 @@ description =
  The parser encountered a syntactic construct
  that is no longer supported in Python 3.
 
+[regexp-bad-escape]
+severity = important
+certainty = possible
+references =
+ https://docs.python.org/3/whatsnew/3.5.html#deprecated-python-modules-functions-and-methods
+ https://docs.python.org/3/whatsnew/3.3.html#re
+description =
+ The regular expression or the substitution pattern contains
+ an unknown escape sequence consisting of ``\`` and an ASCII letter.
+ Such sequences were deprecated in Python 3.5.
+ In regular expressions, they are disallowed since Python 3.6.
+ In substitution patterns, they are disallowed since Python 3.7.
+ .
+ The ``\u``\ *XXXX* and ``\U``\ *XXXXXXXX* sequences
+ were added only in Python 3.3.
+ In earlier versions, ``\u`` and ``\U`` stand for literal ``u`` and ``U``.
+
 [regexp-duplicate-range]
 severity = normal
 certainty = possible
@@ -211,16 +228,10 @@ description =
 severity = important
 certainty = possible
 references =
- https://docs.python.org/3/whatsnew/3.5.html#deprecated-python-modules-functions-and-methods
  https://docs.python.org/3/whatsnew/3.6.html#id5
 description =
  The code attempts to compile a regular expression
  that uses a dubious or deprecated syntactic construct.
- .
- Unknown escape sequences consisting of ``\`` and an ASCII letter were
- deprecated in Python 3.5.
- In regular expressions, they are disallowed since Python 3.6;
- In substitution patterns, they are disallowed since Python 3.7.
  .
  Inline flags (such as ``(?i)``) in the middle of the regular expression were
  deprecated in Python 3.6.
