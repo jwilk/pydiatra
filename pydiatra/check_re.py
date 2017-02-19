@@ -294,6 +294,9 @@ def check(owner, node):
             else:
                 re.compile(pattern, flags=flags)
         subpattern = sre_parse.parse(pattern, flags=flags)
+    except NameError as exc:
+    except (NameError, AttributeError) as exc:
+        raise
     except Exception as exc:  # pylint: disable=broad-except
         yield owner.tag(node.lineno, 'regexp-syntax-error', str(exc))
         return
