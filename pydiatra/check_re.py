@@ -26,6 +26,7 @@ pydiatra re checks
 
 import ast
 import inspect
+import itertools
 import operator
 import re
 import sre_parse
@@ -219,6 +220,16 @@ def eval_const(node):
     except BadConst as exc:
         return exc
 
+incompatible_flags = dict(LOCALE=re.LOCALE, UNICODE=re.UNICODE)
+if sys.version_info >= (3,):
+    incompatible_flags.update(ASCII=re.ASCII)
+
+incompatible_flag_pairs = sorted(
+    sorted(pair)
+    for pair in
+    itertools.combinations(incompatible_flags.items(), 2)
+)
+
 def check(owner, node):
     if sys.version_info < (3, 5):
         if node.starargs:
@@ -249,6 +260,21 @@ def check(owner, node):
     flags = args.get('flags', 0)
     if not isinstance(flags, int):
         return
+    for (n1, f1), (n2, f2) in incompatible_flag_pairs:
+        if (f1 & flags) and (f2 & flags):
+            yield owner.tag(node.lineno, 'regexp-incompatible-flags', 're.' + n1, 're.' + n2)
+            if ((3, 0) <= sys.version_info < (3, 6)) and (f1 == re.ASCII) and (f2 == re.LOCALE):
+                # re.ASCII + re.LOCALE was allowed prior to Python 3.6
+                continue
+            else:
+                return
+    if isinstance(pattern, unicode) and re.LOCALE & flags:
+        yield owner.tag(node.lineno, 'regexp-incompatible-flags', unicode.__name__, 're.LOCALE')
+        if sys.version_info < (3, 6):
+            # str + re.LOCALE was allowed prior to Python 3.6
+            pass
+        else:
+            return
     if func_name == 'template':
         flags |= re.TEMPLATE
     flags &= ~re.DEBUG
@@ -272,6 +298,10 @@ def check(owner, node):
         yield owner.tag(node.lineno, 'regexp-syntax-error', str(exc))
         return
     for wrn in wrns:
+        message = str(wrn.message)
+        if message.startswith(('LOCALE flag with a str pattern is deprecated.', 'ASCII and LOCALE flags are incompatible.')):
+            # emitted elsewhere
+            continue
         yield owner.tag(node.lineno, 'regexp-syntax-warning', str(wrn.message))
     re_visitor = ReVisitor(tp=type(pattern), path=owner.path, lineno=node.lineno)
     for t in re_visitor.visit(subpattern):

@@ -166,6 +166,22 @@ description =
  .
  .    [A-Z]
 
+[regexp-incompatible-flags]
+severity = important
+certainty = possible
+references =
+ https://docs.python.org/3/whatsnew/3.5.html#deprecated-python-modules-functions-and-methods
+description =
+ ``re.ASCII``, ``re.LOCALE`` and ``re.UNICODE`` are mutually exclusive.
+ .
+ Combining ``re.LOCALE`` and ``re.ASCII`` is meaningless, but it used to work.
+ This misfeature was deprecated in Python 3.5.
+ It was removed in Python 3.6.
+ .
+ Using ``re.LOCALE`` for Unicode regexps has never worked correctly.
+ This misfeature was deprecated in Python 3.5.
+ It was removed in Python 3.6.
+
 [regexp-overlapping-ranges]
 severity = normal
 certainty = possible
@@ -200,13 +216,6 @@ references =
 description =
  The code attempts to compile a regular expression
  that uses a dubious or deprecated syntactic construct.
- .
- Combining ``re.LOCALE`` and ``re.ASCII`` was deprecated in Python 3.5.
- It is disallowed since Python 3.6.
- .
- Using ``re.LOCALE`` for Unicode strings has never worked correctly.
- It was deprecated in Python 3.5.
- It is disallowed since Python 3.6.
  .
  Unknown escape sequences consisting of ``\`` and an ASCII letter were
  deprecated in Python 3.5.
