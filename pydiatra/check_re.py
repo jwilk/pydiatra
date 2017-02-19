@@ -320,34 +320,38 @@ def check(owner, node):
         flags |= re.TEMPLATE
     flags &= ~re.DEBUG
     check_sub = func_name.startswith('sub') and isinstance(repl, (unicode, str, bytes))
-    try:
-        with warnings.catch_warnings(record=True) as wrns:
-            warnings.simplefilter('default')
-            if sys.version_info < (3, 5):
-                monkey_context = utils.monkeypatch(sre_parse,
-                    _class_escape=my_class_escape,
-                    _escape=my_escape,
-                    parse_template=my_parse_template,
-                )
-            else:
-                # no-op context manager
-                monkey_context = utils.monkeypatch(None)
-            with monkey_context:
-                if check_sub:
-                    if sys.version_info < (2, 7):
-                        # The flags argument was added to re.sub() only in 2.7.
-                        if flags == 0:
+    if sys.version_info < (3, 5):
+        monkey_context = utils.monkeypatch(sre_parse,
+            _class_escape=my_class_escape,
+            _escape=my_escape,
+            parse_template=my_parse_template,
+        )
+    else:
+        # no-op context manager
+        monkey_context = utils.monkeypatch(None)
+    exc = None
+    with warnings.catch_warnings(record=True) as wrns:
+        warnings.simplefilter('default')
+        with monkey_context:
+            if check_sub:
+                if sys.version_info < (2, 7):
+                    # The flags argument was added to re.sub() only in 2.7.
+                    if flags == 0:
+                        with utils.catch_exceptions() as exc:
                             re.sub(pattern, repl, pattern[:0])
-                        else:
-                            re.compile(pattern, flags=flags)
                     else:
-                        re.sub(pattern, repl, pattern[:0], flags=flags)
+                        with utils.catch_exceptions() as exc:
+                            re.compile(pattern, flags=flags)
                 else:
+                    with utils.catch_exceptions() as exc:
+                        re.sub(pattern, repl, pattern[:0], flags=flags)
+            else:
+                with utils.catch_exceptions() as exc:
                     re.compile(pattern, flags=flags)
-        subpattern = sre_parse.parse(pattern, flags=flags)
-    except (NameError, AttributeError) as exc:
-        raise
-    except Exception as exc:  # pylint: disable=broad-except
+    if not exc:
+        with utils.catch_exceptions() as exc:
+            subpattern = sre_parse.parse(pattern, flags=flags)
+    if exc:
         yield owner.tag(node.lineno, 'regexp-syntax-error', str(exc))
         return
     for wrn in wrns:

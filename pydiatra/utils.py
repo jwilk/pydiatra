@@ -26,6 +26,39 @@ pydiatra helper functions
 
 import contextlib
 
+class ExceptionContext(object):
+
+    def __init__(self):
+        self.exception = None
+
+    def __str__(self):
+        return str(self.exception)
+
+    def __nonzero__(self):
+        return self.exception is not None
+
+    __bool__ = __nonzero__
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, tb):
+        if exc_type is None:
+            pass
+        elif isinstance(exc_value, exc_type):
+            pass
+            # This branch is not always taken in Python 2.6:
+            # https://bugs.python.org/issue7853
+        elif isinstance(exc_value, tuple):
+            exc_value = exc_type(*exc_value)
+        else:
+            exc_value = exc_type(exc_value)
+        self.exception = exc_value
+        return True
+
+def catch_exceptions():
+    return ExceptionContext()
+
 # pylint: disable=undefined-loop-variable
 @contextlib.contextmanager
 def monkeypatch(obj, **kwargs):
@@ -42,6 +75,7 @@ def monkeypatch(obj, **kwargs):
 # pylint: enable=undefined-loop-variable
 
 __all__ = [
+    'catch_exceptions',
     'monkeypatch',
 ]
 
