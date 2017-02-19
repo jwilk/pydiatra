@@ -259,6 +259,18 @@ def my_escape(source, escape, state):
     check_bad_escape(escape)
     return original_escape(source, escape, state)
 
+class EscapeDict(dict):
+    def __missing__(self, key):
+        if key[1:] in ascii_letters:
+            warnings.warn('bad escape {esc}'.format(esc=key), category=DeprecationWarning)
+        raise KeyError(key)
+
+original_parse_template = sre_parse.parse_template
+original_ESCAPES = sre_parse.ESCAPES
+def my_parse_template(source, pattern):
+    with utils.monkeypatch(sre_parse, ESCAPES=EscapeDict(original_ESCAPES)):
+        return original_parse_template(source, pattern)
+
 def check(owner, node):
     if sys.version_info < (3, 5):
         if node.starargs:
@@ -312,7 +324,11 @@ def check(owner, node):
         with warnings.catch_warnings(record=True) as wrns:
             warnings.simplefilter('default')
             if sys.version_info < (3, 5):
-                monkey_context = utils.monkeypatch(sre_parse, _class_escape=my_class_escape, _escape=my_escape)
+                monkey_context = utils.monkeypatch(sre_parse,
+                    _class_escape=my_class_escape,
+                    _escape=my_escape,
+                    parse_template=my_parse_template,
+                )
             else:
                 # no-op context manager
                 monkey_context = utils.monkeypatch(None)
