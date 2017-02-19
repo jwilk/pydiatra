@@ -222,7 +222,7 @@ def eval_const(node):
 
 incompatible_flags = dict(LOCALE=re.LOCALE, UNICODE=re.UNICODE)
 if sys.version_info >= (3,):
-    incompatible_flags.update(ASCII=re.ASCII)
+    incompatible_flags.update(ASCII=re.ASCII)  # pylint: disable=no-member
 
 incompatible_flag_pairs = sorted(
     sorted(pair)
@@ -263,7 +263,7 @@ def check(owner, node):
     for (n1, f1), (n2, f2) in incompatible_flag_pairs:
         if (f1 & flags) and (f2 & flags):
             yield owner.tag(node.lineno, 'regexp-incompatible-flags', 're.' + n1, 're.' + n2)
-            if ((3, 0) <= sys.version_info < (3, 6)) and (f1 == re.ASCII) and (f2 == re.LOCALE):
+            if ((3, 0) <= sys.version_info < (3, 6)) and (f1 == re.ASCII) and (f2 == re.LOCALE):  # pylint: disable=no-member
                 # re.ASCII + re.LOCALE was allowed prior to Python 3.6
                 continue
             else:
