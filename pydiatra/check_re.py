@@ -112,7 +112,7 @@ class ReVisitor(object):
     def _normalize_op(self, op):
         if sys.version_info >= (3, 5):
             op = repr(op).lower()
-        if type(op) != str:  # pylint: disable=unidiomatic-typecheck
+        if type(op) is not str:  # pylint: disable=unidiomatic-typecheck
             raise TypeError
         return op
 
