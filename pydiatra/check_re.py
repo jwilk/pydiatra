@@ -174,7 +174,6 @@ class ReVisitor(object):
         for t in self.generic_visit(*args):
             yield t
 
-
 class BadConst(Exception):
     pass
 
