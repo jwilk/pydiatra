@@ -34,6 +34,7 @@ import sys
 import warnings
 
 from . import tags
+from . import utils
 
 tag = tags.Tag
 
@@ -230,6 +231,34 @@ incompatible_flag_pairs = sorted(
     itertools.combinations(incompatible_flags.items(), 2)
 )
 
+ascii_letters = frozenset('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+
+def check_bad_escape(escape, cls=False):
+    if escape in sre_parse.ESCAPES:
+        return
+    code = sre_parse.CATEGORIES.get(escape)
+    if code:
+        if cls and code[0] != sre_parse.IN:  # pylint: disable=no-member
+            pass
+        else:
+            return
+    if escape == r'\x':
+        return
+    if (sys.version_info >= (3, 3)) and (escape in (r'\u', r'\U')):
+        return
+    if escape[1:] in ascii_letters:
+        warnings.warn('bad escape {esc}'.format(esc=escape), category=DeprecationWarning)
+
+original_class_escape = sre_parse._class_escape  # pylint: disable=protected-access
+def my_class_escape(source, escape):
+    check_bad_escape(escape, cls=True)
+    return original_class_escape(source, escape)
+
+original_escape = sre_parse._escape  # pylint: disable=protected-access
+def my_escape(source, escape, state):
+    check_bad_escape(escape)
+    return original_escape(source, escape, state)
+
 def check(owner, node):
     if sys.version_info < (3, 5):
         if node.starargs:
@@ -282,19 +311,24 @@ def check(owner, node):
     try:
         with warnings.catch_warnings(record=True) as wrns:
             warnings.simplefilter('default')
-            if check_sub:
-                if sys.version_info < (2, 7):
-                    # The flags argument was added to re.sub() only in 2.7.
-                    if flags == 0:
-                        re.sub(pattern, repl, pattern[:0])
-                    else:
-                        re.compile(pattern, flags=flags)
-                else:
-                    re.sub(pattern, repl, pattern[:0], flags=flags)
+            if sys.version_info < (3, 5):
+                monkey_context = utils.monkeypatch(sre_parse, _class_escape=my_class_escape, _escape=my_escape)
             else:
-                re.compile(pattern, flags=flags)
+                # no-op context manager
+                monkey_context = utils.monkeypatch(None)
+            with monkey_context:
+                if check_sub:
+                    if sys.version_info < (2, 7):
+                        # The flags argument was added to re.sub() only in 2.7.
+                        if flags == 0:
+                            re.sub(pattern, repl, pattern[:0])
+                        else:
+                            re.compile(pattern, flags=flags)
+                    else:
+                        re.sub(pattern, repl, pattern[:0], flags=flags)
+                else:
+                    re.compile(pattern, flags=flags)
         subpattern = sre_parse.parse(pattern, flags=flags)
-    except NameError as exc:
     except (NameError, AttributeError) as exc:
         raise
     except Exception as exc:  # pylint: disable=broad-except

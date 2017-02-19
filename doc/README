@@ -42,7 +42,7 @@ Implemented checks
     (e.g. ``re.compile("[a-zA-z]")``)
 
   * bad escape sequences
-    (e.g. ``re.compile(r"\eggs")``; Python 3.5+ only)
+    (e.g. ``re.compile(r"\eggs")``)
 
   * misplaced inline flags
     (e.g. ``re.compile("eggs(?i)")``; Python 3.6+ only)
