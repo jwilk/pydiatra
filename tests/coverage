@@ -8,6 +8,7 @@
 [X] obsolete-pil-import
 [X] py3k-compat-warning
 [X] regexp-duplicate-range
+[2] regexp-incompatible-flags
 [3] regexp-overlapping-ranges
 [4] regexp-syntax-error
 [2] regexp-syntax-warning
