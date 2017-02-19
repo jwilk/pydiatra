@@ -26,17 +26,16 @@ pydiatra tags
 
 class Tag(object):
 
-    def __init__(self, path, lineno, *args):
+    def __init__(self, path, location, *args):
         if isinstance(path, str):
             self.path = path
         else:
             msg = 'path must be a string, not {0!r} object'.format(type(path).__name__)
             raise TypeError(msg)
-        if isinstance(lineno, int) or lineno is None:
-            self.lineno = lineno
+        if isinstance(location, int) or location is None:
+            self.lineno = location
         else:
-            msg = 'lineno must be an int or None, not {0!r} object'.format(type(path).__name__)
-            raise TypeError(msg)
+            self.lineno = location.lineno
         self.name = args[0]
         self.private = self.name[0] == '*'
         self.args = args

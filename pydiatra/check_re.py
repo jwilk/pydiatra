@@ -100,14 +100,14 @@ def format_char_range(rng, tp):
 
 class ReVisitor(object):
 
-    def __init__(self, tp, path, lineno):
+    def __init__(self, tp, path, location):
         self.tp = tp
         self.path = path
-        self.lineno = lineno
+        self.location = location
 
-    def tag(self, lineno, *args):
-        assert lineno == self.lineno
-        return tag(self.path, lineno, *args)
+    def tag(self, location, *args):
+        assert location is self
+        return tag(self.path, self.location, *args)
 
     def _normalize_op(self, op):
         if sys.version_info >= (3, 5):
@@ -160,13 +160,13 @@ class ReVisitor(object):
                 r2 = ranges[i + 1]
                 if r1 == r2:
                     if not seen_duplicate_range:
-                        yield self.tag(self.lineno, 'regexp-duplicate-range',
+                        yield self.tag(self, 'regexp-duplicate-range',
                             format_char_range(r1, tp=self.tp),
                         )
                     seen_duplicate_range = True
                 elif r1[1] >= r2[0]:
                     if not seen_overlapping_ranges:
-                        yield self.tag(self.lineno, 'regexp-overlapping-ranges',
+                        yield self.tag(self, 'regexp-overlapping-ranges',
                             format_char_range(r1, tp=self.tp),
                             format_char_range(r2, tp=self.tp),
                         )
@@ -302,14 +302,14 @@ def check(owner, node):
         return
     for (n1, f1), (n2, f2) in incompatible_flag_pairs:
         if (f1 & flags) and (f2 & flags):
-            yield owner.tag(node.lineno, 'regexp-incompatible-flags', 're.' + n1, 're.' + n2)
+            yield owner.tag(node, 'regexp-incompatible-flags', 're.' + n1, 're.' + n2)
             if ((3, 0) <= sys.version_info < (3, 6)) and (f1 == re.ASCII) and (f2 == re.LOCALE):  # pylint: disable=no-member
                 # re.ASCII + re.LOCALE was allowed prior to Python 3.6
                 continue
             else:
                 return
     if isinstance(pattern, unicode) and re.LOCALE & flags:
-        yield owner.tag(node.lineno, 'regexp-incompatible-flags', unicode.__name__, 're.LOCALE')
+        yield owner.tag(node, 'regexp-incompatible-flags', unicode.__name__, 're.LOCALE')
         if sys.version_info < (3, 6):
             # str + re.LOCALE was allowed prior to Python 3.6
             pass
@@ -351,7 +351,7 @@ def check(owner, node):
         with utils.catch_exceptions() as exc:
             subpattern = sre_parse.parse(pattern, flags=flags)
     if exc:
-        yield owner.tag(node.lineno, 'regexp-syntax-error', str(exc))
+        yield owner.tag(node, 'regexp-syntax-error', str(exc))
         return
     for wrn in wrns:
         message = str(wrn.message)
@@ -359,10 +359,10 @@ def check(owner, node):
             # emitted elsewhere
             continue
         if message.startswith('bad escape '):
-            yield owner.tag(node.lineno, 'regexp-bad-escape', message[11:])
+            yield owner.tag(node, 'regexp-bad-escape', message[11:])
         else:
-            yield owner.tag(node.lineno, 'regexp-syntax-warning', message)
-    re_visitor = ReVisitor(tp=type(pattern), path=owner.path, lineno=node.lineno)
+            yield owner.tag(node, 'regexp-syntax-warning', message)
+    re_visitor = ReVisitor(tp=type(pattern), path=owner.path, location=node)
     for t in re_visitor.visit(subpattern):
         yield t
 

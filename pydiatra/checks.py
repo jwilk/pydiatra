@@ -104,7 +104,7 @@ class Visitor(ast.NodeVisitor):
         while isinstance(ex_type, ast.BinOp):
             ex_type = ex_type.left
         if isinstance(ex_type, ast.Str):
-            yield self.tag(node.lineno, 'string-exception')
+            yield self.tag(node, 'string-exception')
         for t in self.generic_visit(node):
             yield t
 
@@ -117,7 +117,7 @@ class Visitor(ast.NodeVisitor):
             # Python 3
             node_name = node.name
         if node_name in builtin_exception_types:
-            yield self.tag(node.lineno, 'except-shadows-builtin', node_name)
+            yield self.tag(node, 'except-shadows-builtin', node_name)
         if node.type is None:
             ex_types = []
         elif isinstance(node.type, ast.Tuple):
@@ -128,7 +128,7 @@ class Visitor(ast.NodeVisitor):
             while isinstance(ex_type, ast.BinOp):
                 ex_type = ex_type.left
             if isinstance(ex_type, ast.Str):
-                yield self.tag(node.lineno, 'string-exception')
+                yield self.tag(node, 'string-exception')
                 break
         for t in self.generic_visit(node):
             yield t
@@ -137,24 +137,24 @@ class Visitor(ast.NodeVisitor):
         imp_modules = frozenset(mod.name for mod in node.names)
         imp_pil_modules = imp_modules & pil_modules
         for mod in sorted(imp_pil_modules):
-            yield self.tag(node.lineno, 'obsolete-pil-import', mod)
+            yield self.tag(node, 'obsolete-pil-import', mod)
         imp_pil_modules = (
             frozenset(mod[4:] for mod in imp_modules if mod.startswith('PIL.'))
             & pil_modules
         )
         for mod in sorted(imp_pil_modules):
-            yield self.tag(node.lineno, '*modern-pil-import', mod)
+            yield self.tag(node, '*modern-pil-import', mod)
         for t in self.generic_visit(node):
             yield t
 
     def visit_ImportFrom(self, node):
         if node.level == 0 and node.module in pil_modules:
-            yield self.tag(node.lineno, 'obsolete-pil-import', node.module)
+            yield self.tag(node, 'obsolete-pil-import', node.module)
         elif node.level == 0 and node.module == 'PIL':
             imp_modules = frozenset(mod.name for mod in node.names)
             imp_pil_modules = imp_modules & pil_modules
             for mod in sorted(imp_pil_modules):
-                yield self.tag(node.lineno, '*modern-pil-import', mod)
+                yield self.tag(node, '*modern-pil-import', mod)
         for t in self.generic_visit(node):
             yield t
 
@@ -173,7 +173,7 @@ class Visitor(ast.NodeVisitor):
                 right.n in errno_constants
             )
             if hardcoded_errno:
-                yield self.tag(node.lineno, '*hardcoded-errno-value', right.n)
+                yield self.tag(node, '*hardcoded-errno-value', right.n)
         for t in self.generic_visit(node):
             yield t
 
@@ -203,12 +203,12 @@ class Visitor(ast.NodeVisitor):
                 if t.name == '*hardcoded-errno-value':
                     [_, n] = t.args
                     code = errno_constants[n]
-                    yield self.tag(t.lineno, 'hardcoded-errno-value', n, '->', 'errno.{code}'.format(code=code))
+                    yield self.tag(t, 'hardcoded-errno-value', n, '->', 'errno.{code}'.format(code=code))
                 if t.name == '*reraise':
                     reraised = True
                 yield t
             if child.type is None and not reraised:
-                yield self.tag(child.lineno, 'bare-except')
+                yield self.tag(child, 'bare-except')
         for t in pending_body_tags:
             [_, mod] = t.args
             if mod not in except_modern_pil_imp:
@@ -235,7 +235,7 @@ class Visitor(ast.NodeVisitor):
             if isinstance(node.slice, ast.Index):
                 index = node.slice.value
                 if isinstance(index, ast.Num) and index.n == 1:
-                    yield self.tag(node.lineno, 'mkstemp-file-descriptor-leak')
+                    yield self.tag(node, 'mkstemp-file-descriptor-leak')
         for t in self.generic_visit(node):
             yield t
 
@@ -305,9 +305,9 @@ class Visitor(ast.NodeVisitor):
         try:
             lhs % rhs
         except KeyError as exc:
-            yield self.tag(node.lineno, 'string-formatting-error', 'missing key', str(exc))
+            yield self.tag(node, 'string-formatting-error', 'missing key', str(exc))
         except Exception as exc:  # pylint: disable=broad-except
-            yield self.tag(node.lineno, 'string-formatting-error', str(exc))
+            yield self.tag(node, 'string-formatting-error', str(exc))
 
     def visit_Call(self, node):
         func = node.func
@@ -316,7 +316,7 @@ class Visitor(ast.NodeVisitor):
             try:
                 fstring = list(string_formatter.parse(fstring))
             except Exception as exc:  # pylint: disable=broad-except
-                yield self.tag(node.lineno, 'string-formatting-error', str(exc))
+                yield self.tag(node, 'string-formatting-error', str(exc))
             else:
                 for (literal_text, field_name, format_spec, conversion) in fstring:
                     del literal_text, field_name, format_spec
@@ -329,9 +329,9 @@ class Visitor(ast.NodeVisitor):
                             'unknown conversion ',
                             message
                         )
-                        yield self.tag(node.lineno, 'string-formatting-error', message)
+                        yield self.tag(node, 'string-formatting-error', message)
                     except Exception as exc:  # pylint: disable=broad-except
-                        yield self.tag(node.lineno, 'string-formatting-error', str(exc))
+                        yield self.tag(node, 'string-formatting-error', str(exc))
         if isinstance(func, ast.Attribute) and isinstance(func.value, ast.Name) and func.value.id == 're':
             for t in check_re.check(self, node):
                 yield t
@@ -350,7 +350,7 @@ def check_file(path):
         with astaux.python_open(path) as file:
             source = file.read()
     except SyntaxError as exc:
-        yield tag(path, exc.lineno, 'syntax-error', exc.msg)
+        yield tag(path, exc, 'syntax-error', exc.msg)
         return
     except UnicodeDecodeError as exc:
         yield tag(path, None, 'syntax-error', str(exc))
@@ -385,12 +385,12 @@ def check_source(path, source, catch_tab_errors=True):
     except TabError as exc:
         if catch_tab_errors:
             source = source.expandtabs()
-            yield tag(path, exc.lineno, 'inconsistent-use-of-tabs-and-spaces-in-indentation')
+            yield tag(path, exc, 'inconsistent-use-of-tabs-and-spaces-in-indentation')
             for t in check_source(path, source, catch_tab_errors=False):
                 yield t
             return
         else:
-            yield tag(path, exc.lineno, 'syntax-error', exc.msg)
+            yield tag(path, exc, 'syntax-error', exc.msg)
             return
     except SyntaxError as exc:
         yield tag(path, exc.lineno or None, 'syntax-error', exc.msg)
@@ -407,11 +407,11 @@ def check_source(path, source, catch_tab_errors=True):
 def check_warnings(path, wrns):
     for wrn in wrns:
         if str(wrn.message) == 'assertion is always true, perhaps remove parentheses?':
-            yield tag(path, wrn.lineno, 'assertion-always-true')
+            yield tag(path, wrn, 'assertion-always-true')
         elif re.search(r' in 3[.]x(?:\Z|;)', str(wrn.message)):
-            yield tag(path, wrn.lineno, 'py3k-compat-warning', wrn.message)
+            yield tag(path, wrn, 'py3k-compat-warning', wrn.message)
         else:
-            yield tag(path, wrn.lineno, 'syntax-warning', wrn.message)
+            yield tag(path, wrn, 'syntax-warning', wrn.message)
 
 __all__ = [
     'check_file',
