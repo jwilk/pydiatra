@@ -47,7 +47,7 @@ Implemented checks
   * misplaced inline flags
     (e.g. ``re.compile("eggs(?i)")``; Python 3.6+ only)
 
-  * use of incompatible flags
+  * combining incompatible flags
 
 * string exceptions
   (e.g. ``raise "eggs"`` or ``except "ham":``)
