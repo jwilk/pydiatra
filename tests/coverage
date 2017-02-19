@@ -7,11 +7,12 @@
 [X] mkstemp-file-descriptor-leak
 [X] obsolete-pil-import
 [X] py3k-compat-warning
+[X] regexp-bad-escape
 [X] regexp-duplicate-range
 [2] regexp-incompatible-flags
 [3] regexp-overlapping-ranges
 [4] regexp-syntax-error
-[2] regexp-syntax-warning
+[X] regexp-syntax-warning
 [X] string-exception
 [4] string-formatting-error
 [#] syntax-error
