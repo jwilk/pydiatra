@@ -339,7 +339,7 @@ def check(owner, node):
         if message.startswith(('LOCALE flag with a str pattern is deprecated.', 'ASCII and LOCALE flags are incompatible.')):
             # emitted elsewhere
             continue
-        yield owner.tag(node.lineno, 'regexp-syntax-warning', str(wrn.message))
+        yield owner.tag(node.lineno, 'regexp-syntax-warning', message)
     re_visitor = ReVisitor(tp=type(pattern), path=owner.path, lineno=node.lineno)
     for t in re_visitor.visit(subpattern):
         yield t
