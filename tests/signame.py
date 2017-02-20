@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 '''
-convert signal number to singal name
+convert signal number to signal name
 '''
 
 import signal
