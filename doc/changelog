@@ -3,8 +3,9 @@ pydiatra (0.5) UNRELEASED; urgency=low
   * Broaden regular expression checks.
   * Update the list of builtin exception names.
     ModuleNotFoundError was added in Python 3.6.
+  * In tag descriptions, point to Python 3 documentation where it makes sense.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Fri, 17 Feb 2017 20:49:15 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 20 Feb 2017 09:43:45 +0100
 
 pydiatra (0.4) unstable; urgency=low
 
