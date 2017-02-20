@@ -11,6 +11,7 @@
 [X] regexp-duplicate-range
 [2] regexp-incompatible-flags
 [3] regexp-overlapping-ranges
+[2] regexp-redundant-flag
 [4] regexp-syntax-error
 [X] regexp-syntax-warning
 [X] string-exception

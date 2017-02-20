@@ -104,12 +104,18 @@ class ReVisitor(object):
         self.tp = tp
         self.path = path
         self.location = location
+        self.justified_flags = 0
+        if sys.version_info >= (3, 0):
+            if tp is bytes:
+                self.justified_flags |= re.ASCII  # pylint: disable=no-member
+            else:
+                self.justified_flags |= re.UNICODE
 
     def tag(self, location, *args):
         assert location is self
         return tag(self.path, self.location, *args)
 
-    def _normalize_op(self, op):
+    def _normalize(self, op):
         if sys.version_info >= (3, 5):
             op = repr(op).lower()
         if type(op) is not str:  # pylint: disable=unidiomatic-typecheck
@@ -122,7 +128,7 @@ class ReVisitor(object):
         for op, args in node.data:
             if not isinstance(args, (list, tuple)):
                 args = (args,)
-            op = self._normalize_op(op)
+            op = self._normalize(op)
             method = 'visit_' + op
             visitor = getattr(self, method, self.generic_visit)
             for t in visitor(*args):
@@ -146,11 +152,20 @@ class ReVisitor(object):
     def visit_in(self, *args):
         ranges = []
         for op, arg in args:
-            op = self._normalize_op(op)
+            op = self._normalize(op)
             if op == 'range':
                 ranges += [arg]
             elif op == 'literal':
                 ranges += [(arg, arg)]
+            elif op == 'category':
+                arg = self._normalize(arg)
+                if re.match(r'\Acategory_(not_)?(word|space|digit)\Z', arg):
+                    for flag in locale_flags.values():
+                        if arg.endswith('_digit') and flag == re.LOCALE:
+                            # curiously, re.LOCALE doesn't affect \d\D
+                            pass
+                        else:
+                            self.justified_flags |= flag
         seen_duplicate_range = False
         seen_overlapping_ranges = False
         if len(ranges) >= 2:
@@ -172,6 +187,23 @@ class ReVisitor(object):
                         )
                     seen_overlapping_ranges = True
         for t in self.generic_visit(*args):
+            yield t
+
+    def visit_at(self, arg):
+        arg = self._normalize(arg)
+        if arg in ('at_boundary', 'at_non_boundary'):
+            for flag in locale_flags.values():
+                self.justified_flags |= flag
+        elif arg in ('at_beginning', 'at_end'):
+            self.justified_flags |= re.MULTILINE
+        for t in self.generic_visit(arg):
+            yield t
+
+    def visit_any(self, arg):
+        if arg is not None:
+            raise TypeError('{0!r} is not None'.format(arg))
+        self.justified_flags |= re.DOTALL
+        for t in self.generic_visit(arg):
             yield t
 
 class BadConst(Exception):
@@ -220,14 +252,19 @@ def eval_const(node):
     except BadConst as exc:
         return exc
 
-incompatible_flags = dict(LOCALE=re.LOCALE, UNICODE=re.UNICODE)
+locale_flags = dict(LOCALE=re.LOCALE, UNICODE=re.UNICODE)
 if sys.version_info >= (3,):
-    incompatible_flags.update(ASCII=re.ASCII)  # pylint: disable=no-member
+    locale_flags.update(ASCII=re.ASCII)  # pylint: disable=no-member
 
 incompatible_flag_pairs = sorted(
     sorted(pair)
     for pair in
-    itertools.combinations(incompatible_flags.items(), 2)
+    itertools.combinations(locale_flags.items(), 2)
+)
+
+possibly_redundant_flags = dict(locale_flags,
+    MULTILINE=re.MULTILINE,
+    DOTALL=re.DOTALL,
 )
 
 ascii_letters = frozenset('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
@@ -365,6 +402,9 @@ def check(owner, node):
     re_visitor = ReVisitor(tp=type(pattern), path=owner.path, location=node)
     for t in re_visitor.visit(subpattern):
         yield t
+    for name, flag in sorted(possibly_redundant_flags.items()):
+        if (flag & subpattern.pattern.flags) and not (flag & re_visitor.justified_flags):  # pylint: disable=superfluous-parens
+            yield owner.tag(node, 'regexp-redundant-flag', 're.' + name)
 
 __all__ = ['check']
 

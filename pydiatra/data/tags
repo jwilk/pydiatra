@@ -215,6 +215,24 @@ description =
  .
  .    [A-Za-z]
 
+[regexp-redundant-flag]
+severity = minor
+certainty = possible
+references =
+ https://docs.python.org/3/library/re.html#regular-expression-syntax
+description =
+ The regular expression flag has no effect on this regular expression.
+ .
+ ``re.ASCII`` and ``re.UNICODE`` affect only semantics of
+ ``\w``, ``\W``, ``\b``, ``\B``, ``\d``, ``\D``, ``\s`` and ``\S``.
+ .
+ ``re.LOCALE`` affects only semantics of
+ ``\w``, ``\W``, ``\b``, ``\B``, ``\s`` and ``\S``.
+ .
+ ``re.MULTILINE`` affects only semantics of ``^`` and ``$``.
+ .
+ ``re.DOTALL`` affects only semantics of ``.``.
+
 [regexp-syntax-error]
 severity = important
 certainty = possible

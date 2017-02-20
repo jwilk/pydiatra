@@ -49,6 +49,8 @@ Implemented checks
 
   * combining incompatible flags
 
+  * redundant flags
+
 * string exceptions
   (e.g. ``raise "eggs"`` or ``except "ham":``)
 
