@@ -81,7 +81,7 @@ description =
  .    try:
  .        ...
  .    except OSError as exc:
- .        if e.errno == 17:  # non-portable!
+ .        if exc.errno == 17:  # non-portable!
  .           ...
  .
  The code was meant to check for ``EEXIST``,
@@ -91,7 +91,7 @@ description =
  .    try:
  .        ...
  .    except OSError as exc:
- .        if e.errno == errno.EEXIST:
+ .        if exc.errno == errno.EEXIST:
  .           ...
 
 [inconsistent-use-of-tabs-and-spaces-in-indentation]
