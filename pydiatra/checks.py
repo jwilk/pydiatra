@@ -239,12 +239,14 @@ class Visitor(ast.NodeVisitor):
         for t in self.generic_visit(node):
             yield t
 
-    def visit_Str(self, node):
+    def check_str(self, s):
+        if not s:
+            return
         if self.state.code_copy:
             return
         if code_copies_regex is None:
             return
-        match = code_copies_regex.search(node.s)
+        match = code_copies_regex.search(s)
         if match is None:
             return
         for match, info in zip(match.groups(), code_copies):
@@ -255,6 +257,10 @@ class Visitor(ast.NodeVisitor):
         if info is not None:
             yield self.tag(None, 'embedded-code-copy', info)
             self.state.code_copy = True
+
+    def visit_Str(self, node):
+        for t in self.check_str(node.s):
+            yield t
 
     def visit_BinOp(self, node):
         fn = getattr(self,
@@ -339,8 +345,14 @@ class Visitor(ast.NodeVisitor):
             yield t
 
     def visit_Module(self, node):
+        if sys.version_info >= (3, 7):
+            docstring = ast.get_docstring(node, clean=False)
+            for t in self.check_str(docstring):
+                yield t
         for t in self.generic_visit(node):
             yield t
+
+    visit_AsyncFunctionDef = visit_FunctionDef = visit_ClassDef = visit_Module
 
 def check_node(path, node):
     return Visitor(path=path).visit(node)
