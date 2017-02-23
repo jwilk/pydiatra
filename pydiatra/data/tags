@@ -75,6 +75,7 @@ certainty = possible
 references =
  https://lists.debian.org/20100803162901.GA5419@jwilk.net
  http://pubs.opengroup.org/onlinepubs/9699919799/functions/V2_chap02.html#tag_15_03
+ https://docs.python.org/3/library/exceptions.html#os-exceptions
 description =
  It's a mistake to write code like this::
  .
@@ -93,6 +94,13 @@ description =
  .    except OSError as exc:
  .        if exc.errno == errno.EEXIST:
  .            ...
+ .
+ Or, since Python 3.3::
+ .
+ .    try:
+ .        ...
+ .    except FileExistsError:
+ .        ...
 
 [inconsistent-use-of-tabs-and-spaces-in-indentation]
 severity = normal
