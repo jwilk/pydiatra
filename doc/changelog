@@ -1,10 +1,10 @@
-pydiatra (0.6) UNRELEASED; urgency=low
+pydiatra (0.6) unstable; urgency=low
 
   * Add check for redundant regexp flags.
   * Fix and extend examples for hardcoded-errno-value.
   * Fix compatibility with Python 3.7.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Fri, 24 Feb 2017 11:39:11 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Sat, 25 Feb 2017 15:18:18 +0100
 
 pydiatra (0.5) unstable; urgency=low
 
