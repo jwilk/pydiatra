@@ -15,6 +15,15 @@ description =
  .
  .    assert x > 0, "x must be positive"
 
+[async-await-used-as-name]
+severity = important
+certainty = certain
+references =
+ https://docs.python.org/3/whatsnew/3.6.html#new-keywords
+description =
+ The use of ``async`` or ``await`` as names was deprecated in Python 3.6.
+ They will become reserved keywords in Python 3.7.
+
 [embedded-code-copy]
 severity = important
 certainty = possible

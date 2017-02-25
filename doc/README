@@ -67,7 +67,6 @@ Implemented checks
   * ill-formed assignments to global variables
 
   * use of ``async`` and ``await`` as names
-    (Python 3.6 only)
 
   * invalid escape sequences in strings
     (Python 3.6+ only)

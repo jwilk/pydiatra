@@ -354,6 +354,13 @@ class Visitor(ast.NodeVisitor):
 
     visit_AsyncFunctionDef = visit_FunctionDef = visit_ClassDef = visit_Module
 
+    def visit_Name(self, node):
+        if sys.version_info < (3, 6):
+            if node.id in ('async', 'await'):
+                yield self.tag(node, 'async-await-used-as-name')
+        for t in self.generic_visit(node):
+            yield t
+
 def check_node(path, node):
     return Visitor(path=path).visit(node)
 
@@ -420,6 +427,8 @@ def check_warnings(path, wrns):
     for wrn in wrns:
         if str(wrn.message) == 'assertion is always true, perhaps remove parentheses?':
             yield tag(path, wrn, 'assertion-always-true')
+        elif str(wrn.message).startswith("'async' and 'await' will become reserved keywords "):
+            yield tag(path, wrn, 'async-await-used-as-name')
         elif re.search(r' in 3[.]x(?:\Z|;)', str(wrn.message)):
             yield tag(path, wrn, 'py3k-compat-warning', wrn.message)
         else:
