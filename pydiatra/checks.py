@@ -425,14 +425,15 @@ def check_source(path, source, catch_tab_errors=True):
 
 def check_warnings(path, wrns):
     for wrn in wrns:
-        if str(wrn.message) == 'assertion is always true, perhaps remove parentheses?':
+        message = str(wrn.message)
+        if message == 'assertion is always true, perhaps remove parentheses?':
             yield tag(path, wrn, 'assertion-always-true')
-        elif str(wrn.message).startswith("'async' and 'await' will become reserved keywords "):
+        elif message.startswith("'async' and 'await' will become reserved keywords "):
             yield tag(path, wrn, 'async-await-used-as-name')
-        elif re.search(r' in 3[.]x(?:\Z|;)', str(wrn.message)):
-            yield tag(path, wrn, 'py3k-compat-warning', wrn.message)
+        elif re.search(r' in 3[.]x(?:\Z|;)', message):
+            yield tag(path, wrn, 'py3k-compat-warning', message)
         else:
-            yield tag(path, wrn, 'syntax-warning', wrn.message)
+            yield tag(path, wrn, 'syntax-warning', message)
 
 __all__ = [
     'check_file',
