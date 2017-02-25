@@ -134,7 +134,9 @@ class VersionAction(argparse.Action):
         )
 
     def __call__(self, parser, namespace, values, option_string=None):
-        print('{prog} {0}'.format(__version__, prog=parser.prog))
+        prog = parser.prog
+        prog = prog.split()[-1]
+        print('{prog} {0}'.format(__version__, prog=prog))
         sys.exit(0)
 
 def main(runpy=False, script=None):
