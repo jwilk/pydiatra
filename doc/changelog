@@ -1,9 +1,9 @@
-pydiatra (0.6.1) UNRELEASED; urgency=low
+pydiatra (0.7) UNRELEASED; urgency=low
 
   * Check for “async” and “await” used as names also in Pythons older than
     3.6.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Sat, 25 Feb 2017 15:58:21 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Sat, 25 Feb 2017 16:07:12 +0100
 
 pydiatra (0.6) unstable; urgency=low
 
