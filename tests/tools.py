@@ -31,13 +31,17 @@ here = os.path.dirname(__file__)
 basedir = '{here}/..'.format(here=here)
 basedir = os.path.relpath(basedir)
 
-def run_pydiatra(paths, expected, parallel=None):
+script = '{dir}/py{v}diatra'.format(dir=basedir, v=sys.version_info[0])
+
+def run_pydiatra(paths, expected, expected_stderr=None, parallel=None, env=None):
+    env = env or {}
+    env = dict(os.environ, **env)
+    env.update(PYTHONIOENCODING='UTF-8')
     if isinstance(paths, str):
         paths = [paths]
     pyflags = '-tt'
     if sys.version_info < (3,):
         pyflags += '3'
-    script = '{dir}/py{v}diatra'.format(dir=basedir, v=sys.version_info[0])
     options = []
     if parallel is True:
         options += ['-jauto']
@@ -47,7 +51,7 @@ def run_pydiatra(paths, expected, parallel=None):
     checker = ipc.Popen(commandline,
         stdout=ipc.PIPE,
         stderr=ipc.PIPE,
-        env=dict(os.environ, PYTHONIOENCODING='UTF-8'),
+        env=env,
     )
     [stdout, stderr] = (
         s.decode('UTF-8').splitlines()
@@ -64,11 +68,12 @@ def run_pydiatra(paths, expected, parallel=None):
         message += [
             'command exited with status {rc}'.format(rc=rc)
         ]
-    if stderr:
+    expected_stderr = list(expected_stderr or [])
+    if stderr != expected_stderr:
         if message:
             message += ['', 'stderr:']
         else:
-            message += ['non-empty stderr:']
+            message += ['unexpected stderr:']
         message += ['| ' + line for line in stderr]
     if (expected is not None) and (stdout != expected):
         message = ['unexpected checker output:', '']
@@ -79,6 +84,9 @@ def run_pydiatra(paths, expected, parallel=None):
     if message:
         raise AssertionError('\n'.join(message))
 
-__all__ = ['run_pydiatra']
+__all__ = [
+    'run_pydiatra',
+    'script',
+]
 
 # vim:ts=4 sts=4 sw=4 et
