@@ -170,26 +170,27 @@ class ReVisitor(object):
                             pass
                         else:
                             self.justified_flags |= flag
+        if len(ranges) < 2:
+            return
         seen_duplicate_range = False
         seen_overlapping_ranges = False
-        if len(ranges) >= 2:
-            ranges.sort()
-            for i in range(len(ranges) - 1):
-                r1 = ranges[i]
-                r2 = ranges[i + 1]
-                if r1 == r2:
-                    if not seen_duplicate_range:
-                        yield self.tag(self, 'regexp-duplicate-range',
-                            format_char_range(r1, tp=self.tp),
-                        )
-                    seen_duplicate_range = True
-                elif r1[1] >= r2[0]:
-                    if not seen_overlapping_ranges:
-                        yield self.tag(self, 'regexp-overlapping-ranges',
-                            format_char_range(r1, tp=self.tp),
-                            format_char_range(r2, tp=self.tp),
-                        )
-                    seen_overlapping_ranges = True
+        ranges.sort()
+        for i in range(len(ranges) - 1):
+            r1 = ranges[i]
+            r2 = ranges[i + 1]
+            if r1 == r2:
+                if not seen_duplicate_range:
+                    yield self.tag(self, 'regexp-duplicate-range',
+                        format_char_range(r1, tp=self.tp),
+                    )
+                seen_duplicate_range = True
+            elif r1[1] >= r2[0]:
+                if not seen_overlapping_ranges:
+                    yield self.tag(self, 'regexp-overlapping-ranges',
+                        format_char_range(r1, tp=self.tp),
+                        format_char_range(r2, tp=self.tp),
+                    )
+                seen_overlapping_ranges = True
 
     def visit_at(self, arg):
         arg = normalize_token(arg)
