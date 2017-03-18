@@ -111,6 +111,7 @@ class ReVisitor(object):
         self.tp = tp
         self.path = path
         self.location = location
+        self.flags = None
         self.justified_flags = 0
         if sys.version_info >= (3, 0):
             if tp is bytes:
@@ -131,12 +132,18 @@ class ReVisitor(object):
             op = normalize_token(op)
             method = 'visit_' + op
             visitor = getattr(self, method, None)
-            if visitor is not None:
-                ts = visitor(*args) or ()
-                for t in ts:
+            original_flags = self.flags
+            try:
+                if self.flags is None:
+                    self.flags = node.pattern.flags
+                if visitor is not None:
+                    ts = visitor(*args) or ()
+                    for t in ts:
+                        yield t
+                for t in self.generic_visit(*args):
                     yield t
-            for t in self.generic_visit(*args):
-                yield t
+            finally:
+                self.flags = original_flags
 
     def generic_visit(self, *args):
         for arg in args:
@@ -152,6 +159,12 @@ class ReVisitor(object):
                 pass
             else:
                 raise TypeError('{0!r} has unexpected type'.format(arg))
+
+    def visit_subpattern(self, *args):
+        if sys.version_info >= (3, 6):
+            (add_flags, del_flags) = args[1:3]
+            self.flags |= add_flags
+            self.flags &= ~del_flags
 
     def visit_in(self, *args):
         ranges = []
@@ -191,6 +204,26 @@ class ReVisitor(object):
                         format_char_range(r2, tp=self.tp),
                     )
                 seen_overlapping_ranges = True
+        if seen_duplicate_range or seen_overlapping_ranges:
+            return
+        if not (self.flags & re.IGNORECASE):  # pylint: disable=superfluous-parens
+            return
+        for i in range(26):
+            lc = ord('a') + i
+            uc = ord('A') + i
+            crange = None
+            for r in ranges:
+                for c in (lc, uc):
+                    if r[0] <= c <= r[1]:
+                        if crange is None:
+                            crange = r
+                        else:
+                            yield self.tag(self, 'regexp-overlapping-ranges',
+                                format_char_range(crange, tp=self.tp),
+                                format_char_range(r, tp=self.tp),
+                                '(case-insensitive)'
+                            )
+                            return
 
     def visit_at(self, arg):
         arg = normalize_token(arg)
