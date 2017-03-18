@@ -98,6 +98,13 @@ def format_char_range(rng, tp):
     else:
         return x
 
+def normalize_token(tok):
+    if sys.version_info >= (3, 5):
+        tok = repr(tok).lower()
+    if type(tok) is not str:  # pylint: disable=unidiomatic-typecheck
+        raise TypeError
+    return tok
+
 class ReVisitor(object):
 
     def __init__(self, tp, path, location):
@@ -115,20 +122,13 @@ class ReVisitor(object):
         assert location is self
         return tag(self.path, self.location, *args)
 
-    def _normalize(self, op):
-        if sys.version_info >= (3, 5):
-            op = repr(op).lower()
-        if type(op) is not str:  # pylint: disable=unidiomatic-typecheck
-            raise TypeError
-        return op
-
     def visit(self, node):
         if not isinstance(node, sre_parse.SubPattern):
             raise TypeError('{0!r} is not a subpattern'.format(node))
         for op, args in node.data:
             if not isinstance(args, (list, tuple)):
                 args = (args,)
-            op = self._normalize(op)
+            op = normalize_token(op)
             method = 'visit_' + op
             visitor = getattr(self, method, self.generic_visit)
             for t in visitor(*args):
@@ -152,13 +152,13 @@ class ReVisitor(object):
     def visit_in(self, *args):
         ranges = []
         for op, arg in args:
-            op = self._normalize(op)
+            op = normalize_token(op)
             if op == 'range':
                 ranges += [arg]
             elif op == 'literal':
                 ranges += [(arg, arg)]
             elif op == 'category':
-                arg = self._normalize(arg)
+                arg = normalize_token(arg)
                 if re.match(r'\Acategory_(not_)?(word|space|digit)\Z', arg):
                     for flag in locale_flags.values():
                         if arg.endswith('_digit') and flag == re.LOCALE:
@@ -190,7 +190,7 @@ class ReVisitor(object):
             yield t
 
     def visit_at(self, arg):
-        arg = self._normalize(arg)
+        arg = normalize_token(arg)
         if arg in ('at_boundary', 'at_non_boundary'):
             for flag in locale_flags.values():
                 self.justified_flags |= flag
