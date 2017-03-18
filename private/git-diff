@@ -38,10 +38,10 @@ tmpdir=$(mktemp -d -t pydiatra.XXXXXX)
 mkdir "$tmpdir/$v1" "$tmpdir/$v2"
 git -C "$here/.." archive "$v1" --prefix=p1/ | tar -C "$tmpdir/" -x
 git -C "$here/.." archive "$v2" --prefix=p2/ | tar -C "$tmpdir/" -x
-ack --python -f "$dir" --print0 | xargs -0 "$tmpdir/p1/py2diatra" -- > "$tmpdir/$v1/py2" || true
-ack --python -f "$dir" --print0 | xargs -0 "$tmpdir/p1/py3diatra" -- > "$tmpdir/$v1/py3" || true
-ack --python -f "$dir" --print0 | xargs -0 "$tmpdir/p2/py2diatra" -- > "$tmpdir/$v2/py2" || true
-ack --python -f "$dir" --print0 | xargs -0 "$tmpdir/p2/py3diatra" -- > "$tmpdir/$v2/py3" || true
+ack --python -f "$dir" --print0 | xargs -0 -n99 "$tmpdir/p1/py2diatra" -jauto -- > "$tmpdir/$v1/py2" || true
+ack --python -f "$dir" --print0 | xargs -0 -n99 "$tmpdir/p1/py3diatra" -jauto -- > "$tmpdir/$v1/py3" || true
+ack --python -f "$dir" --print0 | xargs -0 -n99 "$tmpdir/p2/py2diatra" -jauto -- > "$tmpdir/$v2/py2" || true
+ack --python -f "$dir" --print0 | xargs -0 -n99 "$tmpdir/p2/py3diatra" -jauto -- > "$tmpdir/$v2/py3" || true
 cd "$tmpdir"
 diff -U0 -r "$v1" "$v2" || true
 cd /
