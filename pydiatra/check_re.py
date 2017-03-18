@@ -130,8 +130,12 @@ class ReVisitor(object):
                 args = (args,)
             op = normalize_token(op)
             method = 'visit_' + op
-            visitor = getattr(self, method, self.generic_visit)
-            for t in visitor(*args):
+            visitor = getattr(self, method, None)
+            if visitor is not None:
+                ts = visitor(*args) or ()
+                for t in ts:
+                    yield t
+            for t in self.generic_visit(*args):
                 yield t
 
     def generic_visit(self, *args):
@@ -186,8 +190,6 @@ class ReVisitor(object):
                             format_char_range(r2, tp=self.tp),
                         )
                     seen_overlapping_ranges = True
-        for t in self.generic_visit(*args):
-            yield t
 
     def visit_at(self, arg):
         arg = normalize_token(arg)
@@ -196,15 +198,11 @@ class ReVisitor(object):
                 self.justified_flags |= flag
         elif arg in ('at_beginning', 'at_end'):
             self.justified_flags |= re.MULTILINE
-        for t in self.generic_visit(arg):
-            yield t
 
     def visit_any(self, arg):
         if arg is not None:
             raise TypeError('{0!r} is not None'.format(arg))
         self.justified_flags |= re.DOTALL
-        for t in self.generic_visit(arg):
-            yield t
 
 class BadConst(Exception):
     pass
