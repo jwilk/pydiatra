@@ -57,8 +57,9 @@ class cmd_build_doc(distutils_build):
     def make_tags_rst(self, data_path, rst_path):
         cp = configparser.RawConfigParser()
         cp.read(data_path)
-        with uopen(rst_path, 'w') as rst_file:
+        with uopen(rst_path + '.tmp', 'w') as rst_file:
             self._make_tags_rst(cp, print=functools.partial(print, file=rst_file))
+        os.rename(rst_path + '.tmp', rst_path)
 
     def _make_tags_rst(self, data, print):  # pylint: disable=redefined-builtin
         _strip_leading_dot = functools.partial(
