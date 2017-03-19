@@ -33,9 +33,9 @@ from distutils.command.build import build as distutils_build
 from distutils.command.sdist import sdist as distutils_sdist
 
 # pylint: disable=import-error
-try:
+if sys.version_info >= (3, 0):
     import configparser
-except ImportError:
+else:
     import ConfigParser as configparser
 # pylint: enable=import-error
 

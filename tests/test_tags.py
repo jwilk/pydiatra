@@ -23,11 +23,12 @@
 import ast
 import glob
 import os
+import sys
 
 # pylint: disable=import-error
-try:
+if sys.version_info >= (3, 0):
     import configparser
-except ImportError:
+else:
     import ConfigParser as configparser
 # pylint: enable=import-error
 
