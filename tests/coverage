@@ -1,4 +1,5 @@
 [X] assertion-always-true
+[X] async-await-used-as-name
 [X] bare-except
 [#] embedded-code-copy
 [X] except-shadows-builtin
@@ -10,11 +11,11 @@
 [X] regexp-bad-escape
 [X] regexp-duplicate-range
 [2] regexp-incompatible-flags
-[3] regexp-overlapping-ranges
+[4] regexp-overlapping-ranges
 [2] regexp-redundant-flag
-[4] regexp-syntax-error
+[5] regexp-syntax-error
 [X] regexp-syntax-warning
 [X] string-exception
 [4] string-formatting-error
 [#] syntax-error
-[4] syntax-warning
+[3] syntax-warning
