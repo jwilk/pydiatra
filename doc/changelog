@@ -4,8 +4,10 @@ pydiatra (0.7) UNRELEASED; urgency=low
     3.6.
   * Broaden regular expression checks.
   * Improve error handling.
+  * Rename inconsistent-use-of-tabs-and-spaces-in-indentation as
+    inconsistent-indentation.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Sat, 04 Mar 2017 11:56:24 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Sun, 19 Mar 2017 11:30:10 +0100
 
 pydiatra (0.6) unstable; urgency=low
 
