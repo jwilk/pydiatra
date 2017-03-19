@@ -40,7 +40,7 @@ def main():
 
 def read_tags(path):
     cp = configparser.RawConfigParser()
-    cp.read(path, encoding='ASCII')
+    cp.read(path, encoding='UTF-8')
     return {t: 0 for t in cp.sections()}
 
 def print_coverage(tags, file):

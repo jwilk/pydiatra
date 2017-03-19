@@ -78,7 +78,7 @@ def read_cfg_tags(path):
     cp = configparser.RawConfigParser()
     options = {}
     if str is not bytes:
-        options.update(encoding='ASCII')
+        options.update(encoding='UTF-8')
     cp.read(path, **options)
     return frozenset(t for t in cp.sections())
 

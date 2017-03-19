@@ -83,6 +83,8 @@ class cmd_build_doc(distutils_build):
             )
             if not description.strip():
                 raise ValueError('missing description for {0}'.format(tagname))
+            if str is bytes:
+                description = description.encode('UTF-8')
             print(description)
             print()
             references = list(parse_multiline(tag, 'references'))
