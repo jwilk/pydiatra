@@ -56,7 +56,10 @@ class cmd_build_doc(distutils_build):
 
     def make_tags_rst(self, data_path, rst_path):
         cp = configparser.RawConfigParser()
-        cp.read(data_path)
+        options = {}
+        if str is not bytes:
+            options.update(encoding='UTF-8')
+        cp.read(data_path, **options)
         with uopen(rst_path + '.tmp', 'w') as rst_file:
             self._make_tags_rst(cp, print=functools.partial(print, file=rst_file))
         os.rename(rst_path + '.tmp', rst_path)
@@ -83,8 +86,6 @@ class cmd_build_doc(distutils_build):
             )
             if not description.strip():
                 raise ValueError('missing description for {0}'.format(tagname))
-            if str is bytes:
-                description = description.encode('UTF-8')
             print(description)
             print()
             references = list(parse_multiline(tag, 'references'))
