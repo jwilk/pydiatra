@@ -4,7 +4,7 @@
 [#] embedded-code-copy
 [X] except-shadows-builtin
 [X] hardcoded-errno-value
-[X] inconsistent-use-of-tabs-and-spaces-in-indentation
+[X] inconsistent-indentation
 [X] mkstemp-file-descriptor-leak
 [X] obsolete-pil-import
 [X] py3k-compat-warning

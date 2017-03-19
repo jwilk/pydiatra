@@ -404,7 +404,7 @@ def check_source(path, source, catch_tab_errors=True):
     except TabError as exc:
         if catch_tab_errors:
             source = source.expandtabs()
-            yield tag(path, exc, 'inconsistent-use-of-tabs-and-spaces-in-indentation')
+            yield tag(path, exc, 'inconsistent-indentation')
             for t in check_source(path, source, catch_tab_errors=False):
                 yield t
             return

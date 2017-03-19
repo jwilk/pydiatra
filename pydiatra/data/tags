@@ -111,7 +111,7 @@ description =
  .    except FileExistsError:
  .        ...
 
-[inconsistent-use-of-tabs-and-spaces-in-indentation]
+[inconsistent-indentation]
 severity = normal
 certainty = certain
 references =
