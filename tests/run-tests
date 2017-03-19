@@ -89,10 +89,10 @@ class TestCase(unittest.TestCase):
                 xline = match.group('expected')
                 if xline[:2] == '*:':
                     xline = str(code_n) + xline[1:]
-                expected += ['{path}{sep}{rest}'.format(
-                    path=self.path,
-                    sep=(':' if xline[0].isdigit() else ': '),
-                    rest=xline
+                expected += [(
+                    self.path +
+                    (':' if xline[0].isdigit() else ': ') +
+                    xline
                 )]
         tools.run_pydiatra(self.path, expected)
 
