@@ -23,18 +23,12 @@
 import ast
 import glob
 import os
-import sys
 
-# pylint: disable=import-error
-if sys.version_info >= (3, 0):
-    import configparser
-else:
-    import ConfigParser as configparser
-# pylint: enable=import-error
-
-from nose.tools import (  # pylint: disable=wrong-import-position
+from nose.tools import (
     assert_equal,
 )
+
+import tools
 
 def extract_tags_from_ast(node):
     for child in ast.iter_child_nodes(node):
@@ -75,28 +69,16 @@ def read_ast_tags(paths):
         ]
     return frozenset(result)
 
-def read_cfg_tags(path):
-    cp = configparser.RawConfigParser()
-    options = {}
-    if str is not bytes:
-        options.update(encoding='UTF-8')
-    cp.read(path, **options)
-    return frozenset(t for t in cp.sections())
-
 def test():
-    here = os.path.dirname(__file__)
-    root = os.path.join(here, os.pardir)
-    cfg_path = os.path.join(root, 'data', 'tags')
-    cfg_path = os.path.relpath(cfg_path)
-    cfg_tags = read_cfg_tags(cfg_path)
-    ast_glob = os.path.join(root, 'pydiatra', 'check*.py')
+    cfg_tags = tools.get_tag_names()
+    ast_glob = os.path.join(tools.basedir, 'pydiatra', 'check*.py')
     ast_glob = os.path.relpath(ast_glob)
     ast_paths = glob.glob(ast_glob)
     ast_tags = read_ast_tags(ast_paths)
     for tag in cfg_tags - ast_tags:
-        raise AssertionError('{tag!r} is in {cfg_path} but not in {ast_glob}'.format(tag=tag, cfg_path=cfg_path, ast_glob=ast_glob))
+        raise AssertionError('{tag!r} is in data/tags but not in {ast_glob}'.format(tag=tag, ast_glob=ast_glob))
     for tag in ast_tags - cfg_tags:
-        raise AssertionError('{tag!r} is in {ast_glob} but not in {cfg_path}'.format(tag=tag, cfg_path=cfg_path, ast_glob=ast_glob))
+        raise AssertionError('{tag!r} is in {ast_glob} but not in data/tags'.format(tag=tag, ast_glob=ast_glob))
     assert_equal(cfg_tags, ast_tags)
 
 # vim:ts=4 sts=4 sw=4 et

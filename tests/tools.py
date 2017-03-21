@@ -25,7 +25,14 @@ import os
 import subprocess as ipc
 import sys
 
-import signame
+# pylint: disable=import-error
+if sys.version_info >= (3, 0):
+    import configparser
+else:
+    import ConfigParser as configparser
+# pylint: enable=import-error
+
+import signame  # pylint: disable=wrong-import-position
 
 here = os.path.dirname(__file__)
 basedir = '{here}/..'.format(here=here)
@@ -84,7 +91,18 @@ def run_pydiatra(paths, expected, expected_stderr=None, parallel=None, env=None)
     if message:
         raise AssertionError('\n'.join(message))
 
+def get_tag_names():
+    path = os.path.join(basedir, 'data', 'tags')
+    cp = configparser.RawConfigParser()
+    options = {}
+    if str is not bytes:
+        options.update(encoding='UTF-8')
+    cp.read(path, **options)
+    return frozenset(t for t in cp.sections())
+
 __all__ = [
+    'basedir',
+    'get_tag_names',
     'run_pydiatra',
     'script',
 ]
