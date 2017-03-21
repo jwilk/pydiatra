@@ -1,5 +1,11 @@
 pydiatra (0.7) UNRELEASED; urgency=low
 
+  * Summary of tag changes:
+    + Added:
+      - async-await-used-as-name
+    + Renamed:
+      - inconsistent-indentation (from inconsistent-use-of-tabs-and-spaces-in-indentation)
+
   * Check for “async” and “await” used as names also in Pythons older than
     3.6.
   * Broaden regular expression checks.
@@ -11,6 +17,10 @@ pydiatra (0.7) UNRELEASED; urgency=low
 
 pydiatra (0.6) unstable; urgency=low
 
+  * Summary of tag changes:
+    + Added:
+      - regexp-redundant-flag
+
   * Add check for redundant regexp flags.
   * Fix and extend examples for hardcoded-errno-value.
   * Fix compatibility with Python 3.7.
@@ -18,6 +28,11 @@ pydiatra (0.6) unstable; urgency=low
  -- Jakub Wilk <jwilk@jwilk.net>  Sat, 25 Feb 2017 15:18:18 +0100
 
 pydiatra (0.5) unstable; urgency=low
+
+  * Summary of tag changes:
+    + Added:
+      - regexp-bad-escape
+      - regexp-incompatible-flags
 
   * Broaden regular expression checks.
   * Update the list of builtin exception names.
@@ -38,6 +53,10 @@ pydiatra (0.4) unstable; urgency=low
  -- Jakub Wilk <jwilk@jwilk.net>  Sat, 04 Feb 2017 17:28:34 +0100
 
 pydiatra (0.3) unstable; urgency=low
+
+  * Summary of tag changes:
+    + Added:
+      - regexp-syntax-warning
 
   * Enable warnings when parsing the code.
     With Python 3.6+, this catches invalid escape sequences in strings, which
@@ -78,5 +97,24 @@ pydiatra (0.2) unstable; urgency=low
 pydiatra (0.1) unstable; urgency=low
 
   * Initial release.
+
+  * Summary of tag changes:
+    + Added:
+      - assertion-always-true
+      - embedded-code-copy
+      - except-shadows-builtin
+      - bare-except
+      - hardcoded-errno-value
+      - inconsistent-use-of-tabs-and-spaces-in-indentation
+      - mkstemp-file-descriptor-leak
+      - obsolete-pil-import
+      - py3k-compat-warning
+      - regexp-duplicate-range
+      - regexp-overlapping-ranges
+      - regexp-syntax-error
+      - string-exception
+      - string-formatting-error
+      - syntax-error
+      - syntax-warning
 
  -- Jakub Wilk <jwilk@jwilk.net>  Mon, 23 May 2016 19:18:49 +0200
