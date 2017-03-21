@@ -32,7 +32,7 @@ else:
     import ConfigParser as configparser
 # pylint: enable=import-error
 
-from nose.tools import (
+from nose.tools import (  # pylint: disable=wrong-import-position
     assert_equal,
 )
 
