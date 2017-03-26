@@ -12,8 +12,9 @@ pydiatra (0.7) UNRELEASED; urgency=low
   * Improve error handling.
   * Rename inconsistent-use-of-tabs-and-spaces-in-indentation as
     inconsistent-indentation.
+  * Improve the test suite.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Sun, 19 Mar 2017 11:30:10 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Sun, 26 Mar 2017 23:56:06 +0200
 
 pydiatra (0.6) unstable; urgency=low
 
