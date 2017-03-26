@@ -6,12 +6,12 @@ pydiatra (0.7) UNRELEASED; urgency=low
     + Renamed:
       - inconsistent-indentation (from inconsistent-use-of-tabs-and-spaces-in-indentation)
 
+  * Rename inconsistent-use-of-tabs-and-spaces-in-indentation as
+    inconsistent-indentation.
   * Check for “async” and “await” used as names also in Pythons older than
     3.6.
   * Broaden regular expression checks.
   * Improve error handling.
-  * Rename inconsistent-use-of-tabs-and-spaces-in-indentation as
-    inconsistent-indentation.
   * Improve the test suite.
 
  -- Jakub Wilk <jwilk@jwilk.net>  Sun, 26 Mar 2017 23:56:06 +0200
