@@ -13,10 +13,11 @@ pydiatra (0.7) UNRELEASED; urgency=low
   * Broaden regular expression checks:
     + Catch overlaps between lowercase and uppercase letter ranges when
       re.IGNORECASE is in effect.
+  * Fix “python -m pydiatra --version” output.
   * Improve error handling.
   * Improve the test suite.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Sun, 26 Mar 2017 23:56:06 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 27 Mar 2017 13:56:59 +0200
 
 pydiatra (0.6) unstable; urgency=low
 
