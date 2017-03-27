@@ -1,4 +1,4 @@
-pydiatra (0.7) UNRELEASED; urgency=low
+pydiatra (0.7) unstable; urgency=low
 
   * Summary of tag changes:
     + Added:
@@ -17,7 +17,7 @@ pydiatra (0.7) UNRELEASED; urgency=low
   * Improve error handling.
   * Improve the test suite.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 27 Mar 2017 13:56:59 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 27 Mar 2017 14:00:14 +0200
 
 pydiatra (0.6) unstable; urgency=low
 
