@@ -46,6 +46,7 @@ pydiatra (0.5) unstable; urgency=low
 
   * Broaden regular expression checks:
     + Check regexps that were compiled with the “flags” argument.
+    + Check for bad escape sequences.
     + Check for incompatible flags.
     + Check replacement patters in re.sub() and re.subn() calls.
   * Update the list of built-in exception names.
