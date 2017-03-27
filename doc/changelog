@@ -10,7 +10,9 @@ pydiatra (0.7) UNRELEASED; urgency=low
     inconsistent-indentation.
   * Check for “async” and “await” used as names also in Pythons older than
     3.6.
-  * Broaden regular expression checks.
+  * Broaden regular expression checks:
+    + Catch overlaps between lowercase and uppercase letter ranges when
+      re.IGNORECASE is in effect.
   * Improve error handling.
   * Improve the test suite.
 
@@ -35,7 +37,10 @@ pydiatra (0.5) unstable; urgency=low
       - regexp-bad-escape
       - regexp-incompatible-flags
 
-  * Broaden regular expression checks.
+  * Broaden regular expression checks:
+    + Check regexps that were compiled with the “flags” argument.
+    + Check for incompatible flags.
+    + Check replacement patters in re.sub() and re.subn() calls.
   * Update the list of built-in exception names.
     ModuleNotFoundError was added in Python 3.6.
   * In tag descriptions, point to Python 3 documentation where it makes sense.
