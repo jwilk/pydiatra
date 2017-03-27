@@ -36,7 +36,7 @@ pydiatra (0.5) unstable; urgency=low
       - regexp-incompatible-flags
 
   * Broaden regular expression checks.
-  * Update the list of builtin exception names.
+  * Update the list of built-in exception names.
     ModuleNotFoundError was added in Python 3.6.
   * In tag descriptions, point to Python 3 documentation where it makes sense.
 
