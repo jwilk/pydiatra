@@ -1,5 +1,6 @@
 include MANIFEST.in
 
+exclude README
 include LICENSE
 include doc/*
 include private/*
