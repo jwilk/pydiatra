@@ -271,6 +271,15 @@ description =
  Inline flags (such as ``(?i)``) in the middle of the regular expression were
  deprecated in Python 3.6.
 
+[regexp-utf-8-bytes-in-set]
+severity = normal
+certainty = possible
+description = TODO
+ For example::
+ .
+ .   >>> re.match('[«»]', '§')
+ .   <_sre.SRE_Match object at 0x12345678>
+
 [string-exception]
 severity = important
 certainty = possible

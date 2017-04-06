@@ -105,6 +105,19 @@ def normalize_token(tok):
         raise TypeError
     return tok
 
+utf_8_nonascii_re = re.compile(b'''
+( [\xC2-\xDF]
+  | ( [\xE1-\xEC\xEE-\xEF]
+    | ( \xF4[\x80-\x8F]
+      | [\xF1-\xF3][\x80-\xBF]
+      | \xF0[\x90-\xBF]
+      )
+    ) [\x80-\xBF]
+  | \xE0 [\xA0-\xBF]
+  | \xED [\x80-\x9F]
+) [\x80-\xBF]
+''', re.VERBOSE)
+
 class ReVisitor(object):
 
     def __init__(self, tp, path, location):
@@ -168,12 +181,19 @@ class ReVisitor(object):
 
     def visit_in(self, *args):
         ranges = []
+        u8string = None
+        if self.tp is bytes:
+            u8string = []
         for op, arg in args:
             op = normalize_token(op)
             if op == 'range':
                 ranges += [arg]
+                if u8string is not None:
+                    u8string += ['.']
             elif op == 'literal':
                 ranges += [(arg, arg)]
+                if u8string is not None:
+                    u8string += [chr(arg)]
             elif op == 'category':
                 arg = normalize_token(arg)
                 if re.match(r'\Acategory_(not_)?(word|space|digit)\Z', arg):
@@ -183,6 +203,13 @@ class ReVisitor(object):
                             pass
                         else:
                             self.justified_flags |= flag
+        if u8string is not None:
+            u8string = ''.join(u8string)
+            if isinstance(u8string, unicode):
+                u8string = u8string.encode('ISO-8859-1')
+            match = utf_8_nonascii_re.search(u8string)
+            if match is not None:
+                yield self.tag(self, 'regexp-utf-8-bytes-in-set', match.group())
         if len(ranges) < 2:
             return
         seen_duplicate_range = False

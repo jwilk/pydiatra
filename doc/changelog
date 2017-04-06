@@ -1,6 +1,8 @@
 pydiatra (0.7.1) UNRELEASED; urgency=low
 
-  * 
+  * Summary of tag changes:
+    + Added:
+      - regexp-utf-8-bytes-in-set
 
  -- Jakub Wilk <jwilk@jwilk.net>  Mon, 27 Mar 2017 19:15:29 +0200
 

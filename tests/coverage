@@ -15,6 +15,7 @@
 [2] regexp-redundant-flag
 [5] regexp-syntax-error
 [X] regexp-syntax-warning
+[X] regexp-utf-8-bytes-in-set
 [X] string-exception
 [4] string-formatting-error
 [#] syntax-error
