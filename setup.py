@@ -172,6 +172,7 @@ Topic :: Software Development :: Quality Assurance
 
 use_stub = sys.version_info < (2, 7)
 pkg_name = '_' * use_stub + 'pydiatra'
+script_name = 'py{0}diatra'.format(*sys.version_info)
 
 setup_options = dict(
     name='pydiatra',
@@ -186,8 +187,8 @@ setup_options = dict(
     package_dir={pkg_name: 'pydiatra', '': 'stub'},
     package_data={pkg_name: ['data/*']},
     py_modules=['pydiatra'],
-    scripts=['py{0}diatra'.format(*sys.version_info)],
-    data_files=[('share/man/man1', ['doc/pydiatra.1', 'doc/py{0}diatra.1'.format(*sys.version_info)])],
+    scripts=[script_name],
+    data_files=[('share/man/man1', ['doc/pydiatra.1', 'doc/{exe}.1'.format(exe=script_name)])],
     cmdclass=dict(
         build_doc=cmd_build_doc,
         sdist=cmd_sdist,
