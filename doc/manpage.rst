@@ -22,7 +22,7 @@ For Python 3:
 
 | **py3diatra** [*options*] *pyfile* [*pyfile* …]
 
-For any Python >= 2.7:
+For any Python:
 
 | **python**\ *X*\ **.**\ *Y* **-m** **pydiatra** [*options*] *pyfile* [*pyfile* …]
 

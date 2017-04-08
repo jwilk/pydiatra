@@ -170,6 +170,9 @@ Programming Language :: Python :: 3
 Topic :: Software Development :: Quality Assurance
 '''.strip().splitlines()
 
+use_stub = sys.version_info < (2, 7)
+pkg_name = '_' * use_stub + 'pydiatra'
+
 setup_options = dict(
     name='pydiatra',
     version=get_version(),
@@ -179,8 +182,10 @@ setup_options = dict(
     url='http://jwilk.net/software/pydiatra',
     author='Jakub Wilk',
     author_email='jwilk@jwilk.net',
-    packages=['pydiatra'],
-    package_data=dict(pydiatra=['data/*']),
+    packages=[pkg_name],
+    package_dir={pkg_name: 'pydiatra', '': 'stub'},
+    package_data={pkg_name: ['data/*']},
+    py_modules=['pydiatra'],
     scripts=['py{0}diatra'.format(*sys.version_info)],
     data_files=[('share/man/man1', ['doc/pydiatra.1', 'doc/py{0}diatra.1'.format(*sys.version_info)])],
     cmdclass=dict(
