@@ -39,7 +39,7 @@ else:
     import ConfigParser as configparser
 # pylint: enable=import-error
 
-int(*['0'], base=0)  # Python >= 2.6 is required
+b = b''  # Python >= 2.6 is required
 
 def uopen(*args):
     if str is bytes:
