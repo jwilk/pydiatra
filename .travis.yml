@@ -26,3 +26,5 @@ script:
 - private/run-pyflakes
 - $no_pylint || private/run-pylint
 - private/check-rst
+- python setup.py install
+- cd / && python -m pydiatra --version
