@@ -39,6 +39,13 @@ else:
     import ConfigParser as configparser
 # pylint: enable=import-error
 
+try:
+    import distutils644
+except ImportError:
+    pass
+else:
+    distutils644.install()
+
 b = b''  # Python >= 2.6 is required
 
 def uopen(*args):
