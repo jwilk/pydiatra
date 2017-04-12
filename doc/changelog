@@ -1,8 +1,8 @@
 pydiatra (0.8) UNRELEASED; urgency=low
 
-  * 
+  * Make “python2.6 -m pydiatra” work.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Sat, 08 Apr 2017 17:15:20 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Wed, 12 Apr 2017 23:07:54 +0200
 
 pydiatra (0.7) unstable; urgency=low
 
