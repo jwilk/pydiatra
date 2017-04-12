@@ -55,7 +55,7 @@ def uopen(*args):
         return open(*args, encoding='UTF-8')
 
 def get_version():
-    with uopen('doc/changelog') as file:
+    with io.open('doc/changelog', encoding='UTF-8') as file:
         line = file.readline()
     return line.split()[1].strip('()')
 
