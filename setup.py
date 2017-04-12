@@ -54,6 +54,12 @@ def uopen(*args):
     else:
         return open(*args, encoding='UTF-8')
 
+def get_readme():
+    with io.open('doc/README', encoding='ASCII') as file:
+        content = file.read()
+    content = re.sub('^[.][.] vim:.*', '', content, flags=re.MULTILINE)
+    return '\n' + content.strip() + '\n'
+
 def get_version():
     with io.open('doc/changelog', encoding='UTF-8') as file:
         line = file.readline()
@@ -186,6 +192,7 @@ setup_options = dict(
     version=get_version(),
     license='MIT',
     description='yet another static checker for Python code',
+    long_description=get_readme(),
     classifiers=classifiers,
     url='http://jwilk.net/software/pydiatra',
     author='Jakub Wilk',
