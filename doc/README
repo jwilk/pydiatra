@@ -27,6 +27,9 @@ Implemented checks
 
 * regular expression syntax errors
 
+* misplaced flags arguments in
+  ``re.split()``, ``re.sub()``, ``re.subn()``
+
 * dubious or deprecated constructs in regular expressions:
 
   * duplicate range
