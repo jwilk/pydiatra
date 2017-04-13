@@ -57,7 +57,7 @@ def uopen(*args):
 def get_readme():
     with io.open('doc/README', encoding='ASCII') as file:
         content = file.read()
-    content = re.sub('^[.][.] vim:.*', '', content, flags=re.MULTILINE)
+    content = re.compile('^[.][.] vim:.*', re.MULTILINE).sub('', content)
     return '\n' + content.strip() + '\n'
 
 def get_version():
