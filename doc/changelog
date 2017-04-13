@@ -1,4 +1,4 @@
-pydiatra (0.8) UNRELEASED; urgency=low
+pydiatra (0.8) unstable; urgency=low
 
   * Summary of tag changes:
     + Added:
@@ -12,7 +12,7 @@ pydiatra (0.8) UNRELEASED; urgency=low
     + Add long description.
     + Use distutils644 to sanitize tarball permissions etc.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Thu, 13 Apr 2017 13:22:19 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Thu, 13 Apr 2017 13:23:37 +0200
 
 pydiatra (0.7) unstable; urgency=low
 
