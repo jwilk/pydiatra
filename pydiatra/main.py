@@ -138,6 +138,7 @@ class VersionAction(argparse.Action):
         prog = parser.prog
         prog = prog.split()[-1]
         print('{prog} {0}'.format(__version__, prog=prog))
+        print('+ Python {0}.{1}'.format(*sys.version_info))
         sys.exit(0)
 
 def main(runpy=False, script=None):
