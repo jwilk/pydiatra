@@ -8,8 +8,11 @@ pydiatra (0.8) UNRELEASED; urgency=low
     calls.
   * Make “python2.6 -m pydiatra” work.
   * Make “--version” print also version of Python.
+  * Improve the setup script:
+    + Add long description.
+    + Use distutils644 to sanitize tarball permissions etc.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Thu, 13 Apr 2017 13:12:52 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Thu, 13 Apr 2017 13:22:19 +0200
 
 pydiatra (0.7) unstable; urgency=low
 
