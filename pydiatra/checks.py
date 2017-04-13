@@ -91,8 +91,8 @@ class Visitor(ast.NodeVisitor):
             for t in self.visit(child):
                 yield t
 
-    def tag(self, *args):
-        return tag(self.path, *args)
+    def tag(self, location, *args):
+        return tag(self.path, location, *args)
 
     def visit_Raise(self, node):
         try:
