@@ -1,8 +1,14 @@
 pydiatra (0.8) UNRELEASED; urgency=low
 
+  * Summary of tag changes:
+    + Added:
+      - regexp-misplaced-flags-argument
+
+  * Add check for misplaced flags arguments in re.split(), re.sub(), re.subn()
+    calls.
   * Make “python2.6 -m pydiatra” work.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Wed, 12 Apr 2017 23:07:54 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Thu, 13 Apr 2017 10:17:32 +0200
 
 pydiatra (0.7) unstable; urgency=low
 
