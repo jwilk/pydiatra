@@ -7,8 +7,9 @@ pydiatra (0.8) UNRELEASED; urgency=low
   * Add check for misplaced flags arguments in re.split(), re.sub(), re.subn()
     calls.
   * Make “python2.6 -m pydiatra” work.
+  * Make “--version” print also version of Python.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Thu, 13 Apr 2017 10:17:32 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Thu, 13 Apr 2017 13:12:52 +0200
 
 pydiatra (0.7) unstable; urgency=low
 
