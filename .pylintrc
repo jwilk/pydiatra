@@ -6,6 +6,7 @@ disable =
     invalid-name,
     locally-disabled,
     locally-enabled,
+    no-else-return,
     no-self-use,
     redefined-variable-type,
     too-few-public-methods,
