@@ -162,7 +162,7 @@ class ReVisitor(object):
 
     def visit_subpattern(self, *args):
         if sys.version_info >= (3, 6):
-            (add_flags, del_flags) = args[1:3]
+            (add_flags, del_flags) = args[1:3]  # pylint: disable=unbalanced-tuple-unpacking
             self.flags |= add_flags
             self.flags &= ~del_flags
 
