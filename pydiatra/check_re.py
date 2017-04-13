@@ -366,6 +366,9 @@ def check(owner, node):
     if not isinstance(pattern, (unicode, str, bytes)):
         return
     repl = args.get('repl')
+    count = args.get('count', args.get('maxsplit'))
+    if isinstance(count, int):
+        yield owner.tag(node, 'regexp-misplaced-flags-argument')
     flags = args.get('flags', 0)
     if not isinstance(flags, int):
         return

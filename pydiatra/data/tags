@@ -216,6 +216,20 @@ description =
  This misfeature was deprecated in Python 3.5.
  It was removed in Python 3.6.
 
+[regexp-misplaced-flags-argument]
+severity = important
+certainty = possible
+references =
+ https://docs.python.org/3/library/re.html#re.split
+ https://docs.python.org/3/library/re.html#re.sub
+ https://docs.python.org/3/library/re.html#re.subn
+description =
+ The code uses a regular expression function with the flags argument in the
+ wrong position.
+ .
+ The fourth argument of ``re.split()``, ``re.sub()`` and ``re.subn()``
+ is not flags, but the number of splits or substitutions.
+
 [regexp-overlapping-ranges]
 severity = normal
 certainty = possible
