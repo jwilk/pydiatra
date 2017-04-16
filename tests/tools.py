@@ -82,7 +82,7 @@ def run_pydiatra(paths, expected, expected_stderr=None, parallel=None, env=None)
         else:
             message += ['unexpected stderr:']
         message += ['| ' + line for line in stderr]
-    if (expected is not None) and (stdout != expected):
+    if (rc == expected_rc) and (expected is not None) and (stdout != expected):
         message = ['unexpected checker output:', '']
         diff = list(
             difflib.unified_diff(expected, stdout, n=9999)
