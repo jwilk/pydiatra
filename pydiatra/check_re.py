@@ -241,6 +241,9 @@ class ReVisitor(object):
 class BadConst(Exception):
     pass
 
+class RegexpFlag(int):
+    pass
+
 class Evaluator(ast.NodeVisitor):
 
     def generic_visit(self, node):
@@ -257,7 +260,7 @@ class Evaluator(ast.NodeVisitor):
         if isinstance(value, ast.Name) and value.id == 're':
             value = getattr(re, node.attr, None)
             if isinstance(value, int):
-                return value
+                return RegexpFlag(value)
         raise BadConst
 
     def visit_BinOp(self, node):
@@ -271,7 +274,7 @@ class Evaluator(ast.NodeVisitor):
             self.visit(node.left),
             self.visit(node.right),
         ]
-        if all(isinstance(v, int) for v in values):
+        if all(isinstance(v, RegexpFlag) for v in values):
             return op(*values)
         else:
             raise BadConst
@@ -365,7 +368,7 @@ def check(owner, node):
     pattern = args.get('pattern')
     repl = args.get('repl')
     count = args.get('count', args.get('maxsplit'))
-    if isinstance(count, int):
+    if isinstance(count, RegexpFlag):
         yield owner.tag(node, 'regexp-misplaced-flags-argument')
     flags = args.get('flags', 0)
     if not isinstance(pattern, (unicode, str, bytes)):
