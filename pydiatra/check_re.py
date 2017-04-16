@@ -367,10 +367,11 @@ def check(owner, node):
         args[argnode.arg] = eval_const(argnode.value)
     pattern = args.get('pattern')
     repl = args.get('repl')
-    count = args.get('count', args.get('maxsplit'))
-    if isinstance(count, RegexpFlag):
-        yield owner.tag(node, 'regexp-misplaced-flags-argument')
-    flags = args.get('flags', 0)
+    flags = args.pop('flags', 0)
+    for arg in args.values():
+        if isinstance(arg, RegexpFlag):
+            yield owner.tag(node, 'regexp-misplaced-flags-argument')
+            break
     if not isinstance(pattern, (unicode, str, bytes)):
         return
     if not isinstance(flags, int):
