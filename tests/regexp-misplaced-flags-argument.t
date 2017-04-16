@@ -1,5 +1,7 @@
 import re
 
+re.sub(pat, repl, re.MULTILINE)
+## *: regexp-misplaced-flags-argument
 re.sub(pat, repl, s, re.MULTILINE)
 ## *: regexp-misplaced-flags-argument
 
