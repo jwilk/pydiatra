@@ -216,6 +216,30 @@ description =
  This misfeature was deprecated in Python 3.5.
  It was removed in Python 3.6.
 
+[regexp-misplaced-inline-flags]
+severity = important
+certainty = possible
+references =
+ https://docs.python.org/3/whatsnew/3.6.html#id5
+description =
+ An inline flag (such as ``(?i)``) is not at the start of the regular
+ expression.
+ .
+ Inline flags in the middle of the regular expression were deprecated in Python
+ 3.6.
+ .
+ For example::
+ .
+ .    re.compile('eggs(?i)')
+ .
+ should be rewritten as::
+ .
+ .    re.compile('(?i)eggs')
+ .
+ or::
+ .
+ .    re.compile('eggs', re.IGNORECASE)
+
 [regexp-misplaced-flags-argument]
 severity = important
 certainty = possible
@@ -276,14 +300,9 @@ description =
 [regexp-syntax-warning]
 severity = important
 certainty = possible
-references =
- https://docs.python.org/3/whatsnew/3.6.html#id5
 description =
  The code attempts to compile a regular expression
  that uses a dubious or deprecated syntactic construct.
- .
- Inline flags (such as ``(?i)``) in the middle of the regular expression were
- deprecated in Python 3.6.
 
 [string-exception]
 severity = important

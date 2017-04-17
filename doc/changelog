@@ -1,5 +1,10 @@
 pydiatra (0.9) UNRELEASED; urgency=low
 
+  * Summary of tag changes:
+    + Added:
+      - regexp-misplaced-inline-flags
+
+  * Add separate tag for misplaced inline flags in regular expressions.
   * Check for misplaced flags arguments in re.split(), re.sub(), re.subn()
     calls more thoroughly.
 

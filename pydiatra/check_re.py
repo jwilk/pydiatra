@@ -436,6 +436,8 @@ def check(owner, node):
             continue
         if message.startswith('bad escape '):
             yield owner.tag(node, 'regexp-bad-escape', message[11:])
+        elif message.startswith('Flags not at the start of the expression '):
+            yield owner.tag(node, 'regexp-misplaced-inline-flags')
         else:
             yield owner.tag(node, 'regexp-syntax-warning', message)
     re_visitor = ReVisitor(tp=type(pattern), path=owner.path, location=node)

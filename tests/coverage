@@ -12,10 +12,11 @@
 [X] regexp-duplicate-range
 [2] regexp-incompatible-flags
 [X] regexp-misplaced-flags-argument
+[X] regexp-misplaced-inline-flags
 [4] regexp-overlapping-ranges
 [2] regexp-redundant-flag
 [5] regexp-syntax-error
-[X] regexp-syntax-warning
+[ ] regexp-syntax-warning
 [X] string-exception
 [4] string-formatting-error
 [#] syntax-error
