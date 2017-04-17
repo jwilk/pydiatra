@@ -66,7 +66,7 @@ re.compile('#(\n)', re.VERBOSE | re.MULTILINE)
 ## [<< 3.5] *: regexp-syntax-error unbalanced parenthesis
 ## [>= 3.5] *: regexp-syntax-error unbalanced parenthesis at position 3 (line 2, column 1)
 
-re.compile('#(\n)', flags=(re.VERBOSE + re.DEBUG))
+re.compile('#(\n)', flags=(re.VERBOSE + re.MULTILINE + re.DEBUG))
 ## [<< 3.5] *: regexp-syntax-error unbalanced parenthesis
 ## [>= 3.5] *: regexp-syntax-error unbalanced parenthesis at position 3 (line 2, column 1)
 

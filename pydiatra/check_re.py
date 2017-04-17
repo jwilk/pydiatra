@@ -275,7 +275,7 @@ class Evaluator(ast.NodeVisitor):
             self.visit(node.right),
         ]
         if all(isinstance(v, RegexpFlag) for v in values):
-            return op(*values)
+            return RegexpFlag(op(*values))
         else:
             raise BadConst
 
@@ -367,14 +367,14 @@ def check(owner, node):
         args[argnode.arg] = eval_const(argnode.value)
     pattern = args.get('pattern')
     repl = args.get('repl')
-    flags = args.pop('flags', 0)
+    flags = args.pop('flags', RegexpFlag())
     for arg in args.values():
         if isinstance(arg, RegexpFlag):
             yield owner.tag(node, 'regexp-misplaced-flags-argument')
             break
     if not isinstance(pattern, (unicode, str, bytes)):
         return
-    if not isinstance(flags, int):
+    if not isinstance(flags, RegexpFlag):
         return
     for (n1, f1), (n2, f2) in incompatible_flag_pairs:
         if (f1 & flags) and (f2 & flags):
