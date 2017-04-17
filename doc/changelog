@@ -1,9 +1,9 @@
-pydiatra (0.8.1) UNRELEASED; urgency=low
+pydiatra (0.9) UNRELEASED; urgency=low
 
   * Check for misplaced flags arguments in re.split(), re.sub(), re.subn()
     calls more thoroughly.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Sun, 16 Apr 2017 22:03:35 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 17 Apr 2017 10:36:14 +0200
 
 pydiatra (0.8) unstable; urgency=low
 
