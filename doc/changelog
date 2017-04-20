@@ -7,8 +7,9 @@ pydiatra (0.9) UNRELEASED; urgency=low
   * Add separate tag for misplaced inline flags in regular expressions.
   * Check for misplaced flags arguments in re.split(), re.sub(), re.subn()
     calls more thoroughly.
+  * Improve the test suite.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 17 Apr 2017 10:36:14 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Thu, 20 Apr 2017 11:31:48 +0200
 
 pydiatra (0.8) unstable; urgency=low
 
