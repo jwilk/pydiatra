@@ -253,6 +253,9 @@ description =
  .
  The fourth argument of ``re.split()``, ``re.sub()`` and ``re.subn()``
  is not flags, but the number of splits or substitutions.
+ .
+ Regexp methods don't accept flags at all.
+ Flags have to be supplied at compile time.
 
 [regexp-overlapping-ranges]
 severity = normal

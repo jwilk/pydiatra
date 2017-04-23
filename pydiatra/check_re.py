@@ -356,6 +356,9 @@ def check(owner, node):
         argnames = re_functions[func_name]
     except KeyError:
         return
+    if node.func.value.id != 're':
+        # maybe a regexp method
+        argnames = argnames[1:]
     args = {}
     for argname, argnode in zip(argnames, node.args):
         if isinstance(argnode, starred_tp):

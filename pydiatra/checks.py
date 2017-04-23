@@ -338,7 +338,7 @@ class Visitor(ast.NodeVisitor):
                         yield self.tag(node, 'string-formatting-error', message)
                     except Exception as exc:  # pylint: disable=broad-except
                         yield self.tag(node, 'string-formatting-error', str(exc))
-        if isinstance(func, ast.Attribute) and isinstance(func.value, ast.Name) and func.value.id == 're':
+        if isinstance(func, ast.Attribute) and isinstance(func.value, ast.Name):
             for t in check_re.check(self, node):
                 yield t
         for t in self.generic_visit(node):
