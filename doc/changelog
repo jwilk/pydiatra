@@ -1,8 +1,8 @@
-pydiatra (0.10) UNRELEASED; urgency=low
+pydiatra (0.10) unstable; urgency=low
 
   * Check for flags arguments in regexp methods.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 24 Apr 2017 00:14:46 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Thu, 27 Apr 2017 12:59:01 +0200
 
 pydiatra (0.9) unstable; urgency=low
 
