@@ -32,12 +32,13 @@ v1="$1"
 v2="$2"
 shift 2
 here=$(dirname "$0")
-v1=$(git rev-parse --short "$v1")
-v2=$(git rev-parse --short "$v2")
+git_dir="$here/../.git"
+v1=$(git --git-dir="$git_dir" rev-parse --short "$v1")
+v2=$(git --git-dir="$git_dir" rev-parse --short "$v2")
 tmpdir=$(mktemp -d -t pydiatra.XXXXXX)
 mkdir "$tmpdir/$v1" "$tmpdir/$v2"
-git -C "$here/.." archive "$v1" --prefix=p1/ | tar -C "$tmpdir/" -x
-git -C "$here/.." archive "$v2" --prefix=p2/ | tar -C "$tmpdir/" -x
+git --git-dir="$git_dir" archive "$v1" --prefix=p1/ | tar -C "$tmpdir/" -x
+git --git-dir="$git_dir" archive "$v2" --prefix=p2/ | tar -C "$tmpdir/" -x
 ack --python -f --print0 -- "$@" > "$tmpdir/ls"
 < "$tmpdir/ls" xargs -0 -n99 "$tmpdir/p1/py2diatra" -jauto -- > "$tmpdir/$v1/py2" || true
 < "$tmpdir/ls" xargs -0 -n99 "$tmpdir/p1/py3diatra" -jauto -- > "$tmpdir/$v1/py3" || true
