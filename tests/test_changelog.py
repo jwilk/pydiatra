@@ -82,6 +82,8 @@ def test_tags():
     for summary in reversed(summaries):
         summary = str(summary)
         match = summary_details_re.match(summary)
+        if match is None:
+            raise AssertionError('cannot find summary details')
         for key, lines in match.groupdict().items():
             if lines is None:
                 continue
