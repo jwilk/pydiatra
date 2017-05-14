@@ -158,22 +158,25 @@ class Visitor(ast.NodeVisitor):
         for t in self.generic_visit(node):
             yield t
 
+    def _visit_compare(self, left, op, right):
+        if not isinstance(left, ast.Attribute):
+            left, right = right, left
+        hardcoded_errno = (
+            isinstance(left, ast.Attribute) and
+            left.attr == 'errno' and
+            isinstance(op, (ast.Eq, ast.NotEq)) and
+            isinstance(right, ast.Num) and
+            isinstance(right.n, int) and
+            right.n in errno_constants
+        )
+        if hardcoded_errno:
+            yield self.tag(right, '*hardcoded-errno-value', right.n)
     def visit_Compare(self, node):
-        if len(node.ops) == 1:
-            [op] = node.ops
-            left, right = [node.left] + node.comparators
-            if not isinstance(left, ast.Attribute):
-                left, right = right, left
-            hardcoded_errno = (
-                isinstance(left, ast.Attribute) and
-                left.attr == 'errno' and
-                isinstance(op, (ast.Eq, ast.NotEq)) and
-                isinstance(right, ast.Num) and
-                isinstance(right.n, int) and
-                right.n in errno_constants
-            )
-            if hardcoded_errno:
-                yield self.tag(node, '*hardcoded-errno-value', right.n)
+        left = node.left
+        for op, right in zip(node.ops, node.comparators):
+            for t in self._visit_compare(left, op, right):
+                yield t
+            left = right
         for t in self.generic_visit(node):
             yield t
 
