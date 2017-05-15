@@ -340,4 +340,20 @@ certainty = possible
 description =
  The parser encountered a dubious syntactic construct.
 
+[sys.hexversion-comparison]
+severity = wishlist
+certainty = possible
+description =
+ Comparisons with ``sys.hexversion`` are poorly readable and error-prone.
+ Consider using the ``sys.version_info`` tuple instead,
+
+[sys.version-comparison]
+severity = normal
+certainty = possible
+description =
+ ``sys.version`` is a human-readable string,
+ which should not be used in comparisons.
+ Use the ``sys.version_info`` tuple or
+ the functions provided by the ``platform`` module instead.
+
 # vim:ft=dosini

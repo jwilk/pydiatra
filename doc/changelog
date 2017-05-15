@@ -1,8 +1,13 @@
 pydiatra (0.11) UNRELEASED; urgency=low
 
-  * 
+  * Summary of tag changes:
+    + Added:
+      - sys.hexversion-comparison
+      - sys.version-comparison
 
- -- Jakub Wilk <jwilk@jwilk.net>  Sun, 14 May 2017 22:56:08 +0200
+  * Warn against comparisons with sys.version and sys.hexversion.
+
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 15 May 2017 00:25:04 +0200
 
 pydiatra (0.10) unstable; urgency=low
 

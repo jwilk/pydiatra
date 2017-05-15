@@ -24,6 +24,7 @@
 pydiatra: helper functions for AST manipulation
 '''
 
+import ast
 import sys
 
 if sys.version_info >= (3, 2):
@@ -40,7 +41,26 @@ else:
     def python_open(path):
         return open(path, 'rU')
 
+inequality_ops = {
+    ast.Gt: '>',
+    ast.Lt: '<',
+    ast.GtE: '>=',
+    ast.LtE: '<=',
+}
+
+equality_ops = {
+    ast.Eq: '==',
+    ast.NotEq: '!=',
+}
+
+numeric_cmp_ops = {}
+numeric_cmp_ops.update(equality_ops)
+numeric_cmp_ops.update(inequality_ops)
+
 __all__ = [
+    'equality_ops',
+    'inequality_ops',
+    'numeric_cmp_ops',
     'python_open',
 ]
 

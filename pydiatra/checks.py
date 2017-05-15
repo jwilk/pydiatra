@@ -34,6 +34,7 @@ import warnings
 from . import astaux
 from . import tags
 from . import check_re
+from . import sysversion
 
 tag = tags.Tag
 
@@ -77,6 +78,12 @@ def load_data():
         code_copies.append(package)
     regex = '|'.join('(%s)' % r for r in regex)
     code_copies_regex = re.compile(regex, re.DOTALL)
+
+def format_cmp(left, op, right, swap=False):
+    op = astaux.numeric_cmp_ops[type(op)]
+    if swap:
+        left, right = right, left
+    return '{l} {op} {r}'.format(l=left, op=op, r=right)
 
 class Visitor(ast.NodeVisitor):
 
@@ -159,10 +166,13 @@ class Visitor(ast.NodeVisitor):
             yield t
 
     def _visit_compare(self, left, op, right):
+        swap = False
         if not isinstance(left, ast.Attribute):
             left, right = right, left
+            swap = True
+        if not isinstance(left, ast.Attribute):
+            return
         hardcoded_errno = (
-            isinstance(left, ast.Attribute) and
             left.attr == 'errno' and
             isinstance(op, (ast.Eq, ast.NotEq)) and
             isinstance(right, ast.Num) and
@@ -171,6 +181,38 @@ class Visitor(ast.NodeVisitor):
         )
         if hardcoded_errno:
             yield self.tag(right, '*hardcoded-errno-value', right.n)
+        sys_attr_comparison = (
+            isinstance(left.value, ast.Name) and
+            left.value.id == 'sys'
+        )
+        if sys_attr_comparison:
+            if left.attr == 'version':
+                tpl = None
+                if isinstance(right, ast.Str) and type(op) in astaux.inequality_ops:
+                    try:
+                        tpl = sysversion.version_to_tuple(right.s)
+                    except (TypeError, ValueError):
+                        pass
+                if tpl is None:
+                    yield self.tag(left, 'sys.version-comparison')
+                else:
+                    yield self.tag(left, 'sys.version-comparison',
+                        format_cmp('sys.version_info', op, tpl, swap=swap)
+                    )
+            elif left.attr == 'hexversion':
+                tpl = None
+                if isinstance(right, ast.Num) and type(op) in astaux.numeric_cmp_ops:
+                    try:
+                        tpl = sysversion.hexversion_to_tuple(right.n)
+                    except (TypeError, ValueError):
+                        pass
+                if tpl is None:
+                    yield self.tag(left, 'sys.hexversion-comparison')
+                else:
+                    yield self.tag(left, 'sys.hexversion-comparison',
+                        format_cmp('sys.version_info', op, tpl, swap=swap)
+                    )
+
     def visit_Compare(self, node):
         left = node.left
         for op, right in zip(node.ops, node.comparators):
