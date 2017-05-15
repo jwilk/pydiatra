@@ -188,7 +188,7 @@ class Visitor(ast.NodeVisitor):
         if sys_attr_comparison:
             if left.attr == 'version':
                 tpl = None
-                if isinstance(right, ast.Str) and type(op) in astaux.inequality_ops:
+                if isinstance(right, ast.Str) and type(op) in astaux.inequality_ops:  # pylint: disable=unidiomatic-typecheck
                     try:
                         tpl = sysversion.version_to_tuple(right.s)
                     except (TypeError, ValueError):
@@ -201,7 +201,7 @@ class Visitor(ast.NodeVisitor):
                     )
             elif left.attr == 'hexversion':
                 tpl = None
-                if isinstance(right, ast.Num) and type(op) in astaux.numeric_cmp_ops:
+                if isinstance(right, ast.Num) and type(op) in astaux.numeric_cmp_ops:  # pylint: disable=unidiomatic-typecheck
                     try:
                         tpl = sysversion.hexversion_to_tuple(right.n)
                     except (TypeError, ValueError):
