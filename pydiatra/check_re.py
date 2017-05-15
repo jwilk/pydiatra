@@ -136,6 +136,9 @@ class ReVisitor(object):
             try:
                 if self.flags is None:
                     self.flags = node.pattern.flags
+                    if self.flags & re.IGNORECASE:
+                        for flag in locale_flags.values():
+                            self.justified_flags |= flag
                 if visitor is not None:
                     ts = visitor(*args) or ()
                     for t in ts:
@@ -165,6 +168,9 @@ class ReVisitor(object):
             (add_flags, del_flags) = args[1:3]  # pylint: disable=unbalanced-tuple-unpacking
             self.flags |= add_flags
             self.flags &= ~del_flags
+            if self.flags & re.IGNORECASE:
+                for flag in locale_flags.values():
+                    self.justified_flags |= flag
 
     def visit_in(self, *args):
         ranges = []

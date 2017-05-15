@@ -1,15 +1,21 @@
+# encoding=UTF-8
+
 import re
 
+re.compile(ur'ñ', re.UNICODE | re.IGNORECASE)
 re.compile(r'\w', re.UNICODE)
 re.compile(r'/w', re.UNICODE)
 ## *: regexp-redundant-flag re.UNICODE
+re.compile(ur'(?ui)ñ')
 re.compile(r'(?u)\W')
 re.compile(r'(?u)/W')
 ## *: regexp-redundant-flag re.UNICODE
 
+re.compile(r'\xf1', re.LOCALE | re.IGNORECASE)
 re.compile(r'[\s]', re.LOCALE)
 re.compile(r'\d[\d]', re.LOCALE)
 ## *: regexp-redundant-flag re.LOCALE
+re.compile(r'(?Li)\xf1')
 re.compile(r'(?L)[\S]')
 re.compile(r'(?L)\d[\D]')
 ## *: regexp-redundant-flag re.LOCALE

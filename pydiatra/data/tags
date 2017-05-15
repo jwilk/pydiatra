@@ -282,10 +282,12 @@ description =
  The regular expression flag has no effect on this regular expression.
  .
  ``re.ASCII`` and ``re.UNICODE`` affect only semantics of
- ``\w``, ``\W``, ``\b``, ``\B``, ``\d``, ``\D``, ``\s`` and ``\S``.
+ ``\w``, ``\W``, ``\b``, ``\B``, ``\d``, ``\D``, ``\s`` and ``\S``,
+ and case-insensitive matching.
  .
  ``re.LOCALE`` affects only semantics of
- ``\w``, ``\W``, ``\b``, ``\B``, ``\s`` and ``\S``.
+ ``\w``, ``\W``, ``\b``, ``\B``, ``\s`` and ``\S``,
+ and case-insensitive matching.
  .
  ``re.MULTILINE`` affects only semantics of ``^`` and ``$``.
  .
