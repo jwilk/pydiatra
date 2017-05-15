@@ -57,9 +57,27 @@ numeric_cmp_ops = {}
 numeric_cmp_ops.update(equality_ops)
 numeric_cmp_ops.update(inequality_ops)
 
+is_ops = {
+    ast.Is: 'is',
+    ast.IsNot: 'is not',
+}
+
+in_ops = {
+    ast.In: 'in',
+    ast.NotIn: 'not in',
+}
+
+cmp_ops = {}
+cmp_ops.update(numeric_cmp_ops)
+cmp_ops.update(is_ops)
+cmp_ops.update(in_ops)
+
 __all__ = [
+    'cmp_ops',
     'equality_ops',
+    'in_ops',
     'inequality_ops',
+    'is_ops',
     'numeric_cmp_ops',
     'python_open',
 ]

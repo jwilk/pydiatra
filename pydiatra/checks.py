@@ -80,7 +80,7 @@ def load_data():
     code_copies_regex = re.compile(regex, re.DOTALL)
 
 def format_cmp(left, op, right, swap=False):
-    op = astaux.numeric_cmp_ops[type(op)]
+    op = astaux.cmp_ops[type(op)]
     if swap:
         left, right = right, left
     return '{l} {op} {r}'.format(l=left, op=op, r=right)
