@@ -9,8 +9,9 @@ pydiatra (0.11) UNRELEASED; urgency=low
   * Don't warn against redundant re.UNICODE, re.LOCALE or re.ASCII when
     re.IGNORECASE is in effect.
   * Fix compatibility with Python 3.7.
+  * Improve the test suite.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Tue, 16 May 2017 21:06:22 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Tue, 16 May 2017 23:34:14 +0200
 
 pydiatra (0.10) unstable; urgency=low
 
