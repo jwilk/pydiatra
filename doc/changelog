@@ -6,8 +6,9 @@ pydiatra (0.11) UNRELEASED; urgency=low
       - sys.version-comparison
 
   * Warn against comparisons with sys.version and sys.hexversion.
+  * Fix compatibility with Python 3.7.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 15 May 2017 00:25:04 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Tue, 16 May 2017 17:56:48 +0200
 
 pydiatra (0.10) unstable; urgency=low
 
