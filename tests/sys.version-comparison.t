@@ -20,6 +20,12 @@ elif sys.version is '2':
 ## *: sys.version-comparison
     pass
 elif 'PyPy' in sys.version:
+## *: sys.version-comparison platform.python_implementation() == 'PyPy'
+    pass
+elif 'PyPy' not in sys.version:
+## *: sys.version-comparison platform.python_implementation() != 'PyPy'
+    pass
+elif 'Spam' in sys.version:
 ## *: sys.version-comparison
     pass
 

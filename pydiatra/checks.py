@@ -80,7 +80,9 @@ def load_data():
     code_copies_regex = re.compile(regex, re.DOTALL)
 
 def format_cmp(left, op, right, swap=False):
-    op = astaux.cmp_ops[type(op)]
+    if isinstance(op, ast.AST):
+        op = type(op)
+    op = astaux.cmp_ops[op]
     if swap:
         left, right = right, left
     return '{l} {op} {r}'.format(l=left, op=op, r=right)
@@ -188,12 +190,22 @@ class Visitor(ast.NodeVisitor):
         if sys_attr_comparison:
             if left.attr == 'version':
                 tpl = None
-                if isinstance(right, ast.Str) and type(op) in astaux.inequality_ops:  # pylint: disable=unidiomatic-typecheck
-                    try:
-                        tpl = sysversion.version_to_tuple(right.s)
-                    except (TypeError, ValueError):
-                        pass
-                if tpl is None:
+                if isinstance(right, ast.Str):
+                    if type(op) in astaux.inequality_ops:  # pylint: disable=unidiomatic-typecheck
+                        try:
+                            tpl = sysversion.version_to_tuple(right.s)
+                        except (TypeError, ValueError):
+                            pass
+                    elif swap and (type(op) in astaux.in_ops):  # pylint: disable=unidiomatic-typecheck
+                        if right.s == 'PyPy':
+                            tpl = False
+                            op = ast.Eq if isinstance(op, ast.In) else ast.NotEq
+                            yield self.tag(left, 'sys.version-comparison',
+                                format_cmp('platform.python_implementation()', op, repr('PyPy'))
+                            )
+                if tpl is False:
+                    pass
+                elif tpl is None:
                     yield self.tag(left, 'sys.version-comparison')
                 else:
                     yield self.tag(left, 'sys.version-comparison',
