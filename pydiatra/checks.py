@@ -80,8 +80,6 @@ def load_data():
     code_copies_regex = re.compile(regex, re.DOTALL)
 
 def format_cmp(left, op, right, swap=False):
-    if isinstance(op, ast.AST):
-        op = type(op)
     op = astaux.cmp_ops[op]
     if swap:
         left, right = right, left
@@ -176,7 +174,7 @@ class Visitor(ast.NodeVisitor):
             return
         hardcoded_errno = (
             left.attr == 'errno' and
-            isinstance(op, (ast.Eq, ast.NotEq)) and
+            op in astaux.equality_ops and
             isinstance(right, ast.Num) and
             isinstance(right.n, int) and
             right.n in errno_constants
@@ -191,12 +189,12 @@ class Visitor(ast.NodeVisitor):
             if left.attr == 'version':
                 tpl = None
                 if isinstance(right, ast.Str):
-                    if type(op) in astaux.inequality_ops:  # pylint: disable=unidiomatic-typecheck
+                    if op in astaux.inequality_ops:
                         try:
                             tpl = sysversion.version_to_tuple(right.s)
                         except (TypeError, ValueError):
                             pass
-                    elif swap and (type(op) in astaux.in_ops):  # pylint: disable=unidiomatic-typecheck
+                    elif swap and (op in astaux.in_ops):
                         if right.s == 'PyPy':
                             tpl = False
                             op = ast.Eq if isinstance(op, ast.In) else ast.NotEq
@@ -213,7 +211,7 @@ class Visitor(ast.NodeVisitor):
                     )
             elif left.attr == 'hexversion':
                 tpl = None
-                if isinstance(right, ast.Num) and type(op) in astaux.numeric_cmp_ops:  # pylint: disable=unidiomatic-typecheck
+                if isinstance(right, ast.Num) and (op in astaux.numeric_cmp_ops):
                     try:
                         tpl = sysversion.hexversion_to_tuple(right.n)
                     except (TypeError, ValueError):

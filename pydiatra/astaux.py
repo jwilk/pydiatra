@@ -41,36 +41,80 @@ else:
     def python_open(path):
         return open(path, 'rU')
 
-inequality_ops = {
+class OpDict(object):
+
+    def __init__(self, *dicts):
+        self._dict = {}
+        for d in dicts:
+            self._dict.update(d.items())
+
+    def _get_type(self, op):
+        if isinstance(op, ast.AST):
+            return type(op)
+        elif issubclass(op, ast.AST):
+            return op
+        else:
+            raise TypeError
+
+    def __contains__(self, op):
+        op = self._get_type(op)
+        return op in self._dict
+
+    def __getitem__(self, op):
+        op = self._get_type(op)
+        return self._dict[op]
+
+    def items(self):
+        return self._dict.items()
+
+    def _key_repr(self, op):
+        name = op.__name__
+        assert getattr(ast, name) is op
+        return 'ast.' + name
+
+    def __repr__(self):
+        dict_repr = ', '.join(
+            '{op}: {s!r}'.format(op=self._key_repr(op), s=s)
+            for op, s in self._dict.items()
+        )
+        return '{mod}.{cls}({{{dict}}})'.format(
+            mod=self.__module__,
+            cls=type(self).__name__,
+            dict=dict_repr,
+        )
+
+inequality_ops = OpDict({
     ast.Gt: '>',
     ast.Lt: '<',
     ast.GtE: '>=',
     ast.LtE: '<=',
-}
+})
 
-equality_ops = {
+equality_ops = OpDict({
     ast.Eq: '==',
     ast.NotEq: '!=',
-}
+})
 
-numeric_cmp_ops = {}
-numeric_cmp_ops.update(equality_ops)
-numeric_cmp_ops.update(inequality_ops)
+numeric_cmp_ops = OpDict(
+    equality_ops,
+    inequality_ops,
+)
 
-is_ops = {
+is_ops = OpDict({
     ast.Is: 'is',
     ast.IsNot: 'is not',
-}
+})
 
-in_ops = {
+in_ops = OpDict({
     ast.In: 'in',
     ast.NotIn: 'not in',
-}
+})
 
-cmp_ops = {}
-cmp_ops.update(numeric_cmp_ops)
-cmp_ops.update(is_ops)
-cmp_ops.update(in_ops)
+cmp_ops = OpDict(
+    numeric_cmp_ops,
+    is_ops,
+    in_ops,
+)
 
 __all__ = [
     'cmp_ops',
