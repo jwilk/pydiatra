@@ -1,4 +1,4 @@
-pydiatra (0.11) UNRELEASED; urgency=low
+pydiatra (0.11) unstable; urgency=low
 
   * Summary of tag changes:
     + Added:
@@ -11,7 +11,7 @@ pydiatra (0.11) UNRELEASED; urgency=low
   * Fix compatibility with Python 3.7.
   * Improve the test suite.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Tue, 16 May 2017 23:34:14 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Tue, 16 May 2017 23:36:40 +0200
 
 pydiatra (0.10) unstable; urgency=low
 
