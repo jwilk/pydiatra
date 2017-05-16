@@ -433,8 +433,16 @@ def check(owner, node):
                 with utils.catch_exceptions() as exc:
                     re.compile(pattern, flags=flags)
     if not exc:
+        if sys.version_info >= (3, 7):
+            monkey_context = utils.monkeypatch(sre_parse,
+                _uniq=list,
+            )
+        else:
+            # no-op context manager
+            monkey_context = utils.monkeypatch(None)
         with utils.catch_exceptions() as exc:
-            subpattern = sre_parse.parse(pattern, flags=flags)
+            with monkey_context:
+                subpattern = sre_parse.parse(pattern, flags=flags)
     if exc:
         yield owner.tag(node, 'regexp-syntax-error', str(exc))
         return
