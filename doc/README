@@ -53,6 +53,8 @@ Implemented checks
 
 * string formatting errors
 
+* comparisons with ``sys.version`` or ``sys.hexversion``
+
 * Python syntax errors
 
 * Python syntax warnings
