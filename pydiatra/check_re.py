@@ -223,7 +223,7 @@ class ReVisitor(object):
                     if r[0] <= c <= r[1]:
                         if crange is None:
                             crange = r
-                        else:
+                        elif crange is not r:
                             yield self.tag(self, 'regexp-overlapping-ranges',
                                 format_char_range(crange, tp=self.tp),
                                 format_char_range(r, tp=self.tp),
