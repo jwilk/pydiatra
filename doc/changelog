@@ -1,8 +1,8 @@
 pydiatra (0.11.1) UNRELEASED; urgency=low
 
-  * 
+  * Fix false positive regexp-overlapping-ranges.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Wed, 17 May 2017 10:59:30 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Thu, 01 Jun 2017 20:41:31 +0200
 
 pydiatra (0.11) unstable; urgency=low
 
