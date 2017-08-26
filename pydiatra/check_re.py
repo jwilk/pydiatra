@@ -310,6 +310,16 @@ possibly_redundant_flags = dict(locale_flags,
 
 ascii_letters = frozenset('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
+enable_bad_escape_check = True
+if sys.version_info >= (3, 5):
+    enable_bad_escape_check = False
+elif (2, 7, 13) <= sys.version_info < (3,):
+    # FIXME: We should really check for sys.version_info > (2, 7, 14) here.
+    # But Debian ships random git snapshot of the 2.7 branch,
+    # so a temporary work-around, check for behavior instead.
+    if len(inspect.getargspec(sre_parse._escape).args) > 3:
+        enable_bad_escape_check = False
+
 def check_bad_escape(escape, cls=False):
     if escape in sre_parse.ESCAPES:
         return
@@ -404,7 +414,7 @@ def check(owner, node):
         flags |= re.TEMPLATE
     flags &= ~re.DEBUG
     check_sub = func_name.startswith('sub') and isinstance(repl, (unicode, str, bytes))
-    if sys.version_info < (3, 5):
+    if enable_bad_escape_check:
         monkey_context = utils.monkeypatch(sre_parse,
             _class_escape=my_class_escape,
             _escape=my_escape,
@@ -440,9 +450,11 @@ def check(owner, node):
         else:
             # no-op context manager
             monkey_context = utils.monkeypatch(None)
-        with utils.catch_exceptions() as exc:
-            with monkey_context:
-                subpattern = sre_parse.parse(pattern, flags=flags)
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore')  # all warnings should have been caught beforehand
+            with utils.catch_exceptions() as exc:
+                with monkey_context:
+                    subpattern = sre_parse.parse(pattern, flags=flags)
     if exc:
         yield owner.tag(node, 'regexp-syntax-error', str(exc))
         return
@@ -452,7 +464,8 @@ def check(owner, node):
             # emitted elsewhere
             continue
         if message.startswith('bad escape '):
-            yield owner.tag(node, 'regexp-bad-escape', message[11:])
+            message = message[11:].partition('; ')[0]
+            yield owner.tag(node, 'regexp-bad-escape', message)
         elif message.startswith('Flags not at the start of the expression '):
             yield owner.tag(node, 'regexp-misplaced-inline-flags')
         else:
