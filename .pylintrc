@@ -3,6 +3,7 @@ disable =
     bad-builtin,
     bad-continuation,
     duplicate-code,
+    fixme,
     invalid-name,
     locally-disabled,
     locally-enabled,
