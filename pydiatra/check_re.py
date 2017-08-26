@@ -317,7 +317,7 @@ elif (2, 7, 13) <= sys.version_info < (3,):
     # FIXME: We should really check for sys.version_info > (2, 7, 14) here.
     # But Debian ships random git snapshot of the 2.7 branch,
     # so a temporary work-around, check for behavior instead.
-    if len(inspect.getargspec(sre_parse._escape).args) > 3:
+    if len(inspect.getargspec(sre_parse._escape).args) > 3:  # pylint: disable=deprecated-method,protected-access
         enable_bad_escape_check = False
 
 def check_bad_escape(escape, cls=False):
@@ -339,12 +339,12 @@ def check_bad_escape(escape, cls=False):
 original_class_escape = sre_parse._class_escape  # pylint: disable=protected-access
 def my_class_escape(source, escape):
     check_bad_escape(escape, cls=True)
-    return original_class_escape(source, escape)
+    return original_class_escape(source, escape)  # pylint: disable=no-value-for-parameter
 
 original_escape = sre_parse._escape  # pylint: disable=protected-access
 def my_escape(source, escape, state):
     check_bad_escape(escape)
-    return original_escape(source, escape, state)
+    return original_escape(source, escape, state)  # pylint: disable=no-value-for-parameter
 
 class EscapeDict(dict):
     def __missing__(self, key):
