@@ -313,12 +313,8 @@ ascii_letters = frozenset('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 enable_bad_escape_check = True
 if sys.version_info >= (3, 5):
     enable_bad_escape_check = False
-elif (2, 7, 13) <= sys.version_info < (3,):
-    # FIXME: We should really check for sys.version_info >= (2, 7, 14) here.
-    # But Debian ships random git snapshot of the 2.7 branch,
-    # so a temporary work-around, check for behavior instead.
-    if len(inspect.getargspec(sre_parse._escape).args) > 3:  # pylint: disable=deprecated-method,protected-access
-        enable_bad_escape_check = False
+elif (2, 7, 14) <= sys.version_info < (3,):
+    enable_bad_escape_check = False
 
 def check_bad_escape(escape, cls=False):
     if escape in sre_parse.ESCAPES:
