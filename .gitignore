@@ -1,6 +1,6 @@
 *.py[co]
-MANIFEST
-build
-dist
-doc/pydiatra.1
-doc/tags.rst
+/MANIFEST
+/build
+/dist
+/doc/pydiatra.1
+/doc/tags.rst
