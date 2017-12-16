@@ -23,12 +23,12 @@
 import io
 import os
 
-import pydiatra
-import tools
-
 from nose.tools import (
     assert_equal,
 )
+
+import pydiatra
+import tools
 
 def test_changelog():
     path = os.path.join(tools.basedir, 'doc', 'changelog')
