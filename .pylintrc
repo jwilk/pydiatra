@@ -4,6 +4,7 @@ disable =
     bad-continuation,
     duplicate-code,
     fixme,
+    inconsistent-return-statements,
     invalid-name,
     locally-disabled,
     locally-enabled,
