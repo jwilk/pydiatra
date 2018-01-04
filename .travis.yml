@@ -17,7 +17,7 @@ before_install:
   [[ "$TRAVIS_PYTHON_VERSION" =~ dev ]] ||
   no_pylint=false
 install:
-- \[ "${TRAVIS_PYTHON_VERSION##2*}" != '' ] || pip install futures
+- if [[ $TRAVIS_PYTHON_VERSION = 2.* ]]; then pip install futures; fi
 - pip install pyflakes
 - $no_pylint || pip install pylint
 - pip install docutils
