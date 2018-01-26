@@ -28,6 +28,7 @@ from __future__ import print_function
 
 import argparse
 import io
+import itertools
 import multiprocessing
 import os
 import sys
@@ -43,20 +44,22 @@ else:
 from . import __version__
 from . import checks
 
-def check_file(path, file=sys.stdout):
+def check_file(path, verbose=False, file=sys.stdout):
     n = 0
     for t in checks.check_file(path):
         print(t, file=file)
         n += 1
+    if verbose and (n == 0):
+        print(checks.tag(path, None, 'OK'))
     return n
 
-def check_file_s(path):
+def check_file_s(path, verbose=False):
     if str is bytes:
         file = io.BytesIO()
     else:
         file = io.StringIO()
-    check_file(path, file=file)
-    return file.getvalue()
+    n = check_file(path, verbose=verbose, file=file)
+    return n, file.getvalue()
 
 def parse_jobs(s):
     if s == 'auto':
@@ -156,6 +159,7 @@ def main(runpy=False, script=None):
     ap = ArgumentParser(prog=prog)
     ap.add_argument('paths', metavar='<file>', nargs='+')
     ap.add_argument('--version', action=VersionAction)
+    ap.add_argument('-v', '--verbose', action='store_true', help='print "OK" if no issues were found')
     ap.add_argument('-j', '--jobs', metavar='<n>', type=parse_jobs, default=1,
         help=('use <n> processes' if concurrent else argparse.SUPPRESS)
     )
@@ -169,14 +173,14 @@ def main(runpy=False, script=None):
     ok = True
     if options.jobs <= 1:
         for path in options.paths:
-            if check_file(path) > 0:
+            if check_file(path, verbose=options.verbose) > 0:
                 ok = False
     else:
         executor = concurrent.futures.ProcessPoolExecutor(max_workers=options.jobs)
         with executor:
-            for s in executor.map(check_file_s, options.paths):
+            for n, s in executor.map(check_file_s, options.paths, itertools.repeat(options.verbose)):
                 sys.stdout.write(s)
-                if s:
+                if n > 0:
                     ok = False
     sys.exit(0 if ok else 2)
 

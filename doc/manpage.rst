@@ -31,6 +31,8 @@ For any Python:
 Options
 -------
 
+-v, --verbose
+   Print ``OK`` if no issues were found.
 -j n, --jobs n
    Use *n* processes in parallel.
    *n* can be a positive integer,
