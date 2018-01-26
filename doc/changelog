@@ -1,10 +1,10 @@
-pydiatra (0.11.3) UNRELEASED; urgency=low
+pydiatra (0.12) UNRELEASED; urgency=low
 
   * Disable bad regexp escape check only for Python ≥ 2.7.14.
     (Previously it was enabled also in Python 2.7.13 if it behaved the same
     way as later versions.)
 
- -- Jakub Wilk <jwilk@jwilk.net>  Wed, 13 Sep 2017 20:27:30 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Fri, 26 Jan 2018 18:51:13 +0100
 
 pydiatra (0.11.2) unstable; urgency=low
 
