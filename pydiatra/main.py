@@ -157,11 +157,11 @@ def main(runpy=False, script=None):
     elif script is not None:
         maybe_reexec(argv0=[script])
     ap = ArgumentParser(prog=prog)
-    ap.add_argument('paths', metavar='<file>', nargs='+')
+    ap.add_argument('paths', metavar='FILE', nargs='+')
     ap.add_argument('--version', action=VersionAction)
     ap.add_argument('-v', '--verbose', action='store_true', help='print "OK" if no issues were found')
-    ap.add_argument('-j', '--jobs', metavar='<n>', type=parse_jobs, default=1,
-        help=('use <n> processes' if concurrent else argparse.SUPPRESS)
+    ap.add_argument('-j', '--jobs', metavar='N', type=parse_jobs, default=1,
+        help=('use N processes' if concurrent else argparse.SUPPRESS)
     )
     options = ap.parse_args()
     if len(options.paths) <= 1:
