@@ -32,7 +32,7 @@ then
     pyre='^#!.*python'
     pyver=$("$PYTHON" -c 'import sys; print(sys.version_info[0])')
     [ "$pyver" = 2 ] && pyre="${pyre}(?!3)"
-    pyscripts=$(grep -l -r -P "$pyre" . | grep -v /build/)
+    pyscripts=$(grep -l -r -P "$pyre" . | grep -Ev '/build/|[.]py[co]$')
     set -- $(find . '(' -name build -prune -false ')' -o -name '*.py') $pyscripts
 fi
 
