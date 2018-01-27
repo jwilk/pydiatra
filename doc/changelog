@@ -1,12 +1,14 @@
 pydiatra (0.12) UNRELEASED; urgency=low
 
+  * Add support for checking directories recursively.
+  * Add the -v/--verbose option.
+  * Fix test failure with Python ≥ 3.7.0a2.
+  * Use uppercase for metavars in the help output.
   * Disable bad regexp escape check only for Python ≥ 2.7.14.
     (Previously it was enabled also in Python 2.7.13 if it behaved the same
     way as later versions.)
-  * Add the -v/--verbose option.
-  * Fix test failure with Python ≥ 3.7.0a2.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Fri, 26 Jan 2018 20:14:07 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Sun, 28 Jan 2018 00:36:42 +0100
 
 pydiatra (0.11.2) unstable; urgency=low
 
