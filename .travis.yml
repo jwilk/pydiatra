@@ -28,12 +28,14 @@ script:
 - private/update-coverage
 - git diff --exit-code
 - python setup.py install
-- cd / && python -m pydiatra --version
+- pushd /
+- python -m pydiatra --version
 - pyXdiatra=py${TRAVIS_PYTHON_VERSION%.*}diatra
 - $pyXdiatra --version
 - export MANPATH=$VIRTUAL_ENV/share/man MANWIDTH=80
 - man 1 pydiatra | grep -A 15 -w PYDIATRA
 - man 1 $pyXdiatra | grep -A 15 -w PYDIATRA
+- popd
 - private/run-pydiatra
 - private/run-pyflakes
 - $no_pylint || private/run-pylint
