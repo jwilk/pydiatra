@@ -31,6 +31,7 @@ import io
 import itertools
 import multiprocessing
 import os
+import re
 import sys
 
 try:
@@ -43,6 +44,32 @@ else:
 
 from . import __version__
 from . import checks
+
+matches_python_shebang = re.compile(br'#!.*\bpython[0-9.]*\b').match
+
+def has_python_shebang(path):
+    with open(path, 'rb') as file:
+        line = file.readline(128)
+        return matches_python_shebang(line)
+
+def walk_paths(paths):
+    for path in paths:
+        if os.path.isdir(path):
+            for dirpath, dirnames, filenames in os.walk(path):
+                dirnames[:] = [d for d in dirnames if d != '__pycache__']
+                for filename in filenames:
+                    if filename.endswith(('.pyc', '.pyo')):
+                        continue
+                    path = os.path.join(dirpath, filename)
+                    if filename.endswith('.py'):
+                        pass
+                    elif has_python_shebang(path):
+                        pass
+                    else:
+                        continue
+                    yield path
+        else:
+            yield path
 
 def check_file(path, verbose=False, file=sys.stdout):
     n = 0
@@ -157,7 +184,7 @@ def main(runpy=False, script=None):
     elif script is not None:
         maybe_reexec(argv0=[script])
     ap = ArgumentParser(prog=prog)
-    ap.add_argument('paths', metavar='FILE', nargs='+')
+    ap.add_argument('paths', metavar='FILE-OR-DIR', nargs='+')
     ap.add_argument('--version', action=VersionAction)
     ap.add_argument('-v', '--verbose', action='store_true', help='print "OK" if no issues were found')
     ap.add_argument('-j', '--jobs', metavar='N', type=parse_jobs, default=1,
@@ -171,14 +198,15 @@ def main(runpy=False, script=None):
         options.jobs = 1
     checks.load_data()
     ok = True
+    paths_itr = walk_paths(options.paths)
     if options.jobs <= 1:
-        for path in options.paths:
+        for path in paths_itr:
             if check_file(path, verbose=options.verbose) > 0:
                 ok = False
     else:
         executor = concurrent.futures.ProcessPoolExecutor(max_workers=options.jobs)
         with executor:
-            for n, s in executor.map(check_file_s, options.paths, itertools.repeat(options.verbose)):
+            for n, s in executor.map(check_file_s, paths_itr, itertools.repeat(options.verbose)):
                 sys.stdout.write(s)
                 if n > 0:
                     ok = False
