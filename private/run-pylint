@@ -29,7 +29,7 @@ then
     pyre='^#!.*python'
     pyver=$("$PYTHON" -c 'import sys; print(sys.version_info[0])')
     [ "$pyver" = 2 ] && pyre="${pyre}(?!3)"
-    pyscripts=$(grep -l -r -P "$pyre" . | grep -v /build/)
+    pyscripts=$(grep -l -r -P "$pyre" . | grep -Ev '/build/|[.]py[co]$')
     set -- pydiatra setup.py tests/*.py $pyscripts
 fi
 if [ -n "${TRAVIS_PYTHON_VERSION:-}" ]
