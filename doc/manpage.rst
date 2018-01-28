@@ -16,15 +16,15 @@ Synopsis
 --------
 For Python 2:
 
-| **py2diatra** [*options*] *pyfile* [*pyfile* …]
+| **py2diatra** [*options*] *file-or-dir* [*file-or-dir* …]
 
 For Python 3:
 
-| **py3diatra** [*options*] *pyfile* [*pyfile* …]
+| **py3diatra** [*options*] *file-or-dir* [*file-or-dir* …]
 
 For any Python:
 
-| **python**\ *X*\ **.**\ *Y* **-m** **pydiatra** [*options*] *pyfile* [*pyfile* …]
+| **python**\ *X*\ **.**\ *Y* **-m** **pydiatra** [*options*] *file-or-dir* [*file-or-dir* …]
 
 (Beware that the last form adds current working directory to ``sys.path``.)
 
