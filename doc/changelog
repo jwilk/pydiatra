@@ -7,8 +7,9 @@ pydiatra (0.12) UNRELEASED; urgency=low
   * Disable bad regexp escape check only for Python ≥ 2.7.14.
     (Previously it was enabled also in Python 2.7.13 if it behaved the same
     way as later versions.)
+  * Reset the SIGPIPE signal disposition.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Sun, 28 Jan 2018 00:36:42 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 29 Jan 2018 16:21:44 +0100
 
 pydiatra (0.11.2) unstable; urgency=low
 
