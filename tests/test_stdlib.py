@@ -28,11 +28,10 @@ def get_mod_paths():
     stdlib_dir = os.path.dirname(os.__file__)
     for root, dirs, files in os.walk(stdlib_dir):
         for path in files:
-            for d in ['site-packages', 'dist-packages']:
-                try:
-                    dirs.remove(d)
-                except ValueError:
-                    pass
+            dirs[:] = [
+                d for d in dirs
+                if d not in ('site-packages', 'dist-packages')
+            ]
             if path.endswith('.py'):
                 path = os.path.join(root, path)
                 yield path
