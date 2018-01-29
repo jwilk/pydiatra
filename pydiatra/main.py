@@ -32,6 +32,7 @@ import itertools
 import multiprocessing
 import os
 import re
+import signal
 import sys
 
 try:
@@ -183,6 +184,7 @@ def main(runpy=False, script=None):
         )
     elif script is not None:
         maybe_reexec(argv0=[script])
+    signal.signal(signal.SIGPIPE, signal.SIG_DFL)
     ap = ArgumentParser(prog=prog)
     ap.add_argument('paths', metavar='FILE-OR-DIR', nargs='+')
     ap.add_argument('--version', action=VersionAction)
