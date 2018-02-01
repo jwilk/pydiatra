@@ -51,7 +51,7 @@ matches_python_shebang = re.compile(br'#!.*[/\s]python[0-9.]*\s').match
 def has_python_shebang(path):
     with open(path, 'rb') as file:
         line = file.readline(128)
-        return matches_python_shebang(line)
+    return matches_python_shebang(line)
 
 def walk_paths(paths):
     for path in paths:
