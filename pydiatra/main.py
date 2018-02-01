@@ -46,7 +46,7 @@ else:
 from . import __version__
 from . import checks
 
-matches_python_shebang = re.compile(br'#!.*\bpython[0-9.]*\b').match
+matches_python_shebang = re.compile(br'#!.*[/\s]python[0-9.]*\s').match
 
 def has_python_shebang(path):
     with open(path, 'rb') as file:
