@@ -64,7 +64,7 @@ def walk_paths(paths):
                     path = os.path.join(dirpath, filename)
                     if filename.endswith('.py'):
                         pass
-                    elif has_python_shebang(path):
+                    elif os.access(path, os.X_OK) and has_python_shebang(path):
                         pass
                     else:
                         continue
