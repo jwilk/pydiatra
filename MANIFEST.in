@@ -2,7 +2,7 @@ include MANIFEST.in
 
 include .pylintrc
 include LICENSE
-exclude README
+exclude README.rst
 include doc/*
 include private/*
 exclude private/git-*
