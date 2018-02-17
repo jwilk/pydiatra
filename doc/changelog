@@ -1,3 +1,9 @@
+pydiatra (0.12.1) UNRELEASED; urgency=low
+
+  * 
+
+ -- Jakub Wilk <jwilk@jwilk.net>  Sat, 17 Feb 2018 14:02:51 +0100
+
 pydiatra (0.12) unstable; urgency=low
 
   * Add support for checking directories recursively.
