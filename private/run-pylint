@@ -32,7 +32,7 @@ then
     pyscripts=$(grep -l -r -P "$pyre" . | grep -Ev '/build/|[.]py[co]$')
     set -- pydiatra setup.py tests/*.py $pyscripts
 fi
-if [ -n "${TRAVIS_PYTHON_VERSION:-}" ]
+if [ -n "${VIRTUAL_ENV:-}" ]
 then
     # https://github.com/PyCQA/pylint/issues/73
     set -- --ignored-modules=distutils "$@"
