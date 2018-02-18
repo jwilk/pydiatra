@@ -193,8 +193,6 @@ def main(runpy=False, script=None):
         help=('use N processes' if concurrent else argparse.SUPPRESS)
     )
     options = ap.parse_args()
-    if len(options.paths) <= 1:
-        options.jobs = 1
     if options.jobs > 1 and not concurrent:
         print('{prog}: warning: cannot import concurrent.futures: {msg}'.format(prog=ap.prog, msg=concurrent_exc), file=sys.stderr)
         options.jobs = 1
