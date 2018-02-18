@@ -386,7 +386,8 @@ class Visitor(ast.NodeVisitor):
                     except ValueError as exc:
                         message = str(exc)
                         message = re.sub(
-                            '^Unknown convers?ion ',  # https://hg.python.org/cpython/rev/b306105bf83d
+                            # https://github.com/python/cpython/commit/7b2a7710ef17e38e021f6f045b8cd7ad0e96d5e1
+                            '^Unknown convers?ion ',
                             'unknown conversion ',
                             message
                         )
