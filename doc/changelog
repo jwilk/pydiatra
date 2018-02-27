@@ -1,10 +1,10 @@
-pydiatra (0.12.1) UNRELEASED; urgency=low
+pydiatra (0.12.1) unstable; urgency=low
 
   * Don't disable parallelism when there's only one file to check.
     Now that recursive traversal is implemented, this optimization is no
     longer sound.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Sun, 18 Feb 2018 17:28:19 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Tue, 27 Feb 2018 22:33:18 +0100
 
 pydiatra (0.12) unstable; urgency=low
 
