@@ -80,9 +80,9 @@ Prerequisites
 * futures_ (needed only for Python 2.X)
 
 .. _argparse:
-   https://pypi.python.org/pypi/argparse
+   https://pypi.org/project/argparse/
 
 .. _futures:
-   https://pypi.python.org/pypi/futures
+   https://pypi.org/project/futures/
 
 .. vim:ft=rst ts=3 sts=3 sw=3 et tw=72
