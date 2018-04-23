@@ -37,5 +37,7 @@ script:
 - private/run-pydiatra
 - private/run-pyflakes
 - $if_pylint private/run-pylint
+- rm -rvf $VIRTUAL_ENV/lib/python*/site-packages/pydiatra*
+- pip install .
 
 # vim:ts=2 sts=2 sw=2 et
