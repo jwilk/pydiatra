@@ -40,6 +40,11 @@ else:
 # pylint: enable=import-error
 
 try:
+    from wheel.bdist_wheel import bdist_wheel
+except ImportError:
+    bdist_wheel = None
+
+try:
     import distutils644
 except ImportError:
     pass
@@ -204,6 +209,7 @@ setup_options = dict(
     scripts=[script_name],
     data_files=[('share/man/man1', ['doc/pydiatra.1', 'doc/{exe}.1'.format(exe=script_name)])],
     cmdclass=dict(
+        bdist_wheel=bdist_wheel,
         build_doc=cmd_build_doc,
         sdist=cmd_sdist,
     ),
