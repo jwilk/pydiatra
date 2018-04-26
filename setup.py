@@ -192,6 +192,12 @@ use_stub = sys.version_info < (2, 7)
 pkg_name = '_' * use_stub + 'pydiatra'
 script_name = 'py{0}diatra'.format(*sys.version_info)
 
+def d(**kwargs):
+    return dict(
+        (k, v) for k, v in kwargs.items()
+        if v is not None
+    )
+
 setup_options = dict(
     name='pydiatra',
     version=get_version(),
@@ -208,7 +214,7 @@ setup_options = dict(
     py_modules=['pydiatra'],
     scripts=[script_name],
     data_files=[('share/man/man1', ['doc/pydiatra.1', 'doc/{exe}.1'.format(exe=script_name)])],
-    cmdclass=dict(
+    cmdclass=d(
         bdist_wheel=bdist_wheel,
         build_doc=cmd_build_doc,
         sdist=cmd_sdist,
