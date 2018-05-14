@@ -144,7 +144,7 @@ class cmd_build_doc(distutils_build):
                 man_file.write(line)
 
     def run(self):
-        data_path = 'data/tags'
+        data_path = 'pydiatra/data/tags'
         tags_rst_path = 'doc/tags.rst'
         man_rst_path = 'doc/manpage.rst'
         man_path = 'doc/pydiatra.1'
