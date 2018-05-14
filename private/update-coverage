@@ -52,7 +52,7 @@ def print_coverage(tags, file):
         print('[{c}] {tag}'.format(c=c, tag=tag), file=file)
 
 def update_code_analysis_coverage():
-    path = 'data/tags'
+    path = 'pydiatra/data/tags'
     tags = read_tags(path)
     for path in glob.iglob('tests/*.t'):
         done = set()
