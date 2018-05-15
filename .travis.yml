@@ -10,6 +10,9 @@ python:
 - "3.5"
 - "3.6"
 - "3.7-dev"
+branches:
+  except:
+  - appveyor
 before_install:
 - if [[ $TRAVIS_PYTHON_VERSION = 2.6 ]]; then if_pylint=:; fi
 - if [[ $TRAVIS_PYTHON_VERSION = 3.2 ]]; then if_pylint=:; fi
