@@ -102,6 +102,10 @@ def parse_jobs(s):
 parse_jobs.__name__ = 'jobs'
 
 def maybe_reexec(argv0=None):
+    if os.name == 'nt':
+        # os.execv() is hopelessly broken on Windows.
+        # https://bugs.python.org/issue19124
+        return
     if sys.version_info >= (3,):
         return
     required_flags = dict(
