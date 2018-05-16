@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 import os
+import random
 import sys
 
 import tools
@@ -39,6 +40,9 @@ def get_mod_paths():
 
 def test():
     paths = list(get_mod_paths())
+    if os.name == 'nt':
+        # Windows has tight limits on command-line length.
+        paths = random.sample(paths, 200)
     parallel = True
     if os.name == 'nt' and sys.version_info < (3, 4):
         parallel = None
