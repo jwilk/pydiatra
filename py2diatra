@@ -1,3 +1,4 @@
 #!/usr/bin/python -3tt
 import pydiatra.main
-pydiatra.main.main(script=__file__)
+if __name__ == '__main__':
+    pydiatra.main.main(script=__file__)
