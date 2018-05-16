@@ -92,7 +92,7 @@ def run_pydiatra(paths, expected, expected_stderr=None, parallel=None, env=None)
         raise AssertionError('\n'.join(message))
 
 def get_tag_names():
-    path = os.path.join(basedir, 'data', 'tags')
+    path = os.path.join(basedir, 'pydiatra', 'data', 'tags')
     cp = configparser.RawConfigParser()
     options = {}
     if str is not bytes:
