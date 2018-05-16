@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 import os
+import sys
 
 import tools
 
@@ -38,6 +39,9 @@ def get_mod_paths():
 
 def test():
     paths = list(get_mod_paths())
-    tools.run_pydiatra(paths, expected=None, parallel=True)
+    parallel = True
+    if os.name == 'nt' and sys.version_info < (3, 4):
+        parallel = None
+    tools.run_pydiatra(paths, expected=None, parallel=parallel)
 
 # vim:ts=4 sts=4 sw=4 et

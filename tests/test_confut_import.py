@@ -53,7 +53,13 @@ def test():
             message = "No module named 'concurrent.futures'"
         else:
             message = 'No module named futures'
-        warning = '{prog}: warning: cannot import concurrent.futures: {msg}'.format(prog=prog, msg=message)
+        warning = '{prog}: warning: cannot import concurrent.futures: {msg}'
+        if os.name == 'nt':
+            if sys.version_info < (3,):
+                warning = '{prog}: warning: Windows multiprocessing is disabled for Python 2.X'
+            elif sys.version_info < (3, 4):
+                warning = '{prog}: warning: Windows multiprocessing requires Python >= 3.4'
+        warning = warning.format(prog=prog, msg=message)
         tools.run_pydiatra(
             [__file__, __file__],
             expected=None,

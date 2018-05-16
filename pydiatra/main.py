@@ -198,9 +198,20 @@ def main(runpy=False, script=None):
         help=('use N processes' if concurrent else argparse.SUPPRESS)
     )
     options = ap.parse_args()
-    if options.jobs > 1 and not concurrent:
-        print('{prog}: warning: cannot import concurrent.futures: {msg}'.format(prog=ap.prog, msg=concurrent_exc), file=sys.stderr)
-        options.jobs = 1
+    if options.jobs > 1:
+        warning = None
+        if not concurrent:
+            warning = 'cannot import concurrent.futures: {msg}'
+        if os.name == 'nt':
+            if sys.version_info < (3,):
+                warning = 'Windows multiprocessing is disabled for Python 2.X'
+            elif script and sys.version_info < (3, 4):
+                warning = 'Windows multiprocessing requires Python >= 3.4'
+        if warning is not None:
+            options.jobs = 1
+            warning = '{prog}: warning: ' + warning
+            warning = warning.format(prog=ap.prog, msg=concurrent_exc)
+            print(warning, file=sys.stderr)
     checks.load_data()
     ok = True
     paths_itr = walk_paths(options.paths)
