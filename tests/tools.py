@@ -93,6 +93,7 @@ def run_pydiatra(paths, expected, expected_stderr=None, parallel=None, env=None)
 
 def get_tag_names():
     path = os.path.join(basedir, 'pydiatra', 'data', 'tags')
+    os.stat(path)
     cp = configparser.RawConfigParser()
     options = {}
     if str is not bytes:
