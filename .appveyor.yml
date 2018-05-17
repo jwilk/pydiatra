@@ -1,0 +1,21 @@
+environment:
+  matrix:
+  - PYTHON: Python27
+  - PYTHON: Python33
+  - PYTHON: Python34
+  - PYTHON: Python35
+  - PYTHON: Python36
+
+install:
+- SET PATH=C:\\%PYTHON%;%PATH%
+- python --version
+- python -m pip install docutils
+- python -m pip install nose
+
+build_script:
+- python setup.py build
+
+test_script:
+- python tests/run-tests -v
+
+# vim:ts=2 sts=2 sw=2 et
