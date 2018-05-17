@@ -23,6 +23,7 @@
 
 import io
 import os
+import posixpath
 import re
 import sys
 import unittest
@@ -87,6 +88,8 @@ class TestCase(unittest.TestCase):
                     if relation == '==' and sys.version_info[:len(version)] != version:
                         continue
                 xline = match.group('expected')
+                upath = posixpath.join(*self.path.split(os.sep))
+                xline = xline.replace(repr(upath), repr(self.path))
                 if xline[:2] == '*:':
                     xline = str(code_n) + xline[1:]
                 expected += [(
