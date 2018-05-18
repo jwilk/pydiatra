@@ -1,8 +1,13 @@
 pydiatra (0.12.3) UNRELEASED; urgency=low
 
-  * 
+  * Fix Windows multiprocessing.
+    As a result of bugs in Python interpreters that are difficult to work
+    around, Windows multiprocessing is now disabled:
+    - for Python 2.X;
+    - for Python 3.0-3.3 (except when using the -m option).
+  * Improve the test suite.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Thu, 17 May 2018 12:13:01 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Fri, 18 May 2018 13:06:44 +0200
 
 pydiatra (0.12.2) unstable; urgency=low
 
