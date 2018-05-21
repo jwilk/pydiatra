@@ -1,1 +1,1 @@
-tests/*.t linguist-language=Python
+/tests/*.t linguist-language=Python
