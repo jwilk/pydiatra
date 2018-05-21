@@ -14,13 +14,16 @@ branches:
   except:
   - appveyor
 before_install:
+- pyflakes=pyflakes
+- if [[ $TRAVIS_PYTHON_VERSION = 2.6 ]]; then pyflakes='pyflakes<2'; fi
+- if [[ $TRAVIS_PYTHON_VERSION = 3.[23] ]]; then pyflakes='pyflakes<2'; fi
 - if [[ $TRAVIS_PYTHON_VERSION = 2.6 ]]; then if_pylint=:; fi
 - if [[ $TRAVIS_PYTHON_VERSION = 3.2 ]]; then if_pylint=:; fi
 - if [[ $TRAVIS_PYTHON_VERSION = *-dev ]]; then if_pylint=:; fi
 - pyXdiatra=py${TRAVIS_PYTHON_VERSION%.*}diatra
 install:
 - pip install "futures; python_version < '3'"
-- pip install pyflakes
+- pip install $pyflakes
 - $if_pylint pip install pylint
 - pip install docutils
 script:
