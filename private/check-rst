@@ -32,7 +32,7 @@ options='--input-encoding=UTF-8 --strict'
 if [ $# -eq 0 ]
 then
     find "${root}doc" -name '*.rst'
-    grep -rwl 'ft[=]rst' "${root}doc"
+    grep -rwl 'ft=rst' "${root}doc"
 else
     printf '%s\n' "$@"
 fi |
