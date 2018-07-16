@@ -24,7 +24,7 @@ before_install:
 - if [[ $TRAVIS_PYTHON_VERSION = 2.6 ]]; then pyflakes='pyflakes<2'; fi
 - if [[ $TRAVIS_PYTHON_VERSION = 3.[23] ]]; then pyflakes='pyflakes<2'; fi
 - if [[ $TRAVIS_PYTHON_VERSION = 2.6 ]]; then if_pylint=:; fi
-- if [[ $TRAVIS_PYTHON_VERSION = 3.2 ]]; then if_pylint=:; fi
+- if [[ $TRAVIS_PYTHON_VERSION = 3.[23] ]]; then if_pylint=:; fi
 - if [[ $TRAVIS_PYTHON_VERSION = *-dev ]]; then if_pylint=:; fi
 - pyXdiatra=py${TRAVIS_PYTHON_VERSION%.*}diatra
 install:
