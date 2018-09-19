@@ -1,9 +1,9 @@
-pydiatra (0.12.4) UNRELEASED; urgency=low
+pydiatra (0.12.4) unstable; urgency=low
 
   * Fix compatibility with Python ≥ 3.8.
   * Improve the test suite.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Wed, 19 Sep 2018 18:49:03 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Wed, 19 Sep 2018 19:00:56 +0200
 
 pydiatra (0.12.3) unstable; urgency=low
 
