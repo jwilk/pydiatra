@@ -105,6 +105,12 @@ def normalize_token(tok):
         raise TypeError
     return tok
 
+def get_subpattern_flags(node):
+    if sys.version_info >= (3, 8):
+        return node.state.flags
+    else:
+        return node.pattern.flags
+
 class ReVisitor(object):
 
     def __init__(self, tp, path, location):
@@ -135,7 +141,7 @@ class ReVisitor(object):
             original_flags = self.flags
             try:
                 if self.flags is None:
-                    self.flags = node.pattern.flags
+                    self.flags = get_subpattern_flags(node)
                     if self.flags & re.IGNORECASE:
                         for flag in locale_flags.values():
                             self.justified_flags |= flag
@@ -470,7 +476,7 @@ def check(owner, node):
     for t in re_visitor.visit(subpattern):
         yield t
     for name, flag in sorted(possibly_redundant_flags.items()):
-        if (flag & subpattern.pattern.flags) and not (flag & re_visitor.justified_flags):  # pylint: disable=superfluous-parens
+        if (flag & get_subpattern_flags(subpattern)) and not (flag & re_visitor.justified_flags):  # pylint: disable=superfluous-parens
             yield owner.tag(node, 'regexp-redundant-flag', 're.' + name)
 
 __all__ = ['check']
