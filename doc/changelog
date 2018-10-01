@@ -1,8 +1,9 @@
 pydiatra (0.12.5) UNRELEASED; urgency=low
 
-  * 
+  * Fix compatibility with Python ≥ 3.8.
+    https://bugs.python.org/issue32892
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 01 Oct 2018 08:56:10 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 01 Oct 2018 11:01:27 +0200
 
 pydiatra (0.12.4) unstable; urgency=low
 
