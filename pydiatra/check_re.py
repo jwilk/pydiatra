@@ -261,6 +261,10 @@ class Evaluator(ast.NodeVisitor):
     def generic_visit(self, node):
         raise BadConst
 
+    def visit_Constant(self, node):
+        if isinstance(node.value, (str, bytes)):
+            return node.s
+
     def visit_Str(self, node):
         return node.s
 

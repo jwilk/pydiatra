@@ -313,6 +313,11 @@ class Visitor(ast.NodeVisitor):
             yield self.tag(None, 'embedded-code-copy', info)
             self.state.code_copy = True
 
+    def visit_Constant(self, node):
+        if isinstance(node, ast.Str):
+            for t in self.visit_Str(node):
+                yield t
+
     def visit_Str(self, node):
         for t in self.check_str(node.s):
             yield t
