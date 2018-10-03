@@ -33,6 +33,9 @@ import nose.plugins
 
 import tools
 
+if nose.__versioninfo__ < (0, 11):
+    raise RuntimeError('nose >= 0.11 is required')
+
 class Plugin(nose.plugins.Plugin):
 
     name = 'pydiatra'
