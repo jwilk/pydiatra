@@ -22,6 +22,9 @@ disable =
     too-many-statements,
     useless-object-inheritance,
 
+[BASIC]
+no-docstring-rgx = .*
+
 [REPORTS]
 reports = no
 msg-template = {C}: {path}:{line}: {symbol} [{obj}] {msg}
