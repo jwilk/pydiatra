@@ -115,7 +115,7 @@ pydiatra (0.8) unstable; urgency=low
   * Make “--version” print also version of Python.
   * Improve the setup script:
     + Add long description.
-    + Use distutils644 to sanitize tarball permissions etc.
+    + Use distutils644 to normalize tarball permissions etc.
 
  -- Jakub Wilk <jwilk@jwilk.net>  Thu, 13 Apr 2017 13:23:37 +0200
 
