@@ -59,7 +59,7 @@ def extract_exceptions(version):
     if re.match(r'\A2[.][0-5]\Z', version):
         url = 'https://docs.python.org/{ver}/lib/module-exceptions.html'
     url = url.format(ver=version)
-    with urllib.request.urlopen(url, cadefault=True) as fp:
+    with urllib.request.urlopen(url) as fp:
         html = fp.read()
     html = html.decode('UTF-8')
     match = re.search('<pre>(?:<span></span>)?(?:<span class="ne">)?(BaseException.*?)</pre>', html, flags=re.DOTALL)
