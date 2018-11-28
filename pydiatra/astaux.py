@@ -31,13 +31,7 @@ if sys.version_info >= (3, 2):
     import tokenize
     python_open = tokenize.open  # pylint: disable=no-member
     del tokenize
-elif sys.version_info >= (3,):
-    import py_compile
-    def python_open(path, read_encoding=py_compile.read_encoding):  # pylint: disable=no-member
-        encoding = read_encoding(path, 'utf-8')
-        return open(path, 'rU', encoding=encoding)
-    del py_compile
-else:
+elif sys.version_info < (3,):
     def python_open(path):
         return open(path, 'rU')
 
