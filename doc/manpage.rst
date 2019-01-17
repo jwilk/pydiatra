@@ -39,9 +39,9 @@ Options
    or ``auto`` to determine the number automatically.
    The default is to use only a single process.
 -h, --help
-   Show the help message and exit.
+   Show help message and exit.
 --version
-   Show the program's version number and exit.
+   Show version information and exit.
 
 Description
 -----------
