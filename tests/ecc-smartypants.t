@@ -2,4 +2,4 @@ __description__ = "Smart-quotes, smart-ellipses, and smart-dashes for weblog ent
 
 ## embedded-code-copy smartypants
 
-# vim:ts=4 sts=4 sw=4 et syntax=python
+# vim:ts=4 sts=4 sw=4 et ft=python

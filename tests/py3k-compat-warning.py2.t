@@ -18,4 +18,4 @@ b'ó'
 ## 9: py3k-compat-warning backquote not supported in 3.x; use repr()
 ## [>= 2.7] 10: py3k-compat-warning non-ascii bytes literals not supported in 3.x
 
-# vim:ts=4 sts=4 sw=4 et syntax=python
+# vim:ts=4 sts=4 sw=4 et ft=python

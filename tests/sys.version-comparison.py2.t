@@ -8,4 +8,4 @@ if sys.version >= u'2.7':
 elif sys.version_info >= u'2·7':
     pass
 
-# vim:ts=4 sts=4 sw=4 et syntax=python
+# vim:ts=4 sts=4 sw=4 et ft=python

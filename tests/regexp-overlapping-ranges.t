@@ -12,4 +12,4 @@ re.compile('[\0-\r\t]')
 re.compile(b'[\0-\r\t]')
 ## *: regexp-overlapping-ranges \x00-\r \t
 
-# vim:ts=4 sts=4 sw=4 et syntax=python
+# vim:ts=4 sts=4 sw=4 et ft=python

@@ -12,4 +12,4 @@ def match_hostname(cert, hostname):
 
 ## embedded-code-copy ssl.match_hostname() => Python (>= 3.2) | backports.ssl_match_hostname
 
-# vim:ts=4 sts=4 sw=4 et syntax=python
+# vim:ts=4 sts=4 sw=4 et ft=python

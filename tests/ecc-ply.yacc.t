@@ -8,4 +8,4 @@ class LRParser:
 
 ## embedded-code-copy ply.yacc
 
-# vim:ts=4 sts=4 sw=4 et syntax=python
+# vim:ts=4 sts=4 sw=4 et ft=python

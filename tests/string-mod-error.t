@@ -26,4 +26,4 @@ x = ('eggs', 'ham')
 ## 11: string-formatting-error %d format: a number is required, not str
 ## 12: string-formatting-error unsupported format character 'S' (0x53) at index 7
 
-# vim:ts=4 sts=4 sw=4 et syntax=python
+# vim:ts=4 sts=4 sw=4 et ft=python

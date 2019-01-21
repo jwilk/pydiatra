@@ -34,4 +34,4 @@ re.compile('(?m)$')
 re.compile('(?m).')
 ## *: regexp-redundant-flag re.MULTILINE
 
-# vim:ts=4 sts=4 sw=4 et syntax=python
+# vim:ts=4 sts=4 sw=4 et ft=python

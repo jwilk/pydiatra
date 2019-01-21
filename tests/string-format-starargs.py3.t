@@ -3,4 +3,4 @@ meat = ['spam', 'ham']
 
 ## [<< 3.5] 2: syntax-error can use starred expression only as assignment target
 
-# vim:ts=4 sts=4 sw=4 et syntax=python
+# vim:ts=4 sts=4 sw=4 et ft=python

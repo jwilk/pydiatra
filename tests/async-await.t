@@ -4,4 +4,4 @@ async = 42
 await = 37
 ## [<< 3.7] *: async-await-used-as-name
 
-# vim:ts=4 sts=4 sw=4 et syntax=python
+# vim:ts=4 sts=4 sw=4 et ft=python

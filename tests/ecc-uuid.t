@@ -9,4 +9,4 @@ UUIDs as specified in RFC 4122.
 
 ## embedded-code-copy uuid => Python (>= 2.5)
 
-# vim:ts=4 sts=4 sw=4 et syntax=python
+# vim:ts=4 sts=4 sw=4 et ft=python

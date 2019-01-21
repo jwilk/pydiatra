@@ -18,4 +18,4 @@ except (IOError, 'eggs' + '+' + 'ham', OSError):
 ## 9: string-exception
 ## 11: string-exception
 
-# vim:ts=4 sts=4 sw=4 et syntax=python
+# vim:ts=4 sts=4 sw=4 et ft=python

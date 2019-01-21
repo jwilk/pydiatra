@@ -70,4 +70,4 @@ re.compile('#(\n)', flags=(re.VERBOSE + re.MULTILINE + re.DEBUG))
 ## [<< 3.5] *: regexp-syntax-error unbalanced parenthesis
 ## [>= 3.5] *: regexp-syntax-error unbalanced parenthesis at position 3 (line 2, column 1)
 
-# vim:ts=4 sts=4 sw=4 et syntax=python
+# vim:ts=4 sts=4 sw=4 et ft=python

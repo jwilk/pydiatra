@@ -12,4 +12,4 @@ re.compile(r'([+-^x])(?i:[+-^y])([+-^z])')
 
 re.compile('[0-9=-~]', re.I)
 
-# vim:ts=4 sts=4 sw=4 et syntax=python
+# vim:ts=4 sts=4 sw=4 et ft=python

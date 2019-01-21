@@ -9,4 +9,4 @@ the style of RFC 822.
 
 ## embedded-code-copy ConfigParser => Python
 
-# vim:ts=4 sts=4 sw=4 et syntax=python
+# vim:ts=4 sts=4 sw=4 et ft=python

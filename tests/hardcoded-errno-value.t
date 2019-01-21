@@ -33,4 +33,4 @@ except IOError as exc:
 ## 22: hardcoded-errno-value 20 -> errno.ENOTDIR
 ## 28: hardcoded-errno-value 28 -> errno.ENOSPC
 
-# vim:ts=4 sts=4 sw=4 et syntax=python
+# vim:ts=4 sts=4 sw=4 et ft=python
