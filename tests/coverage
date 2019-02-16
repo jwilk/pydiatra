@@ -20,6 +20,6 @@
 [X] string-exception
 [4] string-formatting-error
 [#] syntax-error
-[3] syntax-warning
+[5] syntax-warning
 [X] sys.hexversion-comparison
 [2] sys.version-comparison
