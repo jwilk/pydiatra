@@ -27,9 +27,6 @@ before_install:
 install:
 - pip install "futures; python_version < '3'"
 - pip install $pyflakes
-- if [[ $TRAVIS_PYTHON_VERSION = *-dev ]]; then
-    printf '\n\n    CONSTANT = ignore\n' >> $VIRTUAL_ENV/lib/python*/site-packages/pyflakes/checker.py;
-  fi
 - $if_pylint pip install pylint
 - pip install docutils
 script:
