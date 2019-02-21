@@ -2,8 +2,12 @@ pydiatra (0.12.5) UNRELEASED; urgency=low
 
   * Fix compatibility with Python ≥ 3.8.
     https://bugs.python.org/issue32892
+  * Rephrase help messages for --help, --version.
+  * Improve typography in the manual page.
+  * Improve error handling.
+  * Improve the test suite.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 01 Oct 2018 11:01:27 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Thu, 21 Feb 2019 18:43:20 +0100
 
 pydiatra (0.12.4) unstable; urgency=low
 
