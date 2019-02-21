@@ -141,6 +141,7 @@ class cmd_build_doc(distutils_build):
                 if line.startswith('.BI'):
                     # work-around for <https://bugs.debian.org/806601>:
                     line = line.replace(r'\fP', r'\fR')
+                line = re.sub(r'(?<=[a-zA-Z])\\\(aq(?=[a-z])', "'", line)
                 man_file.write(line)
 
     def run(self):
