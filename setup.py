@@ -30,6 +30,8 @@ import sys
 
 import distutils.core
 from distutils.command.build import build as distutils_build
+from distutils.command.install import install as distutils_install
+from distutils.command.install_data import install_data as distutils_install_data
 from distutils.command.sdist import sdist as distutils_sdist
 
 # pylint: disable=import-error
@@ -156,6 +158,23 @@ class cmd_build_doc(distutils_build):
 
 distutils_build.sub_commands[:0] = [('build_doc', None)]
 
+class cmd_install_doc(distutils_install_data):
+
+    description = 'install documentation'
+
+    def run(self):
+        man_dir = os.path.join(self.install_dir, 'share/man/man1')
+        self.mkpath(man_dir)
+        path = '{dir}/{prog}.1'.format(dir=man_dir, prog=script_name)
+        msg = 'writing {path}'.format(path=path)
+        data = ['.so pydiatra.1']
+        self.execute(distutils.file_util.write_file, (path, data), msg)
+        self.outfiles += [path]
+        (path, _) = self.copy_file('doc/pydiatra.1', man_dir)
+        self.outfiles += [path]
+
+distutils_install.sub_commands[:0] = [('install_doc', None)]
+
 class cmd_sdist(distutils_sdist):
 
     def run(self):
@@ -216,10 +235,10 @@ setup_options = dict(
     package_data={pkg_name: ['data/*']},
     py_modules=['pydiatra'],
     scripts=[script_name],
-    data_files=[('share/man/man1', ['doc/pydiatra.1', 'doc/{exe}.1'.format(exe=script_name)])],
     cmdclass=d(
         bdist_wheel=bdist_wheel,
         build_doc=cmd_build_doc,
+        install_doc=cmd_install_doc,
         sdist=cmd_sdist,
     ),
 )
