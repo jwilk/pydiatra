@@ -46,7 +46,9 @@ script:
 - popd
 - private/run-pydiatra
 - private/run-pyflakes
+- $if_pylint mv $VIRTUAL_ENV/lib/python$TRAVIS_PYTHON_VERSION/distutils{,.bak}
 - $if_pylint private/run-pylint
+- $if_pylint mv $VIRTUAL_ENV/lib/python$TRAVIS_PYTHON_VERSION/distutils{.bak,}
 - rm -rvf $VIRTUAL_ENV/lib/python*/site-packages/pydiatra*
 - pip install .
 
