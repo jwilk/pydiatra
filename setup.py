@@ -138,6 +138,8 @@ class cmd_build_doc(distutils_build):
         tmp_file.seek(0)
         with uopen(man_path, 'w') as man_file:
             for line in tmp_file:
+                if line.startswith(r'.\" vim:'):
+                    continue
                 if line.startswith('.BI'):
                     # work-around for <https://bugs.debian.org/806601>:
                     line = line.replace(r'\fP', r'\fR')
