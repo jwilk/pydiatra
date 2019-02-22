@@ -6,8 +6,9 @@ pydiatra (0.12.5) UNRELEASED; urgency=low
   * Improve typography in the manual page.
   * Improve error handling.
   * Improve the test suite.
+  * Generate py2diatra.1 and py3diatra.1 man pages at install time.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Thu, 21 Feb 2019 18:43:20 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Fri, 22 Feb 2019 10:45:00 +0100
 
 pydiatra (0.12.4) unstable; urgency=low
 
