@@ -466,7 +466,11 @@ def check(owner, node):
         return
     for wrn in wrns:
         message = str(wrn.message)
-        if message.startswith(('LOCALE flag with a str pattern is deprecated.', 'ASCII and LOCALE flags are incompatible.')):
+        boring = (
+            'LOCALE flag with a str pattern is deprecated.',
+            'ASCII and LOCALE flags are incompatible.',
+        )
+        if message.startswith(boring):
             # emitted elsewhere
             continue
         if message.startswith('bad escape '):
