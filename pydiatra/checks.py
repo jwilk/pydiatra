@@ -325,7 +325,7 @@ class Visitor(ast.NodeVisitor):
     def visit_BinOp(self, node):
         fn = getattr(self,
             'visit_BinOp_' + node.op.__class__.__name__,
-             self.generic_visit
+            self.generic_visit
         )
         return fn(node)
 
