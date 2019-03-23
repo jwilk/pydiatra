@@ -1,3 +1,9 @@
+pydiatra (0.12.6) UNRELEASED; urgency=low
+
+  * 
+
+ -- Jakub Wilk <jwilk@jwilk.net>  Sat, 23 Mar 2019 16:54:04 +0100
+
 pydiatra (0.12.5) unstable; urgency=low
 
   * Fix compatibility with Python 3.8.
