@@ -124,8 +124,10 @@ class cmd_build_doc(distutils_build):
             print()
 
     def make_man(self, rst_path, man_path):
+        # pylint: disable=import-outside-toplevel
         import docutils.core
         import docutils.writers.manpage
+        # pylint: enable=import-outside-toplevel
         if str is bytes:
             tmp_file = io.BytesIO()
         else:
