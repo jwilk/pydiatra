@@ -35,8 +35,8 @@ fi
 log=$(mktemp -t pylint.XXXXXX)
 "$PYTHON" -m pylint "$@" > "$log" || [ $? != 1 ]
 ! grep -P '^\S+:' "$log" \
-| grep -v -P '^(?!pydiatra/).+: missing-docstring ' \
-| grep -v -P '^\S+/__main__[.]py:.+: missing-docstring ' \
+| grep -v -P '^(?!pydiatra/).+: missing-(\w+-)?docstring ' \
+| grep -v -P '^\S+/__main__[.]py:.+: missing-(\w+-)?docstring ' \
 | grep -v ": redefined-builtin \\[.*\\] Redefining built-in 'file'" \
 | LC_ALL=C sort -k2 \
 | grep '.' || exit 1
