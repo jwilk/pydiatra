@@ -18,6 +18,9 @@ branches:
   except:
   - appveyor
 before_install:
+- docutils=docutils
+- if [[ $TRAVIS_PYTHON_VERSION = 2.6 ]]; then docutils+='<0.16'; fi
+- if [[ $TRAVIS_PYTHON_VERSION = 3.[234] ]]; then docutils+='<0.16'; fi
 - pyflakes=pyflakes
 - if [[ $TRAVIS_PYTHON_VERSION = 2.6 ]]; then pyflakes='pyflakes<2'; fi
 - if [[ $TRAVIS_PYTHON_VERSION = 3.[23] ]]; then pyflakes='pyflakes<2'; fi
@@ -29,7 +32,7 @@ install:
 - pip install "futures; python_version < '3'"
 - pip install $pyflakes
 - $if_pylint pip install pylint
-- pip install docutils
+- pip install $docutils
 before_script:
 - distutils_pkg=$(python -c 'import os, distutils as d; print(os.path.dirname(d.__file__))')
 - echo "$distutils_pkg"
