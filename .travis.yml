@@ -22,8 +22,8 @@ before_install:
 - if [[ $TRAVIS_PYTHON_VERSION = 2.6 ]]; then docutils+='<0.16'; fi
 - if [[ $TRAVIS_PYTHON_VERSION = 3.[234] ]]; then docutils+='<0.16'; fi
 - pyflakes=pyflakes
-- if [[ $TRAVIS_PYTHON_VERSION = 2.6 ]]; then pyflakes='pyflakes<2'; fi
-- if [[ $TRAVIS_PYTHON_VERSION = 3.[23] ]]; then pyflakes='pyflakes<2'; fi
+- if [[ $TRAVIS_PYTHON_VERSION = 2.6 ]]; then pyflakes+='<2'; fi
+- if [[ $TRAVIS_PYTHON_VERSION = 3.[23] ]]; then pyflakes+='<2'; fi
 - if [[ $TRAVIS_PYTHON_VERSION = 2.6 ]]; then if_pylint=:; fi
 - if [[ $TRAVIS_PYTHON_VERSION = 3.[23] ]]; then if_pylint=:; fi
 - if [[ $TRAVIS_PYTHON_VERSION = *-dev ]]; then if_pylint=:; fi
