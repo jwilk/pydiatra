@@ -287,10 +287,13 @@ class Visitor(ast.NodeVisitor):
             elif isinstance(node.value.func, ast.Attribute):
                 func = call.func.attr
         if func == 'mkstemp':
+            index = None
             if isinstance(node.slice, ast.Index):
                 index = node.slice.value
-                if isinstance(index, ast.Num) and index.n == 1:
-                    yield self.tag(node, 'mkstemp-file-descriptor-leak')
+            elif isinstance(node.slice, ast.Num):
+                index = node.slice
+            if isinstance(index, ast.Num) and index.n == 1:
+                yield self.tag(node, 'mkstemp-file-descriptor-leak')
         for t in self.generic_visit(node):
             yield t
 
