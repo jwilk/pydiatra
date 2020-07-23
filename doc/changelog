@@ -1,8 +1,10 @@
 pydiatra (0.12.6) UNRELEASED; urgency=low
 
-  * 
+  * Fix compatibility with Python 3.9.
+  * Improve documentation:
+    + Use HTTPS for opengroup.org URL.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Sat, 23 Mar 2019 16:54:04 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Thu, 23 Jul 2020 17:40:04 +0200
 
 pydiatra (0.12.5) unstable; urgency=low
 
