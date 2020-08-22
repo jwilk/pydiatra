@@ -27,8 +27,9 @@ from nose.tools import (
     assert_equal,
 )
 
-import pydiatra
 import tools
+
+import pydiatra
 
 def test_changelog():
     path = os.path.join(tools.basedir, 'doc', 'changelog')
