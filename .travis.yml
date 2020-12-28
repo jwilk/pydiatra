@@ -36,7 +36,8 @@ install:
 - pip install $docutils
 before_script:
 - distutils_pkg=$(python -c 'import os, distutils as d; print(os.path.dirname(d.__file__))')
-- echo "$distutils_pkg"
+- echo "$distutils_pkg" "$VIRTUAL_ENV"
+- if [[ $distutils_pkg != "${VIRTUAL_ENV%/}"/* ]]; then if_vdistutils=:; fi
 script:
 - dpkg-parsechangelog -ldoc/changelog --all 2>&1 >/dev/null | { ! grep .; }
 - python setup.py build
@@ -54,9 +55,9 @@ script:
 - popd
 - private/run-pydiatra
 - private/run-pyflakes
-- $if_pylint mv $distutils_pkg{,.bak}
+- $if_pylint $if_vdistutils mv $distutils_pkg{,.bak}
 - $if_pylint private/run-pylint
-- $if_pylint mv $distutils_pkg{.bak,}
+- $if_pylint $if_vdistutils mv $distutils_pkg{.bak,}
 - rm -rvf $VIRTUAL_ENV/lib/python*/site-packages/pydiatra*
 - pip install .
 
