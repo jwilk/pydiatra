@@ -220,8 +220,8 @@ def main(runpy=False, script=None):
             if check_file(path, verbose=options.verbose) > 0:
                 ok = False
     else:
-        executor = concurrent.futures.ProcessPoolExecutor(max_workers=options.jobs)
-        with executor:
+        Executor = concurrent.futures.ProcessPoolExecutor
+        with Executor(max_workers=options.jobs) as executor:
             for n, s in executor.map(check_file_s, paths_itr, itertools.repeat(options.verbose)):
                 sys.stdout.write(s)
                 if n > 0:
