@@ -57,9 +57,9 @@ b = b''  # Python >= 2.6 is required
 
 def uopen(*args):
     if str is bytes:
-        return open(*args)
+        return open(*args)  # pylint: disable=consider-using-with
     else:
-        return open(*args, encoding='UTF-8')
+        return open(*args, encoding='UTF-8')  # pylint: disable=consider-using-with
 
 def get_readme():
     with io.open('doc/README', encoding='ASCII') as file:

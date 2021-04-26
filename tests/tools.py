@@ -55,7 +55,7 @@ def run_pydiatra(paths, expected, expected_stderr=None, parallel=None, env=None)
     elif parallel is not None:
         options += ['-j{n:d}'.format(n=parallel)]
     commandline = [sys.executable, pyflags, script] + options + paths
-    checker = ipc.Popen(commandline,
+    checker = ipc.Popen(commandline,  # pylint: disable=consider-using-with
         stdout=ipc.PIPE,
         stderr=ipc.PIPE,
         env=env,
