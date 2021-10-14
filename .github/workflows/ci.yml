@@ -27,9 +27,7 @@ jobs:
           os: ubuntu-20.04
         - python: '3.10-dev'
           os: ubuntu-20.04
-          broken: true
     runs-on: ${{matrix.os}}
-    continue-on-error: ${{matrix.broken || false}}
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{matrix.python}}
