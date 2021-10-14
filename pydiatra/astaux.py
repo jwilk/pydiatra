@@ -33,7 +33,7 @@ if sys.version_info >= (3, 2):
     del tokenize
 elif sys.version_info < (3,):
     def python_open(path):
-        return open(path, 'rU')  # pylint: disable=consider-using-with
+        return open(path, 'rU')  # pylint: disable=consider-using-with,unspecified-encoding
 
 class OpDict(object):
 
