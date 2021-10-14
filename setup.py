@@ -57,7 +57,7 @@ b = b''  # Python >= 2.6 is required
 
 def uopen(*args):
     if str is bytes:
-        return open(*args)  # pylint: disable=consider-using-with
+        return open(*args)  # pylint: disable=consider-using-with,unspecified-encoding
     else:
         return open(*args, encoding='UTF-8')  # pylint: disable=consider-using-with
 
