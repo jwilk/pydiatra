@@ -25,7 +25,6 @@ set -e -u
 here=$(dirname "$0")
 
 PYTHON=${PYTHON:-python3}
-[ -n "${TRAVIS_PYTHON_VERSION:-}" ] && PYTHON=python
 
 if [ $# -eq 0 ]
 then
