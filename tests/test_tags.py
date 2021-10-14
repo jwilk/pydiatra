@@ -59,7 +59,7 @@ def read_ast_tags(paths):
         options.update(encoding='UTF-8')
     result = []
     for path in paths:
-        with open(path, 'rt', **options) as file:
+        with open(path, 'rt', **options) as file:  # pylint: disable=unspecified-encoding
             body = file.read()
         node = ast.parse(body, filename=path)
         result += [
