@@ -51,7 +51,10 @@ code_copies_regex = None
 
 def load_data_file(ident):
     path = '{dir}/{ident}'.format(dir=datadir, ident=ident)
-    with open(path) as file:
+    options = {}
+    if str is not bytes:
+        options.update(encoding='ASCII')
+    with open(path, 'rt', **options) as file:  # pylint: disable=unspecified-encoding
         for line in file:
             line = line.strip()
             if not line:
