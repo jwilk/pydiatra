@@ -1,0 +1,102 @@
+name: CI
+on:
+  push:
+    branches-ignore:
+    - appveyor
+  pull_request:
+jobs:
+  main:
+    strategy:
+      matrix:
+        include:
+        - python: '2.7'
+          os: ubuntu-20.04
+        - python: '3.3'
+          os: ubuntu-18.04
+        - python: '3.4'
+          os: ubuntu-18.04
+        - python: '3.5'
+          os: ubuntu-18.04
+        - python: '3.6'
+          os: ubuntu-20.04
+        - python: '3.7'
+          os: ubuntu-20.04
+        - python: '3.8'
+          os: ubuntu-20.04
+        - python: '3.9'
+          os: ubuntu-20.04
+        - python: '3.10-dev'
+          os: ubuntu-20.04
+          broken: true
+    runs-on: ${{matrix.os}}
+    continue-on-error: ${{matrix.broken || false}}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{matrix.python}}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{matrix.python}}
+    - name: install deps
+      run: |
+        pip install "futures; python_version < '3'"
+        pip install docutils
+    - name: build
+      run:
+        python setup.py build
+    - name: check docs
+      run: |
+        dpkg-parsechangelog -ldoc/changelog --all 2>&1 >/dev/null | { ! grep .; }
+        private/check-rst
+    - name: run tests
+      run: |
+        pip install --no-binary ':all:' nose
+        python tests/run-tests -v
+    - name: check test coverage
+      run: |
+        private/update-coverage
+        git diff --exit-code
+    - name: install
+      run:
+        python setup.py install --user
+    - name: check whether the module is installed correctly
+      run: |
+        cd /
+        python -m pydiatra --version
+    - name: check whether the executable is installed correctly
+      run: |
+        cd /
+        pyXdiatra=py${pyver%.*}diatra
+        $pyXdiatra --version
+      env:
+        pyver: ${{matrix.python}}
+    - name: check whether the manual pages are installed correctly
+      run: |
+        cd /
+        man 1 pydiatra | grep -A 15 -w PYDIATRA
+        pyXdiatra=py${pyver%.*}diatra
+        man 1 $pyXdiatra | grep -A 15 -w PYDIATRA
+      env:
+        MANPATH: /home/runner/.local/share/man
+        pyver: ${{matrix.python}}
+    - name: install with pip
+      run: |
+        rm -rvf ~/.local/lib/python*/site-packages/pydiatra*
+        pip install .
+    - name: run pydiatra
+      run: |
+        PYTHON=python private/run-pydiatra
+    - name: run pyflakes
+      run: |
+        pyflakes=pyflakes
+        if [[ ${{matrix.python}} = 3.3 ]]; then pyflakes+='<2'; fi
+        pip install $pyflakes
+        PYTHON=python private/run-pyflakes
+    - name: run pylint
+      run: |
+        pip install pylint
+        PYTHON=python private/run-pylint
+      if:
+        matrix.python != '3.3' &&
+        matrix.python != '3.4'
+
+# vim:ts=2 sts=2 sw=2 et
