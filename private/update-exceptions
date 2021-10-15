@@ -47,7 +47,7 @@ def main():
     today = datetime.date.today()
     header = header_template.format(
         today=today,
-        versions=', '.join(sorted(versions))
+        versions=', '.join(versions)
     )
     with open(path, 'wt', encoding='ASCII') as file:
         print(header, file=file)
