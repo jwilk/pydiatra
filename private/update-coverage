@@ -25,6 +25,7 @@ import glob
 import os
 import re
 
+# XXX Keep this in sync with tests/run-tests.
 _comment_re = re.compile(r'''
     ^ [#][#]
     (?: \s+ \[ (?:

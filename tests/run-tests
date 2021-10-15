@@ -54,6 +54,7 @@ class Plugin(nose.plugins.Plugin):
 
 class TestCase(unittest.TestCase):
 
+    # XXX Keep this in sync with private/update-coverage.
     _comment_re = re.compile(r'''
         ^ [#][#]
         (?: \s+ \[ (?:
