@@ -1,7 +1,7 @@
 # This file contains names of built-in exceptions that exist in the following
-# Python versions: 2.5, 2.6, 2.7, 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7
+# Python versions: 2.5, 2.6, 2.7, 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10
 
-# Last update: 2018-11-24
+# Last update: 2021-10-15
 
 ArithmeticError
 AssertionError
@@ -18,6 +18,7 @@ ConnectionRefusedError
 ConnectionResetError
 DeprecationWarning
 EOFError
+EncodingWarning
 EnvironmentError
 Exception
 FileExistsError
