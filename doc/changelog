@@ -4,8 +4,10 @@ pydiatra (0.12.6) UNRELEASED; urgency=low
   * Improve documentation:
     + Use HTTPS for opengroup.org URL.
   * Fix test failures with Python 3.10.
+  * Add EncodingWarning (added in Python 3.10) to the list of known
+    exceptions.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Fri, 15 Oct 2021 12:22:03 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Sat, 23 Oct 2021 20:06:50 +0200
 
 pydiatra (0.12.5) unstable; urgency=low
 
