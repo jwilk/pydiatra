@@ -1,4 +1,4 @@
-pydiatra (0.12.6) UNRELEASED; urgency=low
+pydiatra (0.12.6) unstable; urgency=low
 
   * Fix compatibility with Python 3.9.
   * Improve documentation:
