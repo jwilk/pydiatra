@@ -102,6 +102,7 @@ jobs:
         PYTHON=python private/run-pylint
       if:
         matrix.python != '3.3' &&
-        matrix.python != '3.4'
+        matrix.python != '3.4' &&
+        matrix.python != '3.11-dev'
 
 # vim:ts=2 sts=2 sw=2 et
