@@ -44,10 +44,10 @@ def test():
         with open(path, 'wb'):
             pass
         PYTHONPATH = os.environ.get('PYTHONPATH')
-        if PYTHONPATH is None:
+        if not PYTHONPATH:
             PYTHONPATH = tmpdir
         else:
-            PYTHONPATH[:0] = tmpdir
+            PYTHONPATH = tmpdir + ':' + PYTHONPATH
         prog = os.path.basename(tools.script)
         if sys.version_info >= (3, 3):
             message = "No module named 'concurrent.futures'"
