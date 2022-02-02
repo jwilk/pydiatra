@@ -116,7 +116,7 @@ jobs:
         - python: '3.4'
           os: windows-2016
         - python: '3.9'
-          os: windows-2016
+          os: windows-2019
         - python: '3.10'
           os: windows-2019
           broken: broken
