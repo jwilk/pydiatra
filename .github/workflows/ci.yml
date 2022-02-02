@@ -107,5 +107,43 @@ jobs:
       if:
         matrix.python != '3.3' &&
         matrix.python != '3.4'
+  windows:
+    strategy:
+      matrix:
+        include:
+        - python: '2.7'
+          os: windows-2019
+        - python: '3.4'
+          os: windows-2016
+        - python: '3.9'
+          os: windows-2016
+        - python: '3.10'
+          os: windows-2019
+          broken: broken
+    continue-on-error: ${{(matrix.broken && true) || false}}
+    runs-on: ${{matrix.os}}
+    steps:
+    - uses: actions/checkout@v2
+    - name: set up Python ${{matrix.python}}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{matrix.python}}
+    - name: install deps
+      run: |
+        python -m pip install "futures; python_version < '3'"
+        python -m pip install docutils
+    - name: build
+      run:
+        python setup.py build
+    - name: remove CRs from test files
+      run: |
+        sed -i -e 's/\r$//' tests/*.t
+    - name: run tests
+      run: |
+        # work-around for <https://github.com/nose-devs/nose/issues/1115>:
+        python -m pip install 'setuptools<58'
+        # work-around for <https://github.com/nose-devs/nose/issues/1099>:
+        python -m pip install --no-binary ':all:' nose
+        python tests/run-tests -v
 
 # vim:ts=2 sts=2 sw=2 et
