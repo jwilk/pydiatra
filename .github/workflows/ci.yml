@@ -40,8 +40,8 @@ jobs:
         python-version: ${{matrix.python}}
     - name: install deps
       run: |
-        pip install "futures; python_version < '3'"
-        pip install docutils
+        python -m pip install "futures; python_version < '3'"
+        python -m pip install docutils
     - name: build
       run:
         python setup.py build
@@ -52,9 +52,9 @@ jobs:
     - name: run tests
       run: |
         # work-around for <https://github.com/nose-devs/nose/issues/1115>:
-        pip install 'setuptools<58'
+        python -m pip install 'setuptools<58'
         # work-around for <https://github.com/nose-devs/nose/issues/1099>:
-        pip install --no-binary ':all:' nose
+        python -m pip install --no-binary ':all:' nose
         # work-around for <https://github.com/nose-devs/nose/issues/1116>:
         sed -i -e 's/ from unittest import _TextTestResult$/ from unittest import TextTestResult as _TextTestResult/' ${{env.pythonLocation}}/lib/python*/site-packages/nose/result.py
         python tests/run-tests -v
@@ -88,7 +88,7 @@ jobs:
     - name: install with pip
       run: |
         rm -rvf ~/.local/lib/python*/site-packages/pydiatra*
-        pip install .
+        python -m pip install .
     - name: run pydiatra
       run: |
         PYTHON=python private/run-pydiatra
@@ -96,11 +96,11 @@ jobs:
       run: |
         pyflakes=pyflakes
         if [[ ${{matrix.python}} = 3.3 ]]; then pyflakes+='<2'; fi
-        pip install $pyflakes
+        python -m pip install $pyflakes
         PYTHON=python private/run-pyflakes
     - name: run pylint
       run: |
-        pip install pylint
+        python -m pip install pylint
         # work-around for <https://github.com/GrahamDumpleton/wrapt/issues/196>:
         sed -i -e 's/, formatargspec$//' ${{env.pythonLocation}}/lib/python*/site-packages/wrapt/decorators.py
         PYTHON=python private/run-pylint
