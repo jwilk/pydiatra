@@ -1,9 +1,7 @@
 name: CI
 on:
-  push:
-    branches-ignore:
-    - appveyor
-  pull_request:
+- push
+- pull_request
 jobs:
   main:
     strategy:
