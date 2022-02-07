@@ -112,7 +112,7 @@ jobs:
         - python: '2.7'
           os: windows-2019
         - python: '3.4'
-          os: windows-2016
+          os: windows-2019
         - python: '3.9'
           os: windows-2019
         - python: '3.10'
