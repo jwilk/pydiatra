@@ -99,12 +99,11 @@ jobs:
     - name: run pylint
       run: |
         python -m pip install pylint
-        # work-around for <https://github.com/GrahamDumpleton/wrapt/issues/196>:
-        sed -i -e 's/, formatargspec$//' ${{env.pythonLocation}}/lib/python*/site-packages/wrapt/decorators.py
         PYTHON=python private/run-pylint
       if:
         matrix.python != '3.3' &&
-        matrix.python != '3.4'
+        matrix.python != '3.4' &&
+        matrix.python != '3.11-dev'
   windows:
     strategy:
       matrix:
