@@ -31,7 +31,7 @@ jobs:
     continue-on-error: ${{(matrix.broken && true) || false}}
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python ${{matrix.python}}
+    - name: set up Python ${{matrix.python}}
       uses: actions/setup-python@v2
       with:
         python-version: ${{matrix.python}}
