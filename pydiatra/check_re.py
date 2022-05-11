@@ -29,9 +29,13 @@ import inspect
 import itertools
 import operator
 import re
-import sre_parse
 import sys
 import warnings
+
+try:
+    import re._parser as sre_parse  # pylint: disable=ungrouped-imports
+except ImportError:  # Python < 3.11
+    import sre_parse
 
 from . import tags
 from . import utils
