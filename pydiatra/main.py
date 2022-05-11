@@ -220,7 +220,7 @@ def main(runpy=False, script=None):
             if check_file(path, verbose=options.verbose) > 0:
                 ok = False
     else:
-        Executor = concurrent.futures.ProcessPoolExecutor
+        Executor = concurrent.futures.ProcessPoolExecutor  # pylint: disable=no-member
         with Executor(max_workers=options.jobs) as executor:
             for n, s in executor.map(check_file_s, paths_itr, itertools.repeat(options.verbose)):
                 sys.stdout.write(s)
