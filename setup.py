@@ -28,11 +28,13 @@ import os
 import re
 import sys
 
+# pylint: disable=deprecated-module
 import distutils.core
 from distutils.command.build import build as distutils_build
 from distutils.command.install import install as distutils_install
 from distutils.command.install_data import install_data as distutils_install_data
 from distutils.command.sdist import sdist as distutils_sdist
+# pylint: enable=deprecated-module
 
 # pylint: disable=import-error
 if sys.version_info >= (3, 0):
