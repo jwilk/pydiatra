@@ -48,7 +48,6 @@ def analyze_re_functions():
         re.split,
         re.sub,
         re.subn,
-        re.template,
     ]
     if sys.version_info >= (3, 4):
         funcs += [
@@ -416,8 +415,6 @@ def check(owner, node):
             pass
         else:
             return
-    if func_name == 'template':
-        flags |= re.TEMPLATE
     flags &= ~re.DEBUG
     check_sub = func_name.startswith('sub') and isinstance(repl, (unicode, str, bytes))
     if enable_bad_escape_check:
