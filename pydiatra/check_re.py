@@ -459,7 +459,11 @@ def check(owner, node):
                 with monkey_context:
                     subpattern = sre_parse.parse(pattern, flags=flags)
     if exc:
-        yield owner.tag(node, 'regexp-syntax-error', str(exc))
+        msg = str(exc)
+        if msg.startswith('global flags not at the start of the expression at position '):
+            yield owner.tag(node, 'regexp-misplaced-inline-flags')
+        else:
+            yield owner.tag(node, 'regexp-syntax-error', msg)
         return
     for wrn in wrns:
         message = str(wrn.message)
