@@ -3,7 +3,7 @@ pydiatra (0.12.7) UNRELEASED; urgency=low
   * Fix compatibility with Python 3.11.
   * In --version, print Python version with micro details.
   * Improve the setup script:
-    + Use userscore in requires_dist.
+    + Use underscore in requires_dist.
     + Use HTTPS for jwilk.net.
   * Improve the test suite:
     + Fix test output for Python ≥ 3.10.
