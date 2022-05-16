@@ -47,7 +47,7 @@ builtin_exception_types = set()
 pil_modules = set()
 errno_constants = {}
 code_copies = []
-code_copies_regex = None
+code_copies_regexp = None
 
 def load_data_file(ident):
     path = '{dir}/{ident}'.format(dir=datadir, ident=ident)
@@ -64,7 +64,7 @@ def load_data_file(ident):
             yield line
 
 def load_data():
-    global code_copies_regex  # pylint: disable=global-statement
+    global code_copies_regexp  # pylint: disable=global-statement
     builtin_exception_types.update(
         load_data_file('exceptions')
     )
@@ -74,13 +74,13 @@ def load_data():
     for line in load_data_file('errno-constants'):
         n, code = line.split()
         errno_constants[int(n)] = code
-    regex = []
+    regexp = []
     for line in load_data_file('embedded-code-copies'):
-        regex += [None]
-        package, regex[-1] = map(str.strip, line.split('||'))
+        regexp += [None]
+        package, regexp[-1] = map(str.strip, line.split('||'))
         code_copies.append(package)
-    regex = '|'.join('(%s)' % r for r in regex)
-    code_copies_regex = re.compile(regex, re.DOTALL)
+    regexp = '|'.join('(%s)' % r for r in regexp)
+    code_copies_regexp = re.compile(regexp, re.DOTALL)
 
 def format_cmp(left, op, right, swap=False):
     op = astaux.cmp_ops[op]
@@ -305,9 +305,9 @@ class Visitor(ast.NodeVisitor):
             return
         if self.state.code_copy:
             return
-        if code_copies_regex is None:
+        if code_copies_regexp is None:
             return
-        match = code_copies_regex.search(s)
+        match = code_copies_regexp.search(s)
         if match is None:
             return
         for match, info in zip(match.groups(), code_copies):
