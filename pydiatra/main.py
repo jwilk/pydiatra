@@ -89,10 +89,22 @@ def check_file_s(path, verbose=False):
     n = check_file(path, verbose=verbose, file=file)
     return n, file.getvalue()
 
+def get_cpu_count():
+    try:
+        sched_getaffinity = os.sched_getaffinity
+    except AttributeError:
+        pass
+    else:
+        return len(sched_getaffinity(0))
+    try:
+        return multiprocessing.cpu_count()
+    except NotImplementedError:
+        return 1
+
 def parse_jobs(s):
     if s == 'auto':
         try:
-            return multiprocessing.cpu_count()
+            return get_cpu_count()
         except NotImplementedError:
             return 1
     n = int(s)
