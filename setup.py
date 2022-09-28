@@ -214,8 +214,7 @@ Programming Language :: Python :: 3
 Topic :: Software Development :: Quality Assurance
 '''.strip().splitlines()
 
-use_stub = sys.version_info < (2, 7)
-pkg_name = '_' * use_stub + 'pydiatra'
+pkg_name = 'pydiatra'
 script_name = 'py{0}diatra'.format(*sys.version_info)
 
 def d(**kwargs):
@@ -235,7 +234,7 @@ setup_options = dict(
     author='Jakub Wilk',
     author_email='jwilk@jwilk.net',
     packages=[pkg_name],
-    package_dir={pkg_name: 'pydiatra', '': 'stub'},
+    package_dir={pkg_name: 'pydiatra'},
     package_data={pkg_name: ['data/*']},
     py_modules=['pydiatra'],
     scripts=[script_name],

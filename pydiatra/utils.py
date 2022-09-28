@@ -43,16 +43,6 @@ class ExceptionContext(object):
         return self
 
     def __exit__(self, exc_type, exc_value, tb):
-        if exc_type is None:
-            pass
-        elif isinstance(exc_value, exc_type):
-            pass
-            # This branch is not always taken in Python 2.6:
-            # https://bugs.python.org/issue7853
-        elif isinstance(exc_value, tuple):
-            exc_value = exc_type(*exc_value)
-        else:
-            exc_value = exc_type(exc_value)
         self.exception = exc_value
         return True
 
