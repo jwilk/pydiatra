@@ -218,10 +218,10 @@ pkg_name = 'pydiatra'
 script_name = 'py{0}diatra'.format(*sys.version_info)
 
 def d(**kwargs):
-    return dict(
-        (k, v) for k, v in kwargs.items()
+    return {
+        k: v for k, v in kwargs.items()
         if v is not None
-    )
+    }
 
 setup_options = dict(
     name='pydiatra',
