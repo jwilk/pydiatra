@@ -55,7 +55,7 @@ except ImportError:
 else:
     distutils644.install()
 
-b = b''  # Python >= 2.6 is required
+type({0})  # Python >= 2.7 is required
 
 def uopen(*args):
     if str is bytes:

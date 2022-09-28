@@ -75,12 +75,8 @@ See the manual page for details.
 Prerequisites
 =============
 
-* Python 2.6+ or 3.2+
-* argparse_ (needed only for Python 2.6)
+* Python 2.7 or 3.2+
 * futures_ (needed only for Python 2.X)
-
-.. _argparse:
-   https://pypi.org/project/argparse/
 
 .. _futures:
    https://pypi.org/project/futures/
