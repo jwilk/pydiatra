@@ -101,8 +101,7 @@ jobs:
         PYTHON=python private/run-pylint
       if:
         matrix.python != '3.3' &&
-        matrix.python != '3.4' &&
-        matrix.python != '3.11-dev'
+        matrix.python != '3.4'
   windows:
     strategy:
       matrix:
