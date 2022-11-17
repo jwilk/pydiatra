@@ -35,7 +35,7 @@ import warnings
 try:
     import re._parser as sre_parse  # pylint: disable=ungrouped-imports
 except ImportError:  # Python < 3.11
-    import sre_parse
+    import sre_parse  # pylint: disable=deprecated-module
 
 from . import tags
 from . import utils
