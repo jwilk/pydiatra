@@ -67,10 +67,10 @@ class OpDict(object):
         return 'ast.' + name
 
     def __repr__(self):
-        dict_repr = ', '.join(
+        dict_repr = str.join(', ', (
             '{op}: {s!r}'.format(op=self._key_repr(op), s=s)
             for op, s in self._dict.items()
-        )
+        ))
         return '{mod}.{cls}({{{dict}}})'.format(
             mod=self.__module__,
             cls=type(self).__name__,

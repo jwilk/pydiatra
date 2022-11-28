@@ -79,7 +79,7 @@ def load_data():
         regexp += [None]
         package, regexp[-1] = map(str.strip, line.split('||'))
         code_copies.append(package)
-    regexp = '|'.join('(%s)' % r for r in regexp)
+    regexp = str.join('|', ('(%s)' % r for r in regexp))
     code_copies_regexp = re.compile(regexp, re.DOTALL)
 
 def format_cmp(left, op, right, swap=False):

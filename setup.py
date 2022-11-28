@@ -105,7 +105,7 @@ class cmd_build_doc(distutils_build):
             tag = dict(data.items(tagname))
             print(tagname)
             print('~' * len(tagname))
-            description = '\n'.join(
+            description = str.join('\n',
                 parse_multiline(tag, 'description')
             )
             if not description.strip():

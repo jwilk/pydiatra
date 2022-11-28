@@ -89,7 +89,7 @@ def run_pydiatra(paths, expected, expected_stderr=None, parallel=None, env=None)
         )
         message += diff[3:]
     if message:
-        raise AssertionError('\n'.join(message))
+        raise AssertionError(str.join('\n', message))
 
 def get_tag_names():
     path = os.path.join(basedir, 'pydiatra', 'data', 'tags')

@@ -45,7 +45,7 @@ class Tag(object):
             location = self.path
         else:
             location = '{path}:{n}'.format(path=self.path, n=self.lineno)
-        message = ' '.join(str(arg) for arg in self.args)
+        message = str.join(' ', map(str, self.args))
         return '{loc}: {msg}'.format(loc=location, msg=message)
 
 __all__ = ['Tag']
