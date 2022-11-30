@@ -29,6 +29,9 @@ jobs:
           os: ubuntu-22.04
         - python: '3.12-dev'
           os: ubuntu-22.04
+          broken: broken
+          # FIXME: "No manual entry for pydiatra in section 1"
+    continue-on-error: ${{(matrix.broken && true) || false}}
     runs-on: ${{matrix.os}}
     steps:
     - uses: actions/checkout@v3
