@@ -27,6 +27,15 @@ disable =
     too-many-statements,
     useless-object-inheritance,
 
+[TYPECHECK]
+# FIXME: Pylint doesn't grok setuptools' distutils.
+ignored-modules =
+    distutils.command.build,
+    distutils.command.install,
+    distutils.command.install_data,
+    distutils.command.sdist,
+    distutils.core,
+
 [BASIC]
 no-docstring-rgx = .*
 
