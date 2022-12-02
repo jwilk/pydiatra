@@ -173,9 +173,9 @@ class cmd_install_doc(distutils_install_data):
         msg = 'writing {path}'.format(path=path)
         data = ['.so pydiatra.1']
         self.execute(distutils.file_util.write_file, (path, data), msg)
-        self.outfiles += [path]
+        self.outfiles += [path]  # pylint: disable=no-member
         (path, _) = self.copy_file('doc/pydiatra.1', man_dir)
-        self.outfiles += [path]
+        self.outfiles += [path]  # pylint: disable=no-member
 
 distutils_install.sub_commands[:0] = [('install_doc', None)]
 
