@@ -44,7 +44,7 @@ def main():
     exceptions = set()
     for version in versions:
         vexceptions = extract_exceptions(version)
-        exceptions.update(vexceptions)
+        exceptions |= vexceptions
     today = datetime.date.today()
     header = header_template.format(
         today=today,
@@ -55,7 +55,7 @@ def main():
         for exc in sorted(exceptions):
             print(exc, file=file)
 
-def extract_exceptions(version):
+def _extract_exceptions(version):
     url = 'https://docs.python.org/{ver}/library/exceptions.html'
     if re.match(r'\A2[.][0-5]\Z', version):
         url = 'https://docs.python.org/{ver}/lib/module-exceptions.html'
@@ -75,6 +75,9 @@ def extract_exceptions(version):
         if not re.match(r'\A\w+\Z', exc):
             raise RuntimeError('invalid Python {ver} exception name: {exc}'.format(ver=version, exc=exc))
         yield exc
+
+def extract_exceptions(version):
+    return frozenset(_extract_exceptions(version))
 
 if __name__ == '__main__':
     main()
