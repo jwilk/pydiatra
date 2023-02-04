@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import concurrent.futures
 import datetime
 import os
 import re
@@ -42,9 +43,9 @@ def main():
     here = os.path.dirname(__file__)
     path = '{here}/../pydiatra/data/exceptions'.format(here=here)
     exceptions = set()
-    for version in versions:
-        vexceptions = extract_exceptions(version)
-        exceptions |= vexceptions
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
+        for vexceptions in executor.map(extract_exceptions, versions):
+            exceptions |= vexceptions
     today = datetime.date.today()
     header = header_template.format(
         today=today,
