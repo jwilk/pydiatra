@@ -116,6 +116,9 @@ jobs:
       if:
         matrix.python != '3.3' &&
         matrix.python != '3.4'
+      continue-on-error:
+        ${{ endsWith(matrix.python, '-dev') }}
+        # FIXME: astroid.exceptions.InferenceError: StopIteration raised without any error information.
   windows:
     strategy:
       matrix:
