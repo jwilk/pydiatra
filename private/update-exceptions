@@ -43,7 +43,8 @@ def main():
     path = '{here}/../pydiatra/data/exceptions'.format(here=here)
     exceptions = set()
     for version in versions:
-        exceptions |= extract_exceptions(version)
+        vexceptions = extract_exceptions(version)
+        exceptions.update(vexceptions)
     today = datetime.date.today()
     header = header_template.format(
         today=today,
@@ -69,13 +70,11 @@ def extract_exceptions(version):
     s = re.sub('</?span[^<]*>', '', s)
     s = re.sub(r'\s+\(.*$', '', s, flags=re.MULTILINE)
     s = re.sub('^[ \t│├─└|+-]+', '', s, flags=re.MULTILINE)
-    exceptions = set()
     for exc in s.split():
         exc = exc.strip('[]')
         if not re.match(r'\A\w+\Z', exc):
             raise RuntimeError('invalid Python {ver} exception name: {exc}'.format(ver=version, exc=exc))
-        exceptions.add(exc)
-    return frozenset(exceptions)
+        yield exc
 
 if __name__ == '__main__':
     main()
