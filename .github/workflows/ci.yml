@@ -35,6 +35,7 @@ jobs:
     - name: set up distutils
       run: |
         if ! [ -d ${{env.pythonLocation}}/lib/python*/distutils/ ]; then
+          python -m pip install setuptools
           echo SETUPTOOLS_USE_DISTUTILS=local | tee -a $GITHUB_ENV;
         fi
     - name: set up pip
