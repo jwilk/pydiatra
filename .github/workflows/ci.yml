@@ -57,8 +57,9 @@ jobs:
       run: |
         # work-around for <https://github.com/nose-devs/nose/issues/1115>:
         python -m pip install --upgrade 'setuptools<58'
+        python -m pip install wheel
         # work-around for <https://github.com/nose-devs/nose/issues/1099>:
-        python -m pip install --no-binary ':all:' nose
+        python -m pip install --no-build-isolation --no-binary ':all:' nose
         # work-around for <https://github.com/nose-devs/nose/issues/1116>:
         sed -i -e 's/ from unittest import _TextTestResult$/ from unittest import TextTestResult as _TextTestResult/' ${{env.pythonLocation}}/lib/python*/site-packages/nose/result.py
         python tests/run-tests -v
@@ -145,8 +146,9 @@ jobs:
       run: |
         # work-around for <https://github.com/nose-devs/nose/issues/1115>:
         python -m pip install --upgrade 'setuptools<58'
+        python -m pip install wheel
         # work-around for <https://github.com/nose-devs/nose/issues/1099>:
-        python -m pip install --no-binary ':all:' nose
+        python -m pip install --no-build-isolation --no-binary ':all:' nose
         python tests/run-tests -v
 
 # vim:ts=2 sts=2 sw=2 et
