@@ -8,7 +8,6 @@ jobs:
       matrix:
         include:
         - python: '2.7'
-          os: ubuntu-20.04
         - python: '3.5'
           os: ubuntu-20.04
         - python: '3.6'
@@ -25,23 +24,39 @@ jobs:
           os: ubuntu-22.04
         - python: '3.12-dev'
           os: ubuntu-22.04
-    runs-on: ${{matrix.os}}
+    runs-on: ${{matrix.os || 'ubuntu-latest'}}
     continue-on-error:
       ${{ endsWith(matrix.python, '-dev') }}
       # FIXME: [pkg_resources] AttributeError: module 'pkgutil' has no attribute 'ImpImporter'. Did you mean: 'zipimporter'?
+    container: ${{ ((matrix.python == '2.7') && 'python:2.7') || null }}
+    defaults:
+      run:
+        shell: bash
     steps:
     - uses: actions/checkout@v3
+    - name: set up PATH
+      run: |
+        PATH+=:~/.local/bin
+        echo "$PATH" >> $GITHUB_PATH
     - name: set up Python ${{matrix.python}}
+      if: ${{ ! startsWith(matrix.python, '2.') }}
       uses: actions/setup-python@v4
       with:
         python-version: ${{matrix.python}}
     - name: set up distutils
+      if: env.pythonLocation
       run: |
         if ! [ -d ${{env.pythonLocation}}/lib/python*/distutils/ ]; then
           python -m pip install setuptools
           echo SETUPTOOLS_USE_DISTUTILS=local | tee -a $GITHUB_ENV;
         fi
+    - name: set up APT
+      if: ${{ ! env.pythonLocation }}
+      run: |
+        printf 'Apt::Install-Recommends "false";\n' | tee -a /etc/apt/apt.conf
+        apt-get update
     - name: set up pip
+      if: env.pythonLocation
       run: |
         sed -i -e 's/ sys.exit(.*)/ raise/' ${{env.pythonLocation}}/lib/python*/site-packages/pip/_internal/utils/setuptools_build.py
         python -m pip list
@@ -65,7 +80,7 @@ jobs:
         # work-around for <https://github.com/nose-devs/nose/issues/1099>:
         python -m pip install --no-build-isolation --no-binary ':all:' nose
         # work-around for <https://github.com/nose-devs/nose/issues/1116>:
-        sed -i -e 's/ from unittest import _TextTestResult$/ from unittest import TextTestResult as _TextTestResult/' ${{env.pythonLocation}}/lib/python*/site-packages/nose/result.py
+        sed -i -e 's/ from unittest import _TextTestResult$/ from unittest import TextTestResult as _TextTestResult/' ${{env.pythonLocation || '/usr/local'}}/lib/python*/site-packages/nose/result.py
         python tests/run-tests -v
     - name: check test coverage
       run: |
@@ -85,14 +100,18 @@ jobs:
         $pyXdiatra --version
       env:
         pyver: ${{matrix.python}}
+    - name: APT install man-db
+      if: ${{ ! env.pythonLocation }}
+      run: |
+        apt-get install -y man-db
     - name: check whether the manual pages are installed correctly
       run: |
+        export MATHPATH=~/.local/share/man
         cd /
         man 1 pydiatra | grep -A 15 -w PYDIATRA
         pyXdiatra=py${pyver%.*}diatra
         man 1 $pyXdiatra | grep -A 15 -w PYDIATRA
       env:
-        MANPATH: /home/runner/.local/share/man
         pyver: ${{matrix.python}}
       continue-on-error:
         ${{ (env.SETUPTOOLS_USE_DISTUTILS && true) || false }}
