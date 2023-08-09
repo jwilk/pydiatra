@@ -39,7 +39,7 @@ jobs:
         PATH+=:~/.local/bin
         echo "$PATH" >> $GITHUB_PATH
     - name: set up Python ${{matrix.python}}
-      if: ${{ ! startsWith(matrix.python, '2.') }}
+      if: matrix.python != 2.7
       uses: actions/setup-python@v4
       with:
         python-version: ${{matrix.python}}
