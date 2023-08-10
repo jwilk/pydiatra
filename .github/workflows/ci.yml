@@ -49,7 +49,7 @@ jobs:
       if: ${{ ! env.pythonLocation }}
       run: |
         sudo apt-get install -y python-is-python2
-        wget -O get-pip.py https://bootstrap.pypa.io/pip/2.7/get-pip.py
+        wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
         sudo python get-pip.py
         rm get-pip.py
     - name: set up distutils
