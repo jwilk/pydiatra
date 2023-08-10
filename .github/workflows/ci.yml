@@ -8,6 +8,7 @@ jobs:
       matrix:
         include:
         - python: '2.7'
+          os: ubuntu-20.04
         - python: '3.5'
           os: ubuntu-20.04
         - python: '3.6'
@@ -24,14 +25,10 @@ jobs:
           os: ubuntu-22.04
         - python: '3.12-dev'
           os: ubuntu-22.04
-    runs-on: ${{matrix.os || 'ubuntu-latest'}}
+    runs-on: ${{matrix.os}}
     continue-on-error:
       ${{ endsWith(matrix.python, '-dev') }}
       # FIXME: [pkg_resources] AttributeError: module 'pkgutil' has no attribute 'ImpImporter'. Did you mean: 'zipimporter'?
-    container: ${{ ((matrix.python == '2.7') && 'python:2.7') || null }}
-    defaults:
-      run:
-        shell: bash
     steps:
     - uses: actions/checkout@v3
     - name: set up PATH
@@ -43,6 +40,18 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{matrix.python}}
+    - name: set up APT
+      if: ${{ ! env.pythonLocation }}
+      run: |
+        printf 'Apt::Install-Recommends "false";\n' | sudo tee -a /etc/apt/apt.conf
+        sudo apt-get update
+    - name: set up Python 2.7 (with APT + get-pip)
+      if: ${{ ! env.pythonLocation }}
+      run: |
+        sudo apt-get install -y python-is-python2
+        wget -O get-pip.py https://bootstrap.pypa.io/pip/2.7/get-pip.py
+        sudo python get-pip.py
+        rm get-pip.py
     - name: set up distutils
       if: env.pythonLocation
       run: |
@@ -50,11 +59,6 @@ jobs:
           python -m pip install setuptools
           echo SETUPTOOLS_USE_DISTUTILS=local | tee -a $GITHUB_ENV;
         fi
-    - name: set up APT
-      if: ${{ ! env.pythonLocation }}
-      run: |
-        printf 'Apt::Install-Recommends "false";\n' | tee -a /etc/apt/apt.conf
-        apt-get update
     - name: set up pip
       if: env.pythonLocation
       run: |
@@ -79,8 +83,10 @@ jobs:
         python -m pip install --upgrade 'wheel<0.38'
         # work-around for <https://github.com/nose-devs/nose/issues/1099>:
         python -m pip install --no-build-isolation --no-binary ':all:' nose
-        # work-around for <https://github.com/nose-devs/nose/issues/1116>:
-        sed -i -e 's/ from unittest import _TextTestResult$/ from unittest import TextTestResult as _TextTestResult/' ${{env.pythonLocation || '/usr/local'}}/lib/python*/site-packages/nose/result.py
+        case ${{matrix.python}} in 3.*)
+          # work-around for <https://github.com/nose-devs/nose/issues/1116>:
+          sed -i -e 's/ from unittest import _TextTestResult$/ from unittest import TextTestResult as _TextTestResult/' ${{env.pythonLocation || '/usr/local'}}/lib/python*/site-packages/nose/result.py
+        esac
         python tests/run-tests -v
     - name: check test coverage
       run: |
@@ -103,7 +109,7 @@ jobs:
     - name: APT install man-db
       if: ${{ ! env.pythonLocation }}
       run: |
-        apt-get install -y man-db
+        sudo apt-get install -y man-db
     - name: check whether the manual pages are installed correctly
       run: |
         export MATHPATH=~/.local/share/man
