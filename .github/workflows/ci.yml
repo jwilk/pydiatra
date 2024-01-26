@@ -30,7 +30,7 @@ jobs:
       ${{ endsWith(matrix.python, '-dev') }}
       # FIXME: [pkg_resources] AttributeError: module 'pkgutil' has no attribute 'ImpImporter'. Did you mean: 'zipimporter'?
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: set up PATH
       run: |
         PATH+=:~/.local/bin
@@ -152,7 +152,7 @@ jobs:
           os: windows-2019
     runs-on: ${{matrix.os}}
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: set up Python ${{matrix.python}}
       uses: actions/setup-python@v4
       with:
