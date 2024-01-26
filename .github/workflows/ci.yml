@@ -23,12 +23,9 @@ jobs:
           os: ubuntu-22.04
         - python: '3.11'
           os: ubuntu-22.04
-        - python: '3.12-dev'
+        - python: '3.12'
           os: ubuntu-22.04
     runs-on: ${{matrix.os}}
-    continue-on-error:
-      ${{ endsWith(matrix.python, '-dev') }}
-      # FIXME: [pkg_resources] AttributeError: module 'pkgutil' has no attribute 'ImpImporter'. Did you mean: 'zipimporter'?
     steps:
     - uses: actions/checkout@v4
     - name: set up PATH
@@ -137,9 +134,6 @@ jobs:
       run: |
         python -m pip install pylint
         PYTHON=python private/run-pylint
-      continue-on-error:
-        ${{ endsWith(matrix.python, '-dev') }}
-        # FIXME: astroid.exceptions.InferenceError: StopIteration raised without any error information.
   windows:
     strategy:
       matrix:
