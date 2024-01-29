@@ -1,6 +1,7 @@
 import sys
 
-## [>= 3.8] 21: syntax-warning "is" with a literal. Did you mean "=="?
+## [3.8-3.11] 22: syntax-warning "is" with a literal. Did you mean "=="?
+## [>= 3.12] 22: syntax-warning "is" with 'str' literal. Did you mean "=="?
 
 if '3.2' < sys.version < '3.5':
 ## *: sys.version-comparison (3, 2) < sys.version_info
