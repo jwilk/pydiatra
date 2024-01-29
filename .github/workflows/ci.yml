@@ -77,6 +77,10 @@ jobs:
       run: |
         # work-around for <https://github.com/nose-devs/nose/issues/1115>:
         python -m pip install --upgrade 'setuptools<58'
+        case ${{matrix.python}} in 3.*)
+          # stolen from <https://github.com/pypa/setuptools/commit/6653e747c3815b14>
+          sed -i -e "s/^register_.*[(]pkgutil[.]ImpImporter,/if hasattr(pkgutil, 'ImpImporter'):\\n &/" ${{env.pythonLocation || '/usr/local'}}/lib/python*/*-packages/pkg_resources/__init__.py
+        esac
         python -m pip install --upgrade 'wheel<0.38'
         # work-around for <https://github.com/nose-devs/nose/issues/1099>:
         python -m pip install --no-build-isolation --no-binary ':all:' nose
