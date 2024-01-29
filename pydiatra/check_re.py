@@ -449,6 +449,7 @@ def check(owner, node):
             else:
                 with utils.catch_exceptions() as exc:
                     re.compile(pattern, flags=flags)
+    subpattern = None  # hi, Pylint!
     if not exc:
         if sys.version_info >= (3, 7):
             monkey_context = utils.monkeypatch(sre_parse,
@@ -469,6 +470,7 @@ def check(owner, node):
         else:
             yield owner.tag(node, 'regexp-syntax-error', msg)
         return
+    assert subpattern is not None
     for wrn in wrns:
         message = str(wrn.message)
         boring = (
