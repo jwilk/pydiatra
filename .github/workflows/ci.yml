@@ -73,7 +73,7 @@ jobs:
       run: |
         dpkg-parsechangelog -ldoc/changelog --all 2>&1 >/dev/null | { ! grep .; }
         private/check-rst
-    - name: run tests
+    - name: install nose
       run: |
         # work-around for <https://github.com/nose-devs/nose/issues/1115>:
         python -m pip install --upgrade 'setuptools<58'
@@ -91,6 +91,8 @@ jobs:
         if ! python -c 'import imp'; then
           python -m pip install zombie-imp
         fi
+    - name: run tests
+      run: |
         python tests/run-tests -v
     - name: check test coverage
       run: |
