@@ -24,8 +24,8 @@
 convert signal number to signal name
 '''
 
-import signal
 import re
+import signal
 
 def _get_signal_names():
     data = {
