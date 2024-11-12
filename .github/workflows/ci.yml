@@ -9,8 +9,6 @@ jobs:
         include:
         - python: '2.7'
           os: ubuntu-20.04
-        - python: '3.5'
-          os: ubuntu-20.04
         - python: '3.6'
           os: ubuntu-20.04
         - python: '3.7'
@@ -66,7 +64,6 @@ jobs:
     - name: install deps
       run: |
         python -m pip install "futures; python_version < '3'"
-        python -m pip install "docutils<0.16; python_version < '3.5'"
         python -m pip install docutils
     - name: build
       run:
@@ -165,7 +162,6 @@ jobs:
     - name: install deps
       run: |
         python -m pip install "futures; python_version < '3'"
-        python -m pip install "docutils<0.16; python_version < '3.5'"
         python -m pip install docutils
     - name: build
       run:
@@ -177,7 +173,6 @@ jobs:
       run: |
         # work-around for <https://github.com/nose-devs/nose/issues/1115>:
         python -m pip install --upgrade 'setuptools<58'
-        python -m pip install --upgrade "setuptools<44; python_version < '3.5'"
         python -m pip install --upgrade 'wheel<0.38'
         # work-around for <https://github.com/nose-devs/nose/issues/1099>:
         no_build_isolation=$(python -m pip install --help | grep -oF ' --no-build-isolation ' || true)
