@@ -247,6 +247,6 @@ setup_options = dict(
 )
 
 if __name__ == '__main__':
-    distutils.core.setup(**setup_options)
+    distutils.core.setup(**setup_options)  # pylint: disable=no-member
 
 # vim:ts=4 sts=4 sw=4 et
