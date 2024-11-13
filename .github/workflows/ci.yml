@@ -78,6 +78,8 @@ jobs:
         if ! [ -d ${{env.pythonLocation}}/lib/python*/distutils/ ]; then
           python -m pip install setuptools
           echo SETUPTOOLS_USE_DISTUTILS=local | tee -a $GITHUB_ENV;
+        else
+          echo SETUPTOOLS_USE_DISTUTILS=stdlib | tee -a $GITHUB_ENV;
         fi
     - name: set up pip
       if: env.pythonLocation
@@ -148,7 +150,7 @@ jobs:
       env:
         pyver: ${{matrix.python}}
       continue-on-error:
-        ${{ (env.SETUPTOOLS_USE_DISTUTILS && true) || false }}
+        ${{ env.SETUPTOOLS_USE_DISTUTILS == 'local' }}
         # FIXME: "No manual entry for pydiatra in section 1"
     - name: install with pip
       run: |
