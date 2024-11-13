@@ -63,6 +63,8 @@ def hexversion_to_tuple(n):
 
 if str is not bytes:
     unicode = str  # pylint: disable=redefined-builtin
+else:
+    unicode = unicode  # pylint: disable=self-assigning-variable
 
 def version_to_tuple(s):
     '''
