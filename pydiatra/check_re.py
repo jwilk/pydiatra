@@ -79,14 +79,17 @@ def analyze_re_functions():
 
 re_functions = analyze_re_functions()
 
-# pylint: disable=redefined-builtin
+# pylint: disable=redefined-builtin,self-assigning-variable
 if sys.version_info >= (3,):
     long = int
     unichr = chr
     unicode = str
 else:
+    long = long
+    unichr = unichr
+    unicode = unicode
     ascii = repr
-# pylint: enable=redefined-builtin
+# pylint: enable=redefined-builtin,self-assigning-variable
 
 def format_char_range(rng, tp):
     if tp in (str, bytes):
