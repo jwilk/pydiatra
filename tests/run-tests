@@ -81,6 +81,7 @@ class TestCase(unittest.TestCase):
                 int(x) for x in ver.split('.')
             )
         expected = []
+        code_n = None
         with io.open(self.path, 'rt', encoding='UTF-8', errors='replace') as file:
             for n, line in enumerate(file, 1):
                 match = self._comment_re.match(line)
