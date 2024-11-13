@@ -3,6 +3,28 @@ on:
 - push
 - pull_request
 jobs:
+
+  nose:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: set up Python 3.6
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.6
+    - name: pip install wheel
+      run: |
+        python3 -m pip install wheel
+    - name: build wheel
+      run: |
+        python3 -m pip wheel --no-binary ':all:' nose
+    - name: upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: nose
+        path: nose-*.whl
+        compression-level: 0
+        retention-days: 1
+
   main:
     strategy:
       matrix:
@@ -26,6 +48,7 @@ jobs:
         - python: '3.13'
           os: ubuntu-24.04
     runs-on: ${{matrix.os}}
+    needs: nose
     steps:
     - uses: actions/checkout@v4
     - name: set up PATH
@@ -72,24 +95,24 @@ jobs:
       run: |
         dpkg-parsechangelog -ldoc/changelog --all 2>&1 >/dev/null | { ! grep .; }
         private/check-rst
+    - name: download nose
+      if: env.pythonLocation
+      uses: actions/download-artifact@v4
+      with:
+        name: nose
     - name: install nose
+      if: env.pythonLocation
       run: |
-        # work-around for <https://github.com/nose-devs/nose/issues/1115>:
-        python -m pip install --upgrade 'setuptools<58'
-        case ${{matrix.python}} in 3.*)
-          # stolen from <https://github.com/pypa/setuptools/commit/6653e747c3815b14>
-          sed -i -e "s/^register_.*[(]pkgutil[.]ImpImporter,/if hasattr(pkgutil, 'ImpImporter'):\\n &/" ${{env.pythonLocation || '/usr/local'}}/lib/python*/*-packages/pkg_resources/__init__.py
-        esac
-        python -m pip install --upgrade 'wheel<0.38'
-        # work-around for <https://github.com/nose-devs/nose/issues/1099>:
-        python -m pip install --no-build-isolation --no-binary ':all:' nose
-        case ${{matrix.python}} in 3.*)
-          # work-around for <https://github.com/nose-devs/nose/issues/1116>:
-          sed -i -e 's/ from unittest import _TextTestResult$/ from unittest import TextTestResult as _TextTestResult/' ${{env.pythonLocation || '/usr/local'}}/lib/python*/site-packages/nose/result.py
-        esac
+        python -m pip install nose-*.whl
+        # work-around for <https://github.com/nose-devs/nose/issues/1116>:
+        sed -i -e 's/ from unittest import _TextTestResult$/ from unittest import TextTestResult as _TextTestResult/' ${{env.pythonLocation}}/lib/python*/site-packages/nose/result.py
         if ! python -c 'import imp'; then
           python -m pip install zombie-imp
         fi
+    - name: install nose
+      if: ${{ ! env.pythonLocation }}
+      run: |
+        python -m pip install nose
     - name: run tests
       run: |
         python tests/run-tests -v
