@@ -167,6 +167,7 @@ jobs:
       run: |
         python -m pip install pylint
         PYTHON=python private/run-pylint
+
   windows:
     strategy:
       matrix:
@@ -178,6 +179,7 @@ jobs:
         - python: '3.11'
           os: windows-2019
     runs-on: ${{matrix.os}}
+    needs: nose
     steps:
     - uses: actions/checkout@v4
     - name: set up Python ${{matrix.python}}
@@ -194,14 +196,14 @@ jobs:
     - name: remove CRs from test files
       run: |
         sed -i -e 's/\r$//' tests/*.t
+    - name: download nose
+      if: env.pythonLocation
+      uses: actions/download-artifact@v4
+      with:
+        name: nose
     - name: run tests
       run: |
-        # work-around for <https://github.com/nose-devs/nose/issues/1115>:
-        python -m pip install --upgrade 'setuptools<58'
-        python -m pip install --upgrade 'wheel<0.38'
-        # work-around for <https://github.com/nose-devs/nose/issues/1099>:
-        no_build_isolation=$(python -m pip install --help | grep -oF ' --no-build-isolation ' || true)
-        python -m pip install $no_build_isolation --no-binary ':all:' nose
+        python -m pip install nose-*.whl
         python tests/run-tests -v
       shell: bash
 
