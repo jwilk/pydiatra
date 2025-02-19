@@ -27,6 +27,8 @@ import os
 import re
 import urllib.request
 
+int(0_0)  # Python >= 3.6 is required
+
 header_template = '''\
 # This file contains names of built-in exceptions that exist in the following
 # Python versions: {versions}
