@@ -5,12 +5,12 @@ on:
 jobs:
 
   nose:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
-    - name: set up Python 3.6
+    - name: set up Python 3.8
       uses: actions/setup-python@v5
       with:
-        python-version: 3.6
+        python-version: 3.8
     - name: pip install wheel
       run: |
         python3 -m pip install wheel
@@ -36,9 +36,9 @@ jobs:
         - python: '3.7'
           os: ubuntu-20.04
         - python: '3.8'
-          os: ubuntu-20.04
+          os: ubuntu-22.04
         - python: '3.9'
-          os: ubuntu-20.04
+          os: ubuntu-22.04
         - python: '3.10'
           os: ubuntu-22.04
         - python: '3.11'
