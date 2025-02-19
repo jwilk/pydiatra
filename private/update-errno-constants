@@ -35,13 +35,13 @@ header = '''\
 
 def main():
     here = os.path.dirname(__file__)
-    path = '{here}/../pydiatra/data/errno-constants'.format(here=here)
+    path = f'{here}/../pydiatra/data/errno-constants'
     with open(path, 'wt', encoding='ASCII') as file:
         file.write(header.format(
             today=datetime.date.today(),
         ))
         for n in range(1, 41):
-            print('{n} {code}'.format(n=n, code=errno.errorcode[n]), file=file)
+            print(f'{n} {errno.errorcode[n]}', file=file)
 
 if __name__ == '__main__':
     main()
