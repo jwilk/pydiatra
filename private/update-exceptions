@@ -42,7 +42,7 @@ versions = versions.split()
 
 def main():
     here = os.path.dirname(__file__)
-    path = '{here}/../pydiatra/data/exceptions'.format(here=here)
+    path = f'{here}/../pydiatra/data/exceptions'
     exceptions = set()
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
         for vexceptions in executor.map(extract_exceptions, versions):
@@ -67,7 +67,7 @@ def _extract_exceptions(version):
     html = html.decode('UTF-8')
     match = re.search('<pre>(?:<span></span>)?(?:<span class="ne">)?(BaseException.*?)</pre>', html, flags=re.DOTALL)
     if match is None:
-        raise RuntimeError('cannot extract exception names for Python {ver}'.format(ver=version))
+        raise RuntimeError(f'cannot extract exception names for Python {version}')
     s = match.group(1)
     s = re.sub('</?span[^<]*>', '', s)
     s = re.sub(r'\s+\(.*$', '', s, flags=re.MULTILINE)
@@ -75,7 +75,7 @@ def _extract_exceptions(version):
     for exc in s.split():
         exc = exc.strip('[]')
         if not re.match(r'\A\w+\Z', exc):
-            raise RuntimeError('invalid Python {ver} exception name: {exc}'.format(ver=version, exc=exc))
+            raise RuntimeError(f'invalid Python {version} exception name: {exc}')
         yield exc
 
 def extract_exceptions(version):
