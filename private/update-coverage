@@ -26,7 +26,7 @@ import glob
 import os
 import re
 
-...  # Python 3 is required
+type(...)  # Python 3 is required
 
 # XXX Keep this in sync with tests/run-tests.
 _comment_re = re.compile(r'''
