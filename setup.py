@@ -36,12 +36,12 @@ from distutils.command.install_data import install_data as distutils_install_dat
 from distutils.command.sdist import sdist as distutils_sdist
 # pylint: enable=deprecated-module
 
-# pylint: disable=import-error
 if sys.version_info >= (3, 0):
+    # pylint: disable=import-error
     import configparser
 else:
+    # pylint: disable=import-error
     import ConfigParser as configparser
-# pylint: enable=import-error
 
 try:
     from wheel.bdist_wheel import bdist_wheel
