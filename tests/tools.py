@@ -25,12 +25,12 @@ import os
 import subprocess as ipc
 import sys
 
-# pylint: disable=import-error
 if sys.version_info >= (3, 0):
+    # pylint: disable=import-error
     import configparser
 else:
+    # pylint: disable=import-error
     import ConfigParser as configparser
-# pylint: enable=import-error
 
 import signame  # pylint: disable=wrong-import-position
 
