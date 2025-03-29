@@ -28,13 +28,24 @@ import os
 import re
 import sys
 
-# pylint: disable=deprecated-module
-import distutils.core
-from distutils.command.build import build as distutils_build
-from distutils.command.install import install as distutils_install
+# pylint: disable=deprecated-module,import-error
+import distutils
 from distutils.command.install_data import install_data as distutils_install_data
-from distutils.command.sdist import sdist as distutils_sdist
-# pylint: enable=deprecated-module
+if 'setuptools' in sys.modules:
+    # ugh, distutils has been hijacked by setuptools
+    import setuptools as distutils_core
+    try:
+        from setuptools.command.build import build as distutils_build
+    except ImportError:
+        from distutils.command.build import build as distutils_build
+    from setuptools.command.install import install as distutils_install
+    from setuptools.command.sdist import sdist as distutils_sdist
+else:
+    import distutils.core as distutils_core
+    from distutils.command.build import build as distutils_build
+    from distutils.command.install import install as distutils_install
+    from distutils.command.sdist import sdist as distutils_sdist
+# pylint: enable=deprecated-module,import-error
 
 if sys.version_info >= (3, 0):
     # pylint: disable=import-error
@@ -247,6 +258,6 @@ setup_options = dict(
 )
 
 if __name__ == '__main__':
-    distutils.core.setup(**setup_options)  # pylint: disable=no-member
+    distutils_core.setup(**setup_options)  # pylint: disable=no-member
 
 # vim:ts=4 sts=4 sw=4 et
