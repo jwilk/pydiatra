@@ -120,14 +120,17 @@ jobs:
       run: |
         private/update-coverage
         git diff --exit-code
-    - name: install
-      run:
+    - name: (setup.py) install
+      if: env.SETUPTOOLS_USE_DISTUTILS != 'local'
+      run: |
         python setup.py install --user
-    - name: check whether the module is installed correctly
+    - name: (setup.py) check if the module is installed correctly
+      if: env.SETUPTOOLS_USE_DISTUTILS != 'local'
       run: |
         cd /
         python -m pydiatra --version
-    - name: check whether the executable is installed correctly
+    - name: (setup.py) check if the executable is installed correctly
+      if: env.SETUPTOOLS_USE_DISTUTILS != 'local'
       run: |
         cd /
         pyXdiatra=py${pyver%.*}diatra
@@ -138,7 +141,8 @@ jobs:
       if: ${{ ! env.pythonLocation }}
       run: |
         sudo apt-get install -y man-db
-    - name: check whether the manual pages are installed correctly
+    - name: (setup.py) check if the man pages are installed correctly
+      if: env.SETUPTOOLS_USE_DISTUTILS != 'local'
       run: |
         export MATHPATH=~/.local/share/man
         cd /
@@ -147,13 +151,30 @@ jobs:
         man 1 $pyXdiatra | grep -A 15 -w PYDIATRA
       env:
         pyver: ${{matrix.python}}
-      continue-on-error:
-        ${{ env.SETUPTOOLS_USE_DISTUTILS == 'local' }}
-        # FIXME: "No manual entry for pydiatra in section 1"
-    - name: install with pip
+    - name: (pip) install
       run: |
-        rm -rvf ~/.local/lib/python*/site-packages/pydiatra*
+        rm -rvf ~/.local/bin/py*diatra ~/.local/lib/python*/site-packages/pydiatra* ~/home/runner/.local/share/man/man1/py*diatra.1
         python -m pip install .
+    - name: (pip) check if the module is installed correctly
+      run: |
+        cd /
+        python -m pydiatra --version
+    - name: (pip) check if the executable is installed correctly
+      run: |
+        cd /
+        pyXdiatra=py${pyver%.*}diatra
+        $pyXdiatra --version
+      env:
+        pyver: ${{matrix.python}}
+    - name: (pip) check if the man pages are installed correctly
+      run: |
+        export MATHPATH=~/.local/share/man
+        cd /
+        man 1 pydiatra | grep -A 15 -w PYDIATRA
+        pyXdiatra=py${pyver%.*}diatra
+        man 1 $pyXdiatra | grep -A 15 -w PYDIATRA
+      env:
+        pyver: ${{matrix.python}}
     - name: run pydiatra
       run: |
         PYTHON=python private/run-pydiatra
