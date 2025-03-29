@@ -153,6 +153,7 @@ jobs:
         pyver: ${{matrix.python}}
     - name: (pip) install
       run: |
+        rm -rf build/
         rm -rvf ~/.local/bin/py*diatra ~/.local/lib/python*/site-packages/pydiatra* ~/home/runner/.local/share/man/man1/py*diatra.1
         python -m pip install .
     - name: (pip) check if the module is installed correctly
