@@ -23,7 +23,7 @@
 import io
 import os
 
-from nose.tools import (
+from nose.tools import (  # pylint: disable=no-name-in-module
     assert_equal,
 )
 
