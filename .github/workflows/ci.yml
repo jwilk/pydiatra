@@ -193,11 +193,11 @@ jobs:
       matrix:
         include:
         - python: '3.6'
-          os: windows-2019
+          os: windows-2022
         - python: '3.9'
-          os: windows-2019
+          os: windows-2022
         - python: '3.11'
-          os: windows-2019
+          os: windows-2022
     runs-on: ${{matrix.os}}
     needs: nose
     steps:
