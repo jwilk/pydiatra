@@ -1,4 +1,4 @@
-pydiatra (0.12.8) UNRELEASED; urgency=low
+pydiatra (0.12.8) unstable; urgency=low
 
   * Fix compatibility with Python 3.14.
   * Fix compatibility with distutils hijacked by setuptools.
@@ -9,7 +9,7 @@ pydiatra (0.12.8) UNRELEASED; urgency=low
     and ProcessLookupError (added in Python 3.14) to the list of known
     exceptions.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 13 Oct 2025 21:58:47 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 13 Oct 2025 22:03:38 +0200
 
 pydiatra (0.12.7) unstable; urgency=low
 
