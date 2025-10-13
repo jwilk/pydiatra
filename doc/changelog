@@ -1,8 +1,12 @@
 pydiatra (0.12.8) UNRELEASED; urgency=low
 
-  * 
+  * Fix compatibility with Python 3.14.
+  * Fix compatibility with distutils hijacked by setuptools.
+  * Drop support for Python 2.6.
+  * Make “-j auto” take CPU affinity into account.
+  * Improve the test suite.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Thu, 23 Jun 2022 17:54:21 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 13 Oct 2025 21:51:08 +0200
 
 pydiatra (0.12.7) unstable; urgency=low
 
