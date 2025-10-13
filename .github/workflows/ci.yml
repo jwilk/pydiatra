@@ -146,9 +146,9 @@ jobs:
       run: |
         export MATHPATH=~/.local/share/man
         cd /
-        man 1 pydiatra | grep -A 15 -w PYDIATRA
+        man 1 pydiatra | grep -A 15 -iw PYDIATRA
         pyXdiatra=py${pyver%.*}diatra
-        man 1 $pyXdiatra | grep -A 15 -w PYDIATRA
+        man 1 $pyXdiatra | grep -A 15 -iw PYDIATRA
       env:
         pyver: ${{matrix.python}}
     - name: (pip) install
@@ -171,9 +171,9 @@ jobs:
       run: |
         export MATHPATH=~/.local/share/man
         cd /
-        man 1 pydiatra | grep -A 15 -w PYDIATRA
+        man 1 pydiatra | grep -A 15 -iw PYDIATRA
         pyXdiatra=py${pyver%.*}diatra
-        man 1 $pyXdiatra | grep -A 15 -w PYDIATRA
+        man 1 $pyXdiatra | grep -A 15 -iw PYDIATRA
       env:
         pyver: ${{matrix.python}}
     - name: run pydiatra
