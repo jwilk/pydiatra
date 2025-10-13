@@ -5,8 +5,11 @@ pydiatra (0.12.8) UNRELEASED; urgency=low
   * Drop support for Python 2.6.
   * Make “-j auto” take CPU affinity into account.
   * Improve the test suite.
+  * Add BaseExceptionGroup, ExceptionGroup (added in Python 3.11),
+    and ProcessLookupError (added in Python 3.14) to the list of known
+    exceptions.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 13 Oct 2025 21:51:08 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 13 Oct 2025 21:58:47 +0200
 
 pydiatra (0.12.7) unstable; urgency=low
 
