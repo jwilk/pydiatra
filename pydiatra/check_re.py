@@ -269,7 +269,7 @@ class Evaluator(ast.NodeVisitor):
 
     def visit_Constant(self, node):
         if isinstance(node.value, (str, bytes)):
-            return node.s
+            return node.value
 
     def visit_Str(self, node):
         return node.s

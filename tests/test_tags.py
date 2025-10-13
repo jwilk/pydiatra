@@ -23,12 +23,24 @@
 import ast
 import glob
 import os
+import sys
 
 from nose.tools import (
     assert_equal,
 )
 
 import tools
+
+def ast_str(node, fallback=None):
+    if sys.version_info < (3, 8):
+        # pylint: disable=no-member
+        if isinstance(node, ast.Str):
+            return node.s
+    elif isinstance(node, ast.Constant):  # pylint: disable=no-member
+        s = node.value
+        if isinstance(s, str):
+            return s
+    return fallback
 
 def extract_tags_from_ast(node):
     for child in ast.iter_child_nodes(node):
@@ -38,20 +50,22 @@ def extract_tags_from_ast(node):
         isinstance(node, ast.Call) and
         isinstance(node.func, ast.Name) and
         node.func.id == 'tag' and
-        len(node.args) >= 3 and
-        isinstance(node.args[2], ast.Str)
+        len(node.args) >= 3
     ):
-        yield node.args[2].s
+        s = ast_str(node.args[2])
+        if s is not None:
+            yield s
     if (
         isinstance(node, ast.Call) and
         isinstance(node.func, ast.Attribute) and
         isinstance(node.func.value, ast.Name) and
         node.func.value.id in ('self', 'owner') and
         node.func.attr == 'tag' and
-        len(node.args) >= 2 and
-        isinstance(node.args[1], ast.Str)
+        len(node.args) >= 2
     ):
-        yield node.args[1].s
+        s = ast_str(node.args[1])
+        if s is not None:
+            yield s
 
 def read_ast_tags(paths):
     options = {}

@@ -88,6 +88,34 @@ def format_cmp(left, op, right, swap=False):
         left, right = right, left
     return '{l} {op} {r}'.format(l=left, op=op, r=right)
 
+def ast_str(node, fallback=None):
+    if sys.version_info < (3, 8):
+        # pylint: disable=no-member
+        if isinstance(node, ast.Str):
+            return node.s
+    elif isinstance(node, ast.Constant):  # pylint: disable=no-member
+        s = node.value
+        if isinstance(s, str):
+            return s
+    return fallback
+
+def ast_is_str(node):
+    return ast_str(node) is not None
+
+def ast_num(node, fallback=None):
+    if sys.version_info < (3, 8):
+        # pylint: disable=no-member
+        if isinstance(node, ast.Num):
+            return node.n
+    elif isinstance(node, ast.Constant):  # pylint: disable=no-member
+        n = node.value
+        if isinstance(n, int):
+            return n
+    return fallback
+
+def ast_is_num(node):
+    return ast_num(node) is not None
+
 class Visitor(ast.NodeVisitor):
 
     def __init__(self, path):
@@ -113,7 +141,7 @@ class Visitor(ast.NodeVisitor):
             yield self.tag(None, '*reraise')
         while isinstance(ex_type, ast.BinOp):
             ex_type = ex_type.left
-        if isinstance(ex_type, ast.Str):
+        if ast_is_str(ex_type):
             yield self.tag(node, 'string-exception')
         for t in self.generic_visit(node):
             yield t
@@ -137,7 +165,7 @@ class Visitor(ast.NodeVisitor):
         for ex_type in ex_types:
             while isinstance(ex_type, ast.BinOp):
                 ex_type = ex_type.left
-            if isinstance(ex_type, ast.Str):
+            if ast_is_str(ex_type):
                 yield self.tag(node, 'string-exception')
                 break
         for t in self.generic_visit(node):
@@ -178,12 +206,10 @@ class Visitor(ast.NodeVisitor):
         hardcoded_errno = (
             left.attr == 'errno' and
             op in astaux.equality_ops and
-            isinstance(right, ast.Num) and
-            isinstance(right.n, int) and
-            right.n in errno_constants
+            ast_num(right) in errno_constants
         )
         if hardcoded_errno:
-            yield self.tag(right, '*hardcoded-errno-value', right.n)
+            yield self.tag(right, '*hardcoded-errno-value', ast_num(right))
         sys_attr_comparison = (
             isinstance(left.value, ast.Name) and
             left.value.id == 'sys'
@@ -191,14 +217,15 @@ class Visitor(ast.NodeVisitor):
         if sys_attr_comparison:
             if left.attr == 'version':
                 tpl = None
-                if isinstance(right, ast.Str):
+                right_s = ast_str(right)
+                if right_s is not None:
                     if op in astaux.inequality_ops:
                         try:
-                            tpl = sysversion.version_to_tuple(right.s)
+                            tpl = sysversion.version_to_tuple(right_s)
                         except (TypeError, ValueError):
                             pass
                     elif swap and (op in astaux.in_ops):
-                        if right.s == 'PyPy':
+                        if right_s == 'PyPy':
                             tpl = False
                             op = ast.Eq if isinstance(op, ast.In) else ast.NotEq
                             yield self.tag(left, 'sys.version-comparison',
@@ -214,9 +241,10 @@ class Visitor(ast.NodeVisitor):
                     )
             elif left.attr == 'hexversion':
                 tpl = None
-                if isinstance(right, ast.Num) and (op in astaux.numeric_cmp_ops):
+                right_n = ast_num(right)
+                if right_n is not None and (op in astaux.numeric_cmp_ops):
                     try:
-                        tpl = sysversion.hexversion_to_tuple(right.n)
+                        tpl = sysversion.hexversion_to_tuple(right_n)
                     except (TypeError, ValueError):
                         pass
                 if tpl is None:
@@ -293,9 +321,9 @@ class Visitor(ast.NodeVisitor):
             index = None
             if isinstance(node.slice, ast.Index):
                 index = node.slice.value
-            elif isinstance(node.slice, ast.Num):
+            elif ast_is_num(node.slice):
                 index = node.slice
-            if isinstance(index, ast.Num) and index.n == 1:
+            if ast_num(index) == 1:
                 yield self.tag(node, 'mkstemp-file-descriptor-leak')
         for t in self.generic_visit(node):
             yield t
@@ -320,13 +348,13 @@ class Visitor(ast.NodeVisitor):
             self.state.code_copy = True
 
     def visit_Constant(self, node):
-        if isinstance(node, ast.Str):
-            for t in self.visit_Str(node):
-                yield t
-
-    def visit_Str(self, node):
-        for t in self.check_str(node.s):
+        s = ast_str(node)
+        if s is None:
+            return
+        for t in self.check_str(s):
             yield t
+
+    visit_Str = visit_Constant
 
     def visit_BinOp(self, node):
         fn = getattr(self,
@@ -343,37 +371,34 @@ class Visitor(ast.NodeVisitor):
 
     def _check_string_formatting(self, node):
         [lhs, rhs] = [node.left, node.right]
-        if isinstance(lhs, ast.Str):
-            lhs = lhs.s
-        else:
+        lhs = ast_str(lhs)
+        if lhs is None:
             return
         if isinstance(rhs, ast.Tuple):
             if sys.version_info >= (3, 5):
                 if any(isinstance(elt, ast.Starred) for elt in rhs.elts):  # pylint: disable=no-member
                     return
             rhs = tuple(
-                elt.s if isinstance(elt, ast.Str) else 0
+                ast_str(elt, 0)
                 for elt in rhs.elts
             )
         elif isinstance(rhs, ast.Dict):
             new_rhs = {}
             for key, value in zip(rhs.keys, rhs.values):
-                if isinstance(key, ast.Str):
-                    key = key.s
-                else:
+                key = ast_str(key)
+                if key is None:
                     return
-                if isinstance(value, ast.Str):
-                    value = value.s
-                else:
-                    value = 0
+                value = ast_str(value, 0)
                 new_rhs[key] = value
             rhs = new_rhs
-        elif isinstance(rhs, ast.Str):
-            rhs = rhs.s
-        elif isinstance(rhs, ast.Num):
-            rhs = 0
         else:
-            return
+            rhs_s = ast_str(rhs)
+            if rhs_s is not None:
+                rhs = rhs_s
+            elif ast_is_num(rhs):
+                rhs = 0
+            else:
+                return
         try:
             lhs % rhs
         except KeyError as exc:
@@ -383,8 +408,8 @@ class Visitor(ast.NodeVisitor):
 
     def visit_Call(self, node):
         func = node.func
-        if isinstance(func, ast.Attribute) and isinstance(func.value, ast.Str) and func.attr == 'format':
-            fstring = func.value.s
+        if isinstance(func, ast.Attribute) and ast_is_str(func.value) and func.attr == 'format':
+            fstring = ast_str(func.value)
             try:
                 fstring = list(string_formatter.parse(fstring))
             except Exception as exc:  # pylint: disable=broad-except
