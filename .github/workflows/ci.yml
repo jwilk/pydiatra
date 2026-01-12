@@ -84,7 +84,8 @@ jobs:
     - name: set up pip
       if: env.pythonLocation
       run: |
-        sed -i -e 's/ sys.exit(.*)/ raise/' ${{env.pythonLocation}}/lib/python*/site-packages/pip/_internal/utils/setuptools_build.py
+        sb=${{env.pythonLocation}}/lib/python*/site-packages/pip/_internal/utils/setuptools_build.py
+        if ls "$sb"; then sed -i -e 's/ sys.exit(.*)/ raise/' "$sb"; fi
         python -m pip list
     - name: install deps
       run: |
