@@ -203,6 +203,7 @@ def main(runpy=False, script=None):
     if os.name != 'nt':
         signal.signal(signal.SIGPIPE, signal.SIG_DFL)
     ap = ArgumentParser(prog=prog)
+    ap.color = False
     ap.add_argument('paths', metavar='FILE-OR-DIR', nargs='+')
     ap.add_argument('--version', action=VersionAction)
     ap.add_argument('-v', '--verbose', action='store_true', help='print "OK" if no issues were found')
